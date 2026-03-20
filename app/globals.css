@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/* Force class-based dark mode for Tailwind v4 */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Base Colors - Soft & Professional */
+    --color-primary: #3B82F6;
+    /* Vibrant Blue Accent */
+    --color-on-primary: #FFFFFF;
+
+    --color-primary-soft: #F8FAFC;
+    --color-on-primary-soft: #3B82F6;
+
+    --color-surface: #FFFFFF;
+    --color-surface-1: #F8FAFC;
+    /* Slate 50 */
+    --color-surface-2: #F1F5F9;
+    /* Slate 100 */
+    --color-surface-3: #E2E8F0;
+    /* Slate 200 */
+    --color-on-surface: #0F172A;
+    /* Slate 900 */
+    --color-surface-variant: #F1F5F9;
+    --color-on-surface-variant: #475569;
+    /* Slate 600 */
+    --color-outline: #CBD5E1;
+    /* Slate 300 */
+
+    --color-background-dark: #131314;
+    /* Google Dark BG */
+
+    --font-display: var(--font-inter), sans-serif;
+    --font-sans: var(--font-inter), sans-serif;
+}
+
+@layer base {
+    :root {
+        --background: #F1F5F9;
+        /* Slate 100 */
+        --foreground: #0F172A;
+        /* Slate 900 */
+        --card: #FFFFFF;
+        --card-foreground: #0F172A;
+        --popover: #FFFFFF;
+        --popover-foreground: #0F172A;
+        --primary: #2563EB;
+        /* Solid Blue 600 */
+        --primary-foreground: #FFFFFF;
+        --secondary: #F8FAFC;
+        --secondary-foreground: #0F172A;
+        --muted: #64748B;
+        /* Slate 500 */
+        --muted-foreground: #64748B;
+        --accent: #E2E8F0;
+        --accent-foreground: #0F172A;
+        --destructive: #EF4444;
+        --destructive-foreground: #FFFFFF;
+        --border: #E2E8F0;
+        /* Slate 200 - even softer */
+        --input: #F1F5F9;
+        --ring: #3B82F6;
+        --radius: 0.75rem;
+        /* Standard rounded-xl equivalent roughly */
+        /* Visual Accents */
+        --color-primary: #2563EB;
+        --color-surface: #FFFFFF;
+        --color-border: #CBD5E1;
+        --color-muted: #64748B;
+    }
+
+    .dark {
+        --background: #131314;
+        /* Google Dark BG */
+        --foreground: #E3E3E3;
+        --card: #1E1E1F;
+        /* Surface Container */
+        --card-foreground: #E3E3E3;
+        --border: #333537;
+        /* Subtle Outline */
+        --muted: #C4C7C5;
+        --accent: #333537;
+        --accent-foreground: #E3E3E3;
+
+        /* Overwrite primary for high-readability on deep dark */
+        --color-primary: #A8C7FA;
+        --color-on-primary: #062E6F;
+    }
+
+    body {
+        @apply bg-[var(--background)] text-[var(--foreground)] font-sans min-h-screen antialiased selection:bg-primary/20 selection:text-primary;
+        overflow-x: hidden;
+        letter-spacing: -0.01em;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-display tracking-tight text-[var(--foreground)];
+    }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 20px;
+}
+
+.sidebar-transition {
+    transition: transform 0.3s ease-in-out;
+}
+
+.glass-header {
+    @apply bg-white/80 dark:bg-background-dark/80 backdrop-blur-md;
+}
+
+.hero-gradient {
+    background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-shimmer {
+    animation: shimmer 2s infinite;
+}
+
+.tier-bronze {
+    @apply bg-orange-100 text-orange-700 border-orange-200;
+}
+
+.tier-prata {
+    @apply bg-slate-100 text-slate-700 border-slate-200;
+}
+
+.tier-ouro {
+    @apply bg-amber-100 text-amber-700 border-amber-200;
+}

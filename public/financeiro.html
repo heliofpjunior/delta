@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Financeiro - Delta Estrategista</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#258cf4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f172a",
+                        "navy-sidebar": "#0d141c",
+                    },
+                    fontFamily: {
+                        "display": ["Outfit", "Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex overflow-x-hidden">
+    <!-- Sidebar -->
+    <aside
+        class="w-64 bg-navy-sidebar text-slate-300 flex flex-col fixed h-full z-50 sidebar-transition sidebar-mobile-hidden lg:translate-x-0">
+        <div class="p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined">verified_user</span>
+                </div>
+                <div>
+                    <h1 class="text-white text-base font-bold leading-none">Delta Estrategista</h1>
+                    <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-bold">Financeiro</p>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="flex-1 px-4 py-4 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="index.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">dashboard</span>
+                <span class="text-sm font-medium">Painel</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="certificados.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">description</span>
+                <span class="text-sm font-medium">Certificados</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="loja.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">shopping_cart</span>
+                <span class="text-sm font-medium">Links de Venda</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="campanhas.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">campaign</span>
+                <span class="text-sm font-medium">Campanhas / Cupons</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="clientes.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">group</span>
+                <span class="text-sm font-medium">Clientes</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-lg shadow-primary/20"
+                href="financeiro.html">
+                <span class="material-symbols-outlined text-[22px]"
+                    style="font-variation-settings: 'FILL' 1">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="relatorios.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">bar_chart</span>
+                <span class="text-sm font-medium">Relatórios</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="configuracoes.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">settings</span>
+                <span class="text-sm font-medium">Configurações</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <div class="flex items-center gap-3 px-3 py-3 bg-white/5 rounded-xl border border-white/5">
+                <div class="sidebar-user-avatar">
+                    <div
+                        class="size-9 bg-primary/20 rounded-lg flex items-center justify-center text-primary font-bold">
+                        M</div>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-white text-sm font-bold truncate current-seller-name">Carregando...</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Vendedor</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64 min-h-screen flex flex-col w-full">
+        <!-- Header -->
+        <header
+            class="sticky top-0 z-40 glass-header border-b border-slate-200 dark:border-slate-800 px-4 lg:px-6 py-3">
+            <div class="flex items-center justify-between max-w-full mx-auto w-full gap-4">
+                <div class="flex items-center gap-3 lg:gap-4 flex-1">
+                    <button onclick="toggleSidebar()"
+                        class="lg:hidden p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <h2 class="text-lg font-bold hidden sm:block">Gestão Financeira</h2>
+                </div>
+
+                <div class="flex items-center gap-2 lg:gap-3">
+                    <div id="user-tier-badge"
+                        class="flex items-center gap-2 px-3 lg:px-4 py-1.5 rounded-xl border font-bold text-[11px] lg:text-xs tier-bronze transition-all duration-500">
+                        <span class="material-symbols-outlined text-sm">workspace_premium</span>
+                        <span id="user-tier-name">Bronze</span>
+                    </div>
+                    <div
+                        class="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 px-3 lg:px-4 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span class="material-symbols-outlined text-sm">payments</span>
+                        <span id="header-user-sales" class="text-[11px] lg:text-xs font-bold tracking-tight">R$
+                            0,00</span>
+                    </div>
+                    <div class="header-user-avatar">
+                        <div class="size-8 rounded-full bg-slate-200 border border-white shadow-sm flex-shrink-0"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-4 lg:p-6 max-w-[1600px] mx-auto w-full space-y-6">
+            <!-- Breadcrumbs & Title -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <nav
+                        class="flex items-center gap-2 text-[10px] text-slate-500 mb-1 uppercase tracking-wider font-bold">
+                        <a class="hover:text-primary" href="index.html">Início</a>
+                        <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                        <span class="text-slate-900 dark:text-slate-300">Financeiro</span>
+                    </nav>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">Extrato e Resgates
+                    </h2>
+                </div>
+                <button onclick="openWithdrawModal()"
+                    class="bg-primary text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">
+                    <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+                    Solicitar Saque
+                </button>
+            </div>
+
+            <!-- Financial Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Saldo Disponível -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="size-12 bg-emerald-500/10 text-emerald-600 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined">payments</span>
+                        </div>
+                        <span
+                            class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full uppercase">Disponível</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium mb-1">Saldo para Saque</p>
+                        <h4 id="fin-available" class="text-2xl font-black text-slate-900 dark:text-white">R$ 0,00</h4>
+                    </div>
+                    <div
+                        class="absolute -right-4 -bottom-4 size-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform">
+                    </div>
+                </div>
+
+                <!-- Saldo Pendente -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="size-12 bg-amber-500/10 text-amber-600 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined">pending_actions</span>
+                        </div>
+                        <span
+                            class="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-1 rounded-full uppercase">Pendente</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium mb-1">Aguardando Liberação</p>
+                        <h4 id="fin-pending" class="text-2xl font-black text-slate-900 dark:text-white">R$ 0,00</h4>
+                    </div>
+                </div>
+
+                <!-- Total Sacado -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="size-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined">history</span>
+                        </div>
+                        <span
+                            class="text-[10px] font-bold bg-slate-100 dark:bg-white/10 text-slate-500 px-2 py-1 rounded-full uppercase">Total
+                            Pago</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium mb-1">Total já Resgatado</p>
+                        <h4 id="fin-withdrawn" class="text-2xl font-black text-slate-900 dark:text-white">R$ 0,00</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statement Table -->
+            <div
+                class="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden elegant-shadow">
+                <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                    <h3 class="text-sm font-bold flex items-center gap-2 uppercase tracking-widest text-slate-400">
+                        <span class="size-2 bg-primary rounded-full"></span>
+                        Histórico de Movimentações
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                            <tr
+                                class="text-left border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-white/5">
+                                <th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Data</th>
+                                <th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Descrição</th>
+                                <th class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Tipo</th>
+                                <th
+                                    class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">
+                                    Valor</th>
+                                <th
+                                    class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center">
+                                    Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="financeHistoryBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Pedido de Resgate -->
+    <div id="modalWithdraw" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 modal-overlay" onclick="closeWithdrawModal()"></div>
+        <div
+            class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl relative z-10 modal-enter overflow-hidden">
+            <div
+                class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+                <h3 class="text-xl font-bold">Solicitar Resgate</h3>
+                <button onclick="closeWithdrawModal()" class="text-slate-400 hover:text-slate-600">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="p-8 space-y-6">
+                <div class="bg-primary/5 p-4 rounded-xl border border-primary/20 flex items-center gap-4">
+                    <div class="size-10 bg-primary text-white rounded-full flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined">pix</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase text-slate-400">Chave PIX Cadastrada</p>
+                        <p id="withdraw-pix-key" class="text-sm font-bold text-slate-900 dark:text-white">---</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Valor do Resgate (R$)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400">R$</span>
+                        <input id="withdraw-amount" type="number" step="0.01"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary text-xl font-black"
+                            placeholder="0,00">
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-2">Mínimo para saque: R$ 50,00</p>
+                </div>
+
+                <div class="pt-4 flex flex-col gap-3">
+                    <button onclick="handleWithdrawSubmit()"
+                        class="w-full bg-primary text-white py-4 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
+                        Confirmar Saque (PIX)
+                        <span class="material-symbols-outlined text-lg">send</span>
+                    </button>
+                    <button onclick="closeWithdrawModal()"
+                        class="w-full py-2 text-xs font-bold text-slate-500">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.loadFinancialData) loadFinancialData();
+        });
+    </script>
+</body>
+
+</html>

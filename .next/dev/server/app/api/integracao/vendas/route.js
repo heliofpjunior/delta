@@ -1,0 +1,10 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/integracao/vendas/route.js")
+R.c("server/chunks/node_modules_next_5d854401._.js")
+R.c("server/chunks/node_modules_@supabase_auth-js_dist_module_02e1b12e._.js")
+R.c("server/chunks/node_modules_axios_lib_965bc11c._.js")
+R.c("server/chunks/464b8_mime-db_78a234b4._.js")
+R.c("server/chunks/node_modules_6c4a353e._.js")
+R.c("server/chunks/[root-of-the-server]__74bc2c07._.js")
+R.c("server/chunks/_next-internal_server_app_api_integracao_vendas_route_actions_9bd3a6a2.js")
+R.m("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/app/api/integracao/vendas/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/app/api/integracao/vendas/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports
