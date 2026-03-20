@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Minha Loja - Delta Estrategista</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#258cf4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f172a",
+                        "navy-sidebar": "#0d141c",
+                    },
+                    fontFamily: {
+                        "display": ["Outfit", "Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex overflow-x-hidden">
+    <!-- Sidebar -->
+    <aside
+        class="w-64 bg-navy-sidebar text-slate-300 flex flex-col fixed h-full z-50 sidebar-transition sidebar-mobile-hidden lg:translate-x-0">
+        <div class="p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">verified_user</span>
+                </div>
+                <div>
+                    <h1 class="text-white text-base font-bold leading-none">Delta Estrategista</h1>
+                    <p class="text-xs text-slate-500 mt-1">Controle de Certificados</p>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="flex-1 px-4 py-4 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="index.html">
+                <span class="material-symbols-outlined text-[22px]">dashboard</span>
+                <span class="text-sm font-medium">Painel</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="certificados.html">
+                <span class="material-symbols-outlined text-[22px]">description</span>
+                <span class="text-sm font-medium">Certificados</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white" href="loja.html">
+                <span class="material-symbols-outlined text-[22px]"
+                    style="font-variation-settings: 'FILL' 1">shopping_cart</span>
+                <span class="text-sm font-medium">Links de Venda</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="campanhas.html">
+                <span class="material-symbols-outlined text-[22px]">campaign</span>
+                <span class="text-sm font-medium">Campanhas / Cupons</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="clientes.html">
+                <span class="material-symbols-outlined text-[22px]">group</span>
+                <span class="text-sm font-medium">Clientes</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="financeiro.html">
+                <span class="material-symbols-outlined text-[22px]">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="relatorios.html">
+                <span class="material-symbols-outlined text-[22px]">bar_chart</span>
+                <span class="text-sm font-medium">Relatórios</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="configuracoes.html">
+                <span class="material-symbols-outlined text-[22px]">settings</span>
+                <span class="text-sm font-medium">Configurações</span>
+            </a>
+        </nav>
+        <!-- Simulation Switcher (Solo para a Demo) -->
+        <div class="px-4 py-2 border-t border-white/5">
+            <button onclick="toggleSellerRoleSimulation()"
+                class="w-full bg-white/5 hover:bg-white/10 text-[10px] text-slate-400 py-1.5 rounded-lg border border-white/10 transition-colors uppercase font-bold tracking-widest">
+                Alternar Visão (Admin / Vendedor)
+            </button>
+        </div>
+
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <div class="flex items-center gap-3 px-3 py-3 bg-white/5 rounded-xl border border-white/5">
+                <div class="sidebar-user-avatar">
+                    <div
+                        class="size-9 bg-primary/20 rounded-lg flex items-center justify-center text-primary font-bold">
+                        M</div>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-white text-sm font-bold truncate current-seller-name">Carregando...</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Vendedor</p>
+                </div>
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-red-400 mt-2"
+                href="#">
+                <span class="material-symbols-outlined text-[22px]">logout</span>
+                <span class="text-sm font-medium">Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64 min-h-screen flex flex-col w-full">
+        <header
+            class="sticky top-0 z-40 glass-header border-b border-slate-200 dark:border-slate-800 px-4 lg:px-6 py-3">
+            <div class="flex items-center justify-between max-w-full mx-auto w-full gap-4">
+                <div class="flex items-center gap-3 lg:gap-4 flex-1">
+                    <button onclick="toggleSidebar()"
+                        class="lg:hidden p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="relative w-full max-w-sm hidden md:block">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                        <input
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary text-xs transition-all"
+                            placeholder="Buscar produto..." type="text" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 lg:gap-3">
+                    <!-- Tier Badge (Bronze/Prata/Ouro) -->
+                    <div id="user-tier-badge"
+                        class="flex items-center gap-2 px-3 lg:px-4 py-1.5 rounded-xl border font-bold text-[11px] lg:text-xs tier-bronze transition-all duration-500">
+                        <span class="material-symbols-outlined text-sm">workspace_premium</span>
+                        <span id="user-tier-name">Bronze</span>
+                    </div>
+
+                    <!-- Sales Value Display -->
+                    <div
+                        class="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 px-3 lg:px-4 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span class="material-symbols-outlined text-sm">payments</span>
+                        <span id="header-user-sales" class="text-[11px] lg:text-xs font-bold tracking-tight">R$
+                            0,00</span>
+                    </div>
+
+                    <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
+
+                    <button
+                        class="size-9 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 relative hover:bg-slate-200 transition-colors btn-hover-effect">
+                        <span class="material-symbols-outlined text-xl">notifications</span>
+                        <span
+                            class="absolute top-2.5 right-2.5 size-1.5 bg-red-500 rounded-full border border-white dark:border-slate-900"></span>
+                    </button>
+                    <div class="header-user-avatar">
+                        <div class="size-8 rounded-full bg-slate-200 border border-white shadow-sm flex-shrink-0"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Search (MD and down) -->
+            <div class="mt-3 md:hidden relative">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                <input
+                    class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary text-xs"
+                    placeholder="Buscar..." type="text" />
+            </div>
+        </header>
+
+        <div class="p-4 lg:p-6 max-w-[1600px] mx-auto w-full space-y-6">
+            <!-- Breadcrumbs & Title -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <nav
+                        class="flex items-center gap-2 text-[10px] text-slate-500 mb-1 uppercase tracking-wider font-bold">
+                        <a class="hover:text-primary" href="index.html">Início</a>
+                        <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                        <span class="text-slate-900 dark:text-slate-300">Links de Venda</span>
+                    </nav>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">Minha Vitrine Virtual
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Product Card 1: e-CPF A1 -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all group">
+                    <div class="p-6 bg-primary/5 border-b border-primary/10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div
+                                class="size-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center shadow-sm text-primary">
+                                <span class="material-symbols-outlined text-3xl">person</span>
+                            </div>
+                            <span
+                                class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Pessoa
+                                Física</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">e-CPF A1</h3>
+                        <p class="text-sm text-slate-500 mt-1">Validade 12 meses - Emissão por Videoconferência</p>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Seu Custo:</span>
+                            <span class="text-slate-900 dark:text-white font-bold">R$ 70,00</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Preço
+                                de Venda (Defina o seu)</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">R$</span>
+                                <input type="number" step="0.01" value="149.90"
+                                    class="w-full bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-primary text-lg font-bold product-price-input"
+                                    data-cost="70" data-id="101">
+                            </div>
+                            <div class="mt-2 flex justify-between items-center px-1">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Sua Comissão
+                                    Estimada:</span>
+                                <span class="text-xs font-bold text-emerald-500 commission-preview">R$ 70,91</span>
+                            </div>
+                        </div>
+
+                        <!-- Coupon Association -->
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <label
+                                class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Simular/Associar
+                                Cupom (Opcional)</label>
+                            <select
+                                class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg py-2 text-xs focus:ring-2 focus:ring-primary coupon-select"
+                                onchange="updateCommissionPreview(this.closest('.p-6').querySelector('.product-price-input'))">
+                                <option value="">Sem Cupom</option>
+                                <option value="VERAO20">VERAO20 (20%)</option>
+                                <option value="INFLUENCER_ANA">INFLUENCER_ANA (R$ 50)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="copySaleLink(this)"
+                            class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group-hover:scale-[1.02] copy-link-btn">
+                            <span class="material-symbols-outlined">content_copy</span>
+                            Copiar Link de Venda
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 2: e-CNPJ A1 -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all group">
+                    <div class="p-6 bg-indigo-500/5 border-b border-indigo-500/10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div
+                                class="size-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center shadow-sm text-indigo-500">
+                                <span class="material-symbols-outlined text-3xl">business</span>
+                            </div>
+                            <span
+                                class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-[10px] font-bold px-3 py-1 rounded-full uppercase">Pessoa
+                                Jurídica</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">e-CNPJ A1</h3>
+                        <p class="text-sm text-slate-500 mt-1">Validade 12 meses - Emissão por Videoconferência</p>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Seu Custo:</span>
+                            <span class="text-slate-900 dark:text-white font-bold">R$ 74,26</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Preço
+                                de Venda (Defina o seu)</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">R$</span>
+                                <input type="number" step="0.01" value="229.00"
+                                    class="w-full bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-primary text-lg font-bold product-price-input"
+                                    data-cost="74.26" data-id="201">
+                            </div>
+                            <div class="mt-2 flex justify-between items-center px-1">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Sua Comissão
+                                    Estimada:</span>
+                                <span class="text-xs font-bold text-emerald-500 commission-preview">R$ 141,00</span>
+                            </div>
+                        </div>
+
+                        <!-- Coupon Association -->
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <label
+                                class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Simular/Associar
+                                Cupom (Opcional)</label>
+                            <select
+                                class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg py-2 text-xs focus:ring-2 focus:ring-primary coupon-select"
+                                onchange="updateCommissionPreview(this.closest('.p-6').querySelector('.product-price-input'))">
+                                <option value="">Sem Cupom</option>
+                                <option value="VERAO20">VERAO20 (20%)</option>
+                                <option value="INFLUENCER_ANA">INFLUENCER_ANA (R$ 50)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="copySaleLink(this)"
+                            class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group-hover:scale-[1.02] copy-link-btn">
+                            <span class="material-symbols-outlined">content_copy</span>
+                            Copiar Link de Venda
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Card 3: e-CPF A3 12 meses -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all group">
+                    <div class="p-6 bg-emerald-500/5 border-b border-emerald-500/10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div
+                                class="size-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center shadow-sm text-emerald-500">
+                                <span class="material-symbols-outlined text-3xl">badge</span>
+                            </div>
+                            <span
+                                class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full uppercase">PF
+                                / Arquivo</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">e-CPF A3 (1 Ano)</h3>
+                        <p class="text-sm text-slate-500 mt-1">Cartão ou Token - Emissão por Videoconferência</p>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400 font-medium">Seu Custo:</span>
+                            <span class="text-slate-900 dark:text-white font-bold">R$ 150,00</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Preço
+                                de Venda (Defina o seu)</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">R$</span>
+                                <input type="number" step="0.01" value="299.00"
+                                    class="w-full bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-primary text-lg font-bold product-price-input"
+                                    data-cost="150.00" data-id="102">
+                            </div>
+                            <div class="mt-2 flex justify-between items-center px-1">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Sua Comissão
+                                    Estimada:</span>
+                                <span class="text-xs font-bold text-emerald-500 commission-preview">R$ 131,06</span>
+                            </div>
+                        </div>
+
+                        <!-- Coupon Association -->
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <label
+                                class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Simular/Associar
+                                Cupom (Opcional)</label>
+                            <select
+                                class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg py-2 text-xs focus:ring-2 focus:ring-primary coupon-select"
+                                onchange="updateCommissionPreview(this.closest('.p-6').querySelector('.product-price-input'))">
+                                <option value="">Sem Cupom</option>
+                                <option value="VERAO20">VERAO20 (20%)</option>
+                                <option value="ANA_PROMO">ANA_PROMO (R$ 50)</option>
+                                <option value="MASTER_OFF">MASTER_OFF (10%)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="copySaleLink(this)"
+                            class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group-hover:scale-[1.02] copy-link-btn">
+                            <span class="material-symbols-outlined">content_copy</span>
+                            Copiar Link de Venda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/scripts.js"></script>
+    <script>
+        // Mock Coupons with Product Binding
+        const mockCoupons = {
+            'VERAO20': { type: 'PERCENT', value: 20, validFor: ['CPF', 'CNPJ'] },
+            'ANA_PROMO': { type: 'FIXED', value: 50, validFor: ['CPF'] },
+            'MASTER_OFF': { type: 'PERCENT', value: 10, validFor: ['CPF', 'CNPJ'] }
+        };
+
+        // Specific logic for Loja page
+        function updateCommissionPreview(input) {
+            const card = input.closest('.bg-white'); // main container
+            const cost = parseFloat(input.dataset.cost);
+            const price = parseFloat(input.value) || 0;
+            const previewEl = card.querySelector('.commission-preview');
+            const submitBtn = card.querySelector('.copy-link-btn');
+            const couponSelect = card.querySelector('.coupon-select');
+            const couponCode = couponSelect.value;
+
+            // Detection: CPF or CNPJ based on card content
+            const productType = card.innerText.includes('e-CNPJ') ? 'CNPJ' : 'CPF';
+
+            // Filter selection options
+            Array.from(couponSelect.options).forEach(opt => {
+                if (!opt.value) return;
+                const coupon = mockCoupons[opt.value];
+                if (coupon) {
+                    const isValid = coupon.validFor.includes(productType);
+                    opt.disabled = !isValid;
+                    opt.hidden = !isValid;
+                    if (!isValid && couponSelect.value === opt.value) {
+                        couponSelect.value = "";
+                    }
+                }
+            });
+
+            let finalPrice = price;
+            if (couponCode && mockCoupons[couponCode]) {
+                const c = mockCoupons[couponCode];
+                if (c.type === 'PERCENT') finalPrice = price * (1 - (c.value / 100));
+                else finalPrice = Math.max(0, price - c.value);
+            }
+
+            if (price > 0) {
+                // Commission = FinalPrice (after coupon) - Cost - 6% Fees
+                const commission = finalPrice - cost - (finalPrice * 0.06);
+                previewEl.innerText = `R$ ${commission.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                const isInvalid = commission < 0;
+                previewEl.classList.toggle('text-red-500', isInvalid);
+                previewEl.classList.toggle('text-emerald-500', !isInvalid);
+
+                // Disable button if margin is negative
+                submitBtn.disabled = isInvalid;
+                submitBtn.classList.toggle('opacity-50', isInvalid);
+                submitBtn.classList.toggle('cursor-not-allowed', isInvalid);
+                if (isInvalid) {
+                    submitBtn.innerHTML = '<span class="material-symbols-outlined">warning</span> Margem Negativa';
+                } else {
+                    submitBtn.innerHTML = '<span class="material-symbols-outlined">content_copy</span> Copiar Link de Venda';
+                }
+            } else {
+                previewEl.innerText = 'R$ 0,00';
+            }
+        }
+
+        document.querySelectorAll('.product-price-input').forEach(input => {
+            input.oninput = () => updateCommissionPreview(input);
+            updateCommissionPreview(input);
+        });
+
+        function copySaleLink(btn) {
+            const card = btn.closest('.bg-white');
+            const input = card.querySelector('.product-price-input');
+            const couponSelect = card.querySelector('.coupon-select');
+            const productId = input.dataset.id;
+            const price = input.value;
+            const sellerId = currentUser ? currentUser.id : 'unknown';
+            const selectedCoupon = couponSelect.value;
+
+            // SECURITY: Combine parameters into a single object and encode
+            const payload = {
+                p: productId,
+                v: sellerId,
+                pr: price,
+                c: input.dataset.cost, // Include cost for floor price validation
+                cp: selectedCoupon, // Optional: auto-apply this coupon
+                ts: Date.now()
+            };
+
+            const token = btoa(JSON.stringify(payload));
+
+            // Build the absolute URL
+            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+            const saleUrl = `${baseUrl}compra.html?ref=${token}`;
+
+            navigator.clipboard.writeText(saleUrl).then(() => {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined">check</span> Link Copiado!';
+                btn.classList.replace('bg-primary', 'bg-emerald-500');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('bg-emerald-500', 'bg-primary');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

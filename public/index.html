@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Painel - Centro de Controle de Certificados Digitais</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#258cf4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f172a",
+                        "navy-sidebar": "#0d141c",
+                    },
+                    fontFamily: {
+                        "display": ["Outfit", "Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .glow-amber {
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+            border: 2px solid #f59e0b !important;
+        }
+
+        .pulse-crimson {
+            border: 2px solid #ef4444 !important;
+            animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-red {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .7;
+            }
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-enter {
+            animation: modal-in 0.3s ease-out;
+        }
+
+        @keyframes modal-in {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex overflow-x-hidden">
+    <!-- Sidebar -->
+    <aside
+        class="w-64 bg-navy-sidebar text-slate-300 flex flex-col fixed h-full z-50 sidebar-transition sidebar-mobile-hidden lg:translate-x-0">
+        <div class="p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">verified_user</span>
+                </div>
+                <div>
+                    <h1 class="text-white text-base font-bold leading-none">Delta Estrategista</h1>
+                    <p class="text-xs text-slate-500 mt-1">Controle de Certificados</p>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="flex-1 px-4 py-4 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white" href="index.html">
+                <span class="material-symbols-outlined text-[22px]">dashboard</span>
+                <span class="text-sm font-medium">Painel</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="certificados.html">
+                <span class="material-symbols-outlined text-[22px]">description</span>
+                <span class="text-sm font-medium">Certificados</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="loja.html">
+                <span class="material-symbols-outlined text-[22px]">shopping_cart</span>
+                <span class="text-sm font-medium">Links de Venda</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="campanhas.html">
+                <span class="material-symbols-outlined text-[22px]">campaign</span>
+                <span class="text-sm font-medium">Campanhas / Cupons</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="clientes.html">
+                <span class="material-symbols-outlined text-[22px]">group</span>
+                <span class="text-sm font-medium">Clientes</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="financeiro.html">
+                <span class="material-symbols-outlined text-[22px]">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="relatorios.html">
+                <span class="material-symbols-outlined text-[22px]">bar_chart</span>
+                <span class="text-sm font-medium">Relatórios</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
+                href="configuracoes.html">
+                <span class="material-symbols-outlined text-[22px]">settings</span>
+                <span class="text-sm font-medium">Configurações</span>
+            </a>
+        </nav>
+        <!-- Simulation Switcher (Solo para a Demo) -->
+        <div class="px-4 py-2 border-t border-white/5">
+            <button onclick="toggleSellerRoleSimulation()"
+                class="w-full bg-white/5 hover:bg-white/10 text-[10px] text-slate-400 py-1.5 rounded-lg border border-white/10 transition-colors uppercase font-bold tracking-widest">
+                Alternar Visão (Admin / Vendedor)
+            </button>
+        </div>
+
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <div class="flex items-center gap-3 px-3 py-3 bg-white/5 rounded-xl border border-white/5">
+                <div class="sidebar-user-avatar">
+                    <div
+                        class="size-9 bg-primary/20 rounded-lg flex items-center justify-center text-primary font-bold">
+                        M</div>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-white text-sm font-bold truncate current-seller-name">Carregando...</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Vendedor</p>
+                </div>
+            </div>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors text-red-400 mt-2"
+                href="#">
+                <span class="material-symbols-outlined text-[22px]">logout</span>
+                <span class="text-sm font-medium">Sair</span>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64 min-h-screen flex flex-col w-full">
+        <!-- Header / Quick Action Bar -->
+        <header
+            class="sticky top-0 z-40 glass-header border-b border-slate-200 dark:border-slate-800 px-4 lg:px-6 py-3">
+            <div class="flex items-center justify-between max-w-full mx-auto w-full gap-4">
+                <div class="flex items-center gap-3 lg:gap-4 flex-1">
+                    <button onclick="toggleSidebar()"
+                        class="lg:hidden p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="relative w-full max-w-sm hidden md:block">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                        <input
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary text-xs transition-all"
+                            placeholder="Buscar no painel..." type="text" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 lg:gap-3">
+                    <!-- Tier Badge (Bronze/Prata/Ouro) -->
+                    <div id="user-tier-badge"
+                        class="flex items-center gap-2 px-3 lg:px-4 py-1.5 rounded-xl border font-bold text-[11px] lg:text-xs tier-bronze transition-all duration-500">
+                        <span class="material-symbols-outlined text-sm">workspace_premium</span>
+                        <span id="user-tier-name">Bronze</span>
+                    </div>
+
+                    <!-- Sales Value Display -->
+                    <div
+                        class="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 px-3 lg:px-4 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span class="material-symbols-outlined text-sm">payments</span>
+                        <span id="header-user-sales" class="text-[11px] lg:text-xs font-bold tracking-tight">R$
+                            0,00</span>
+                    </div>
+
+                    <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
+
+                    <button id="btnNewCertificate"
+                        class="bg-primary text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all btn-hover-effect">
+                        <span class="material-symbols-outlined text-sm">add</span>
+                        <span class="hidden lg:inline">Emitir</span>
+                    </button>
+                    <div class="header-user-avatar">
+                        <div class="size-8 rounded-full bg-slate-200 border border-white shadow-sm flex-shrink-0"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Search (MD and down) -->
+            <div class="mt-3 md:hidden relative">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                <input
+                    class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary text-xs"
+                    placeholder="Buscar..." type="text" />
+            </div>
+        </header>
+        <div class="p-4 lg:p-6 max-w-[1600px] mx-auto w-full space-y-6">
+            <!-- Hero Section: Motivational & Personal -->
+            <div
+                class="relative overflow-hidden rounded-3xl hero-gradient p-8 text-white min-h-[200px] flex flex-col justify-center animate-slide-up">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 text-blue-100 text-xs font-bold uppercase tracking-widest mb-2">
+                        <span class="material-symbols-outlined text-sm">stars</span>
+                        Delta Estrategista • Performance de Elite
+                    </div>
+                    <h3 class="text-3xl font-black mb-1">Boas-vindas, <span
+                            class="current-seller-name italic">Vendedor</span>! 🚀</h3>
+                    <p class="text-blue-100/80 text-sm max-w-lg" id="dashboard-motivational">
+                        O sucesso é a soma de pequenos esforços repetidos dia após dia. Que tal transformar leads em
+                        conquistas hoje?
+                    </p>
+                    <div class="mt-6 flex flex-wrap items-center gap-4">
+                        <div class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                            <p class="text-[10px] font-bold uppercase opacity-60">Meta Diária</p>
+                            <div class="flex items-end gap-2">
+                                <span class="text-lg font-black italic">60%</span>
+                                <div class="w-24 bg-white/20 h-1.5 rounded-full mb-1.5 overflow-hidden">
+                                    <div class="bg-white h-full w-[60%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="window.location.href='certificados.html?filter=Oportunidade'"
+                            class="bg-white text-primary px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 hover:bg-blue-50 transition-all shadow-xl">
+                            <span class="material-symbols-outlined text-sm">bolt</span>
+                            Ver Oportunidades Quentes
+                        </button>
+                    </div>
+                </div>
+                <!-- Abstract background shapes -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+                <div class="absolute bottom-0 left-1/2 w-48 h-48 bg-blue-400/20 rounded-full blur-3xl"></div>
+            </div>
+
+            <!-- Breadcrumbs (Simplified) -->
+            <nav class="flex items-center gap-2 text-[10px] text-slate-500 uppercase tracking-wider font-bold">
+                <a class="hover:text-primary" href="index.html">Início</a>
+                <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                <span class="text-slate-900 dark:text-slate-300">Dashboard de Elite</span>
+            </nav>
+
+            <!-- Section: Resumo de Performance -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card: Comissões -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 elegant-shadow relative overflow-hidden group hover:border-emerald-500/30 transition-all card-gradient-emerald">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="size-12 bg-emerald-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                            <span class="material-symbols-outlined">payments</span>
+                        </div>
+                        <div class="text-right">
+                            <span
+                                class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase flex items-center justify-end gap-1">
+                                <span class="material-symbols-outlined text-xs">trending_up</span> +12.5%
+                            </span>
+                            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-tighter">vs mês anterior
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Comissões Acumuladas
+                        </p>
+                        <h4 id="stats-comissao" class="text-3xl font-black text-slate-900 dark:text-white tabular-nums">
+                            R$ 1.240,50</h4>
+                    </div>
+                </div>
+
+                <!-- Card: Faturamento -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 elegant-shadow relative overflow-hidden group hover:border-primary/30 transition-all card-gradient-primary">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="size-12 bg-primary text-white rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+                            <span class="material-symbols-outlined">rocket_launch</span>
+                        </div>
+                        <div class="text-right">
+                            <span
+                                class="text-[10px] font-black text-primary uppercase flex items-center justify-end gap-1">
+                                <span class="material-symbols-outlined text-xs">analytics</span> Estável
+                            </span>
+                            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-tighter">Projeção alta</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Volume de Vendas</p>
+                        <h4 class="text-3xl font-black text-slate-900 dark:text-white tabular-nums">R$ 8.450,00</h4>
+                    </div>
+                </div>
+
+                <!-- Card: Certificados Ativos -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 elegant-shadow relative overflow-hidden group hover:border-amber-500/30 transition-all card-gradient-amber">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="size-12 bg-amber-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/20">
+                            <span class="material-symbols-outlined">verified</span>
+                        </div>
+                        <div class="text-right">
+                            <span
+                                class="text-[10px] font-black text-amber-600 uppercase flex items-center justify-end gap-1">
+                                <span class="material-symbols-outlined text-xs">timer</span> 8 Pendentes
+                            </span>
+                            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-tighter">Ação requerida</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Certificados Ativos
+                        </p>
+                        <h4 class="text-3xl font-black text-slate-900 dark:text-white tabular-nums">124</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Central de Oportunidades (Hot Feed) -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                <div
+                    class="bg-white dark:bg-slate-800/50 rounded-3xl border border-slate-200 dark:border-slate-800 elegant-shadow overflow-hidden flex flex-col">
+                    <div
+                        class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50">
+                        <div>
+                            <h3 class="text-base font-black flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">local_fire_department</span>
+                                Central de Oportunidades
+                            </h3>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Dinheiro na
+                                mesa: Leads aguardando contato</p>
+                        </div>
+                        <button onclick="window.location.href='certificados.html?filter=Oportunidade'"
+                            class="text-[10px] font-black text-primary hover:underline uppercase tracking-tighter">Ver
+                            Tudo</button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto max-h-[400px] custom-scrollbar"
+                        id="dashboard-opportunities-feed">
+                        <div class="p-10 text-center text-slate-400">
+                            <span class="animate-pulse flex flex-col items-center gap-2">
+                                <span class="material-symbols-outlined text-3xl">sync</span>
+                                Analisando oportunidades quentes...
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity / Motivational Wall -->
+                <div
+                    class="bg-white dark:bg-slate-800/50 rounded-3xl border border-slate-200 dark:border-slate-800 elegant-shadow p-6 flex flex-col">
+                    <h3 class="text-base font-black mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-amber-500">military_tech</span>
+                        Conquistas Recentes
+                    </h3>
+                    <div class="space-y-6 flex-1">
+                        <div class="flex gap-4">
+                            <div
+                                class="size-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-lg">emoji_events</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">Novo Tier Alcançado!</p>
+                                <p class="text-xs text-slate-500">Parabéns! Você subiu para o nível <span
+                                        class="font-bold text-primary italic">Vendedor Elite</span>.</p>
+                                <p class="text-[10px] text-slate-400 mt-1">Há 2 horas</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 border-t border-slate-100 dark:border-slate-800 pt-6">
+                            <div
+                                class="size-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-lg">monetization_on</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 dark:text-white">Pagamento Confirmado</p>
+                                <p class="text-xs text-slate-500">A comissão do pedido <span
+                                        class="font-bold">#536180</span> está disponível para saque.</p>
+                                <p class="text-[10px] text-slate-400 mt-1">Há 5 horas</p>
+                            </div>
+                        </div>
+                        <!-- Motivational Placeholder -->
+                        <div class="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
+                            <div class="bg-primary/5 p-4 rounded-2xl italic text-slate-600 dark:text-slate-400 text-xs">
+                                "O sucesso não é o final, o fracasso não é fatal: é a coragem de continuar que conta."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Floating Support Action -->
+        <div class="fixed bottom-8 right-8">
+            <button
+                class="bg-navy-sidebar text-white size-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined">help_outline</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal: Novo Pedido -->
+    <div id="modalNewOrder" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 modal-overlay" onclick="closeModal()"></div>
+        <div
+            class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl relative z-10 modal-enter overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header with Stepper Progress -->
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold">Emitir Novo Certificado</h3>
+                    <button onclick="closeModal()"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <!-- Progress bar -->
+                <div class="flex items-center justify-between relative px-2">
+                    <div
+                        class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800 -translate-y-1/2 -z-10">
+                    </div>
+                    <div id="stepper-progress"
+                        class="absolute top-1/2 left-0 w-1/4 h-0.5 bg-primary -translate-y-1/2 -z-10 transition-all duration-300">
+                    </div>
+
+                    <div class="step-dot active size-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="1">1</div>
+                    <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="2">2</div>
+                    <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="3">3</div>
+                    <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="4">4</div>
+                </div>
+                <div
+                    class="flex justify-between mt-2 px-0 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <span>Serviço</span>
+                    <span>Identidade</span>
+                    <span>Contato</span>
+                    <span>Finalizar</span>
+                </div>
+            </div>
+
+            <!-- Content Container (Scrollable) -->
+            <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
+                <!-- Passo 1: Serviço -->
+                <div id="step-1" class="step-content space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Tipo de Cliente</label>
+                            <select id="personType"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                                <option value="PF" selected>Pessoa Física (CPF)</option>
+                                <option value="PJ">Pessoa Jurídica (CNPJ)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Tipo de Atendimento</label>
+                            <select id="attendanceType"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                                <option value="7" selected>Videoconferência</option>
+                                <option value="1">Presencial</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Produto / Certificado</label>
+                        <select id="certType"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                            <!-- Options will be filtered by JS -->
+                            <option value="" disabled selected>Escolha o produto...</option>
+                            <option value="e-CPF A1" data-type="PF" data-cost="70" data-id="101">e-CPF A1 (Validade 1
+                                Ano)</option>
+                            <option value="e-CPF A3" data-type="PF" data-cost="80" data-id="102">e-CPF A3 (Validade 1 a
+                                3 Anos)</option>
+                            <option value="e-CNPJ A1" data-type="PJ" data-cost="74.52" data-id="201">e-CNPJ A1 (Validade
+                                1 Ano)</option>
+                            <option value="e-CNPJ A3" data-type="PJ" data-cost="150" data-id="202">e-CNPJ A3 (Validade 1
+                                a 3 Anos)</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Preço de Venda (R$)</label>
+                            <input id="salePrice" type="number" step="0.01"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="0,00">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2 text-primary">Sua Comissão (R$)</label>
+                            <div id="commissionDisplay"
+                                class="w-full bg-primary/5 border border-primary/20 text-primary font-bold rounded-xl py-3 px-4 text-center">
+                                R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 2: Titular -->
+                <div id="step-2" class="step-content hidden space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">Nome Completo / Razão Social</label>
+                            <input id="customerName" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Ex: João da Silva">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Tipo de Documento</label>
+                            <select id="docType"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                                <option value="CPF">CPF</option>
+                                <option value="CNPJ">CNPJ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Número do Documento</label>
+                            <input id="customerDoc" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Apenas números">
+                        </div>
+                        <div id="rgContainer">
+                            <label class="block text-sm font-bold mb-2">RG (Obrigatório para CPF)</label>
+                            <input id="customerRG" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Seu RG">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 3: Contato e Endereço -->
+                <div id="step-3" class="step-content hidden space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">E-mail para Notificações</label>
+                            <input id="customerEmail" type="email"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="email@exemplo.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">DDD</label>
+                            <input id="customerDDD" type="text" maxlength="2"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="DD">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Celular</label>
+                            <input id="customerPhone" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Apenas números">
+                        </div>
+                        <div class="sm:col-span-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+                            <h4 class="text-xs font-bold uppercase text-slate-400 mb-4">Endereço de Faturamento</h4>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">CEP</label>
+                            <input id="customerCEP" type="text" maxlength="8"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="00000000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Cidade</label>
+                            <input id="customerCity" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Nome da cidade">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">Logradouro (Rua, Av)</label>
+                            <input id="customerAddress" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Endereço">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 4: Finalizar -->
+                <div id="step-4" class="step-content hidden space-y-6">
+                    <div class="bg-primary/5 border border-primary/20 p-6 rounded-2xl text-center">
+                        <span class="material-symbols-outlined text-4xl text-primary mb-2">verified</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Quase lá!</h4>
+                        <p class="text-sm text-slate-500">Revise os dados e selecione o método de emissão.</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Método de Atendimento</label>
+                        <select id="issueType"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                            <option value="7">Videoconferência (Recomendado)</option>
+                            <option value="1">Presencial</option>
+                            <option value="9">Emissão Automática (Renovação)</option>
+                        </select>
+                    </div>
+                    <div id="appointment-info" class="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-xl space-y-4">
+                        <div class="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
+                            <span class="material-symbols-outlined text-sm">event</span>
+                            <span
+                                class="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">Previsão
+                                de Agendamento</span>
+                        </div>
+                        <input type="datetime-local"
+                            class="bg-white dark:bg-slate-800 border-none rounded-lg p-3 text-sm w-full"
+                            title="Sugerir data/hora">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div
+                class="p-6 bg-slate-50 dark:bg-slate-800/50 flex gap-3 border-t border-slate-200 dark:border-slate-800">
+                <button id="btnPrevStep"
+                    class="hidden flex-1 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors">Voltar</button>
+                <button id="btnNextStep"
+                    class="flex-[2] bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Próximo
+                    Passo</button>
+                <button id="btnConfirmOrder"
+                    class="hidden flex-[2] bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Confirmar
+                    e Gerar Link</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Clientes - Delta Estrategista</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#258cf4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f172a",
+                        "navy-sidebar": "#0d141c",
+                    },
+                    fontFamily: {
+                        "display": ["Outfit", "Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex overflow-x-hidden">
+    <!-- Sidebar -->
+    <aside
+        class="w-64 bg-navy-sidebar text-slate-300 flex flex-col fixed h-full z-50 sidebar-transition sidebar-mobile-hidden lg:translate-x-0">
+        <div class="p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined">verified_user</span>
+                </div>
+                <div>
+                    <h1 class="text-white text-base font-bold leading-none">Delta Estrategista</h1>
+                    <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-bold">Certificadora</p>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="flex-1 px-4 py-4 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="index.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">dashboard</span>
+                <span class="text-sm font-medium">Painel</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="certificados.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">description</span>
+                <span class="text-sm font-medium">Certificados</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="loja.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">shopping_cart</span>
+                <span class="text-sm font-medium">Links de Venda</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="campanhas.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">campaign</span>
+                <span class="text-sm font-medium">Campanhas / Cupons</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-lg shadow-primary/20"
+                href="clientes.html">
+                <span class="material-symbols-outlined text-[22px]"
+                    style="font-variation-settings: 'FILL' 1">group</span>
+                <span class="text-sm font-medium">Clientes</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="financeiro.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">payments</span>
+                <span class="text-sm font-medium">Financeiro</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="relatorios.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">bar_chart</span>
+                <span class="text-sm font-medium">Relatórios</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-all duration-200 group"
+                href="configuracoes.html">
+                <span
+                    class="material-symbols-outlined text-[22px] text-slate-500 group-hover:text-primary transition-colors">settings</span>
+                <span class="text-sm font-medium">Configurações</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <div class="flex items-center gap-3 px-3 py-3 bg-white/5 rounded-xl border border-white/5">
+                <div class="sidebar-user-avatar">
+                    <div
+                        class="size-9 bg-primary/20 rounded-lg flex items-center justify-center text-primary font-bold">
+                        M</div>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-white text-sm font-bold truncate current-seller-name">Carregando...</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Vendedor</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-64 min-h-screen flex flex-col w-full">
+        <!-- Header -->
+        <header
+            class="sticky top-0 z-40 glass-header border-b border-slate-200 dark:border-slate-800 px-4 lg:px-6 py-3">
+            <div class="flex items-center justify-between max-w-full mx-auto w-full gap-4">
+                <div class="flex items-center gap-3 lg:gap-4 flex-1">
+                    <button onclick="toggleSidebar()"
+                        class="lg:hidden p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="relative w-full max-w-sm hidden md:block">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                        <input id="customerSearch"
+                            class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary text-xs transition-all"
+                            placeholder="Buscar cliente por nome ou documento..." type="text"
+                            oninput="filterCustomersTable()" />
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 lg:gap-3">
+                    <div id="user-tier-badge"
+                        class="flex items-center gap-2 px-3 lg:px-4 py-1.5 rounded-xl border font-bold text-[11px] lg:text-xs tier-bronze transition-all duration-500">
+                        <span class="material-symbols-outlined text-sm">workspace_premium</span>
+                        <span id="user-tier-name">Bronze</span>
+                    </div>
+
+                    <div
+                        class="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 px-3 lg:px-4 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span class="material-symbols-outlined text-sm">payments</span>
+                        <span id="header-user-sales" class="text-[11px] lg:text-xs font-bold tracking-tight">R$
+                            0,00</span>
+                    </div>
+
+                    <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
+
+                    <button onclick="window.openCustomerModal()"
+                        class="bg-primary text-white px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all btn-hover-effect">
+                        <span class="material-symbols-outlined text-sm">person_add</span>
+                        <span class="hidden lg:inline">Novo Lead</span>
+                    </button>
+                    <div class="header-user-avatar">
+                        <div class="size-8 rounded-full bg-slate-200 border border-white shadow-sm flex-shrink-0"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-4 lg:p-6 max-w-[1600px] mx-auto w-full space-y-6">
+            <!-- Breadcrumbs & Title -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <nav
+                        class="flex items-center gap-2 text-[10px] text-slate-500 mb-1 uppercase tracking-wider font-bold">
+                        <a class="hover:text-primary" href="index.html">Início</a>
+                        <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                        <span class="text-slate-900 dark:text-slate-300">Clientes</span>
+                    </nav>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">Gestão de Clientes
+                    </h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button
+                        class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-2 rounded-lg text-slate-500 hover:text-primary transition-all">
+                        <span class="material-symbols-outlined text-sm">download</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Box (Dense) -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total de Clientes</p>
+                    <h4 id="stats-total-customers" class="text-xl font-black">---</h4>
+                </div>
+                <div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">LTV Médio</p>
+                    <h4 id="stats-avg-ltv" class="text-xl font-black text-emerald-500">---</h4>
+                </div>
+                <div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Novos (30 dias)</p>
+                    <h4 id="stats-new-customers" class="text-xl font-black text-primary">---</h4>
+                </div>
+                <div class="bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Taxa de Recompra</p>
+                    <h4 id="stats-reorder-rate" class="text-xl font-black text-indigo-500">24.5%</h4>
+                </div>
+            </div>
+
+            <!-- Customer Table -->
+            <div
+                class="bg-white dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden elegant-shadow mb-10">
+                <div
+                    class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-wrap gap-3 justify-between items-center">
+                    <h3 class="text-sm font-bold flex items-center gap-2">
+                        <span class="size-2 bg-emerald-500 rounded-full"></span>
+                        Base de Clientes Fidelizados
+                    </h3>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="flex rounded-lg border border-slate-200 p-0.5 bg-white shadow-sm overflow-hidden h-8">
+                            <button class="px-3 py-0 text-[10px] font-bold bg-slate-100 rounded-md">Todos</button>
+                            <button
+                                class="px-3 py-0 text-[10px] font-medium text-slate-500 hover:text-primary transition-colors">VIPs</button>
+                            <button
+                                class="px-3 py-0 text-[10px] font-medium text-slate-500 hover:text-primary transition-colors">Inativos</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left border-collapse min-w-[900px]">
+                        <thead>
+                            <tr
+                                class="text-left border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-white/5">
+                                <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Titular & Documento</th>
+                                <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Contato</th>
+                                <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Última Compra</th>
+                                <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                                    Status / Vencimento</th>
+                                <th class="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">LTV
+                                    (Total Pago)</th>
+                                <th
+                                    class="px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 text-right">
+                                    Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <!-- Dynamically populated -->
+                            <tr>
+                                <td colspan="5" class="px-6 py-10 text-center text-slate-400 text-sm">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <span class="material-symbols-outlined text-4xl animate-pulse">sync</span>
+                                        Carregando base de clientes...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Novo Pedido (Stepper) -->
+    <div id="modalNewOrder" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 modal-overlay" onclick="closeModal()"></div>
+        <div
+            class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl relative z-10 modal-enter overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header with Stepper Progress -->
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold">Emitir Novo Certificado</h3>
+                    <button onclick="closeModal()"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <!-- Progress bar -->
+                <div class="flex items-center justify-between relative px-2">
+                    <div
+                        class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800 -translate-y-1/2 -z-10">
+                    </div>
+                    <div id="stepper-progress"
+                        class="absolute top-1/2 left-0 w-1/4 h-0.5 bg-primary -translate-y-1/2 -z-10 transition-all duration-300">
+                    </div>
+
+                    <div class="step-dot active size-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="1">1</div>
+                    <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="2">2</div>
+                    <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="3">3</div>
+                    <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm"
+                        data-step="4">4</div>
+                </div>
+                <div
+                    class="flex justify-between mt-2 px-0 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <span>Serviço</span>
+                    <span>Identidade</span>
+                    <span>Contato</span>
+                    <span>Finalizar</span>
+                </div>
+            </div>
+
+            <!-- Content Container (Scrollable) -->
+            <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
+                <!-- Passo 1: Serviço -->
+                <div id="step-1" class="step-content space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Tipo de Cliente</label>
+                            <select id="personType"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                                <option value="PF" selected>Pessoa Física (CPF)</option>
+                                <option value="PJ">Pessoa Jurídica (CNPJ)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Tipo de Atendimento</label>
+                            <select id="attendanceType"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                                <option value="7" selected>Videoconferência</option>
+                                <option value="1">Presencial</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Produto / Certificado</label>
+                        <select id="certType"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                            <option value="" disabled selected>Escolha o produto...</option>
+                            <option value="e-CPF A1" data-type="PF" data-cost="70" data-id="101">e-CPF A1 (Validade 1
+                                Ano)</option>
+                            <option value="e-CPF A3" data-type="PF" data-cost="150" data-id="102">e-CPF A3 (Validade 1 a
+                                3 Anos)</option>
+                            <option value="e-CNPJ A1" data-type="PJ" data-cost="74.26" data-id="201">e-CNPJ A1 (Validade
+                                1 Ano)</option>
+                            <option value="e-CNPJ A3" data-type="PJ" data-cost="150" data-id="202">e-CNPJ A3 (Validade 1
+                                a 3 Anos)</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Preço de Venda (R$)</label>
+                            <input id="salePrice" type="number" step="0.01"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="0,00">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2 text-primary">Sua Comissão (R$)</label>
+                            <div id="commissionDisplay"
+                                class="w-full bg-primary/5 border border-primary/20 text-primary font-bold rounded-xl py-3 px-4 text-center">
+                                R$ 0,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 2: Titular -->
+                <div id="step-2" class="step-content hidden space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">Nome Completo / Razão Social</label>
+                            <input id="customerName" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Ex: João da Silva">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Tipo de Documento</label>
+                            <select id="docType"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                                <option value="CPF">CPF</option>
+                                <option value="CNPJ">CNPJ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Número do Documento</label>
+                            <input id="customerDoc" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Apenas números">
+                        </div>
+                        <div id="rgContainer">
+                            <label class="block text-sm font-bold mb-2">RG (Obrigatório para CPF)</label>
+                            <input id="customerRG" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Seu RG">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 3: Contato e Endereço -->
+                <div id="step-3" class="step-content hidden space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">E-mail para Notificações</label>
+                            <input id="customerEmail" type="email"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="email@exemplo.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">DDD</label>
+                            <input id="customerDDD" type="text" maxlength="2"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="DD">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Celular</label>
+                            <input id="customerPhone" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Apenas números">
+                        </div>
+                        <div class="sm:col-span-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+                            <h4 class="text-xs font-bold uppercase text-slate-400 mb-4">Endereço de Faturamento</h4>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">CEP</label>
+                            <input id="customerCEP" type="text" maxlength="8"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="00000000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Cidade</label>
+                            <input id="customerCity" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Nome da cidade">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">Logradouro (Rua, Av)</label>
+                            <input id="customerAddress" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Endereço">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 4: Finalizar -->
+                <div id="step-4" class="step-content hidden space-y-6">
+                    <div class="bg-primary/5 border border-primary/20 p-6 rounded-2xl text-center">
+                        <span class="material-symbols-outlined text-4xl text-primary mb-2">verified</span>
+                        <h4 class="text-lg font-bold text-slate-900 dark:text-white">Quase lá!</h4>
+                        <p class="text-sm text-slate-500">Revise os dados e selecione o método de emissão.</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Método de Atendimento</label>
+                        <select id="issueType"
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm">
+                            <option value="7">Videoconferência (Recomendado)</option>
+                            <option value="1">Presencial</option>
+                            <option value="9">Emissão Automática (Renovação)</option>
+                        </select>
+                    </div>
+                    <div id="appointment-info" class="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-xl space-y-4">
+                        <div class="flex items-center gap-2 text-indigo-700 dark:text-indigo-300">
+                            <span class="material-symbols-outlined text-sm">event</span>
+                            <span
+                                class="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">Previsão
+                                de Agendamento</span>
+                        </div>
+                        <input type="datetime-local"
+                            class="bg-white dark:bg-slate-800 border-none rounded-lg p-3 text-sm w-full"
+                            title="Sugerir data/hora">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div
+                class="p-6 bg-slate-50 dark:bg-slate-800/50 flex gap-3 border-t border-slate-200 dark:border-slate-800">
+                <button id="btnPrevStep"
+                    class="hidden flex-1 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors">Voltar</button>
+                <button id="btnNextStep"
+                    class="flex-[2] bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Próximo
+                    Passo</button>
+                <button id="btnConfirmOrder"
+                    class="hidden flex-[2] bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Confirmar
+                    e Gerar Link</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Novo/Editar Lead -->
+
+    <div id="modalCustomer" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 modal-overlay" onclick="closeCustomerModal()"></div>
+        <div
+            class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl relative z-10 modal-enter overflow-hidden flex flex-col">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <h3 id="customerModalTitle" class="text-xl font-bold">Novo Lead / Cliente</h3>
+                <button onclick="closeCustomerModal()" class="text-slate-400 hover:text-slate-600">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="customerForm" onsubmit="window.saveCustomer(event)" class="p-6 space-y-4">
+                <input type="hidden" id="cust-id">
+                <input type="hidden" id="cust-avatar">
+
+                <div class="flex justify-center mb-2">
+                    <div class="relative group cursor-pointer" onclick="window.changeCustomerAvatar()">
+                        <div id="cust-avatar-preview"
+                            class="size-20 rounded-full ring-4 ring-slate-100 dark:ring-slate-800 overflow-hidden bg-slate-100 flex items-center justify-center">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div
+                            class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span class="material-symbols-outlined text-white text-lg">photo_camera</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Nome Completo / Razão
+                        Social</label>
+                    <input id="cust-name" type="text" required
+                        class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-primary text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Documento
+                            (CPF/CNPJ)</label>
+                        <input id="cust-doc" type="text" required
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-primary text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Telefone / Celular</label>
+                        <input id="cust-phone" type="text" required
+                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-primary text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-1">E-mail Principal</label>
+                    <input id="cust-email" type="email" required
+                        class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-primary text-sm">
+                </div>
+
+                <!-- Certificate Expiration Tracking -->
+                <div class="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-bold">Já possui certificado?</p>
+                            <p class="text-[10px] text-slate-500 uppercase font-bold">Gestão de Vencimento e Renovação
+                            </p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="cust-has-cert" class="sr-only peer"
+                                onchange="toggleCertExpirationField()">
+                            <div
+                                class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div id="cert-expiration-container" class="hidden animate-fade-in">
+                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Data de Vencimento</label>
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">calendar_month</span>
+                            <input id="cust-expiration" type="date"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-primary text-sm">
+                        </div>
+                        <p class="text-[10px] text-primary font-bold mt-1 uppercase tracking-wider">Avisaremos quando
+                            chegar a hora de renovar!</p>
+                    </div>
+                </div>
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="closeCustomerModal()"
+                        class="flex-1 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors">Cancelar</button>
+                    <button type="submit"
+                        class="flex-[2] bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">Salvar
+                        Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>

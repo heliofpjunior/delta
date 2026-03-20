@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Finalizar Sua Compra - Delta Estrategista</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#258cf4",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .step-dot.active {
+            border-color: #258cf4;
+            background-color: #258cf4;
+            color: white;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-slate-950 font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header Section (Public) -->
+    <div class="w-full max-w-2xl mb-8 flex flex-col items-center text-center">
+        <div
+            class="size-16 bg-primary rounded-2xl flex items-center justify-center text-white shadow-xl shadow-primary/20 mb-4">
+            <span class="material-symbols-outlined text-4xl">verified_user</span>
+        </div>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Delta Estrategista</h1>
+        <p class="text-slate-500 text-sm mt-1">Sua certificação digital segura e rápida</p>
+    </div>
+
+    <!-- Main Checkout Container -->
+    <div
+        class="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col">
+
+        <!-- Order Summary Header -->
+        <div
+            class="p-6 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div
+                    class="size-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center shadow-sm text-primary">
+                    <span class="material-symbols-outlined text-2xl" id="productIcon">description</span>
+                </div>
+                <div>
+                    <h2 class="font-bold text-slate-900 dark:text-white" id="productName">Carregando...</h2>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Produto Selecionado</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-xs text-slate-400 font-bold uppercase">Total a Pagar</p>
+                <div class="text-2xl font-black text-primary" id="productPrice">R$ 0,00</div>
+            </div>
+        </div>
+
+        <!-- Stepper Indicator -->
+        <div class="px-8 pt-8">
+            <div class="relative flex justify-between">
+                <div class="absolute top-4 left-0 right-0 h-0.5 bg-slate-100 dark:bg-slate-800 -z-0">
+                    <div id="stepper-progress" class="h-full bg-primary transition-all duration-300" style="width: 0%">
+                    </div>
+                </div>
+                <div class="step-dot active size-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm z-10"
+                    data-step="1">1</div>
+                <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm z-10"
+                    data-step="2">2</div>
+                <div class="step-dot size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border-4 border-white dark:border-slate-900 shadow-sm z-10"
+                    data-step="3">3</div>
+            </div>
+            <div class="flex justify-between mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                <span>Dados</span>
+                <span>Endereço</span>
+                <span>Finalizar</span>
+            </div>
+        </div>
+
+        <!-- Form Content -->
+        <div class="p-8">
+            <form id="checkoutForm">
+                <!-- Passo 1: Titular -->
+                <div id="step-1" class="step-content space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">Nome Completo / Razão Social</label>
+                            <input id="customerName" type="text" required
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Ex: João da Silva">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Número do CPF/CNPJ</label>
+                            <input id="customerDoc" type="text" required
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Apenas números">
+                        </div>
+                        <div id="rgContainer">
+                            <label class="block text-sm font-bold mb-2">RG</label>
+                            <input id="customerRG" type="text"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="Seu RG">
+                        </div>
+                        <div class="sm:col-span-2 pt-4">
+                            <div class="bg-indigo-500/5 border border-indigo-500/10 p-5 rounded-2xl">
+                                <label
+                                    class="block text-xs font-bold text-indigo-500 uppercase tracking-widest mb-3">Possui
+                                    um Cupom de Desconto?</label>
+                                <div class="flex gap-2">
+                                    <input id="couponInput" type="text"
+                                        class="flex-1 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-2.5 focus:ring-2 focus:ring-primary text-sm uppercase font-bold"
+                                        placeholder="Digite aqui...">
+                                    <button type="button" onclick="applyCoupon()"
+                                        class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 rounded-xl font-bold text-sm transition-all shadow-lg shadow-indigo-500/20">
+                                        Aplicar
+                                    </button>
+                                </div>
+                                <div id="couponMessage"
+                                    class="hidden mt-2 text-[10px] font-bold uppercase transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 2: Contato e Endereço -->
+                <div id="step-2" class="step-content hidden space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm font-bold mb-2">E-mail para Recebimento</label>
+                            <input id="customerEmail" type="email" required
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="seu@email.com">
+                        </div>
+                        <div class="sm:col-span-2 flex gap-3">
+                            <div class="w-20">
+                                <label class="block text-sm font-bold mb-2">DDD</label>
+                                <input id="customerDDD" type="text" maxlength="2" required
+                                    class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="DD">
+                            </div>
+                            <div class="flex-1">
+                                <label class="block text-sm font-bold mb-2">WhatsApp / Celular</label>
+                                <input id="customerPhone" type="text" required
+                                    class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                    placeholder="90000-0000">
+                            </div>
+                        </div>
+                        <div class="sm:col-span-2 pt-2">
+                            <label class="block text-sm font-bold mb-2">CEP</label>
+                            <input id="customerCEP" type="text" maxlength="8" required
+                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl py-3 focus:ring-2 focus:ring-primary text-sm"
+                                placeholder="00000-000">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 3: Pagamento e Finalizar -->
+                <div id="step-3" class="step-content hidden space-y-6 text-center">
+                    <div class="bg-primary/5 border border-primary/20 p-8 rounded-3xl">
+                        <span class="material-symbols-outlined text-5xl text-primary mb-4">payments</span>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">Forma de Pagamento</h4>
+                        <p class="text-sm text-slate-500 mt-2">Após confirmar, você receberá o link para pagamento via
+                            PIX ou Cartão.</p>
+
+                        <div class="mt-6 flex flex-col gap-3">
+                            <label
+                                class="flex items-center gap-3 p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl cursor-pointer hover:border-primary transition-all">
+                                <input type="radio" name="payType" value="pix" checked
+                                    class="text-primary focus:ring-primary">
+                                <div class="text-left py-0">
+                                    <p class="font-bold text-slate-900 dark:text-white">PIX (Acesso Imediato)</p>
+                                    <p class="text-xs text-slate-400">Liberação do agendamento em segundos</p>
+                                </div>
+                            </label>
+                            <label
+                                class="flex items-center gap-3 p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl cursor-pointer hover:border-primary transition-all">
+                                <input type="radio" name="payType" value="cc" class="text-primary focus:ring-primary">
+                                <div class="text-left">
+                                    <p class="font-bold text-slate-900 dark:text-white">Cartão de Crédito</p>
+                                    <p class="text-xs text-slate-400">Em até 12x (consulte taxas)</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer Buttons -->
+        <div
+            class="p-8 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-700 flex justify-between gap-4">
+            <button id="btnPrev"
+                class="hidden px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">Voltar</button>
+            <button id="btnNext"
+                class="flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 ml-auto max-w-[200px]">
+                Próximo Passo
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            <button id="btnConfirm"
+                class="hidden flex-1 bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
+                Confirmar e Pagar
+                <span class="material-symbols-outlined">check_circle</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Attribution Info (Optional/Subtle) -->
+    <div class="mt-8 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+        Ambiente Seguro Delta Estrategista &copy; 2026
+    </div>
+
+    <script>
+        // checkout logic
+        let currentStep = 1;
+        const urlParams = new URLSearchParams(window.location.search);
+        const refToken = urlParams.get('ref');
+
+        // Default values
+        let productId = '101';
+        let sellerId = 'master';
+        let originalPrice = 149.90;
+        let productCost = 70.00; // Floor price
+        let finalPrice = 149.90;
+        let appliedCoupon = null;
+        let autoCoupon = null;
+
+        if (refToken) {
+            try {
+                // SECURITY: Decode the payload
+                const decoded = JSON.parse(atob(refToken));
+                productId = decoded.p;
+                sellerId = decoded.v;
+                originalPrice = parseFloat(decoded.pr);
+                productCost = parseFloat(decoded.c || 70);
+                autoCoupon = decoded.cp; // Auto-apply coupon from link
+                finalPrice = originalPrice;
+
+                // Simple security simulation: check if data is consistent
+                console.log(`Link Verificado: Vendedor ${sellerId}, Produto ${productId} | Custo: ${productCost}`);
+            } catch (e) {
+                console.error('Link de venda inválido ou corrompido.');
+                alert('Atenção: Este link de venda expirou ou é inválido. Por favor, solicite um novo link ao seu consultor.');
+            }
+        }
+
+        // Mock Coupons Database (In real app, this would be an API call)
+        const mockCoupons = {
+            'VERAO20': { type: 'PERCENT', value: 20, sellerId: 'vend_001', validFor: ['CPF', 'CNPJ'] },
+            'ANA_PROMO': { type: 'FIXED', value: 50, sellerId: 'vend_001', validFor: ['CPF'] },
+            'MASTER_OFF': { type: 'PERCENT', value: 10, sellerId: 'master', validFor: ['CPF', 'CNPJ'] }
+        };
+
+        // Auto-apply coupon if present in link
+        document.addEventListener('DOMContentLoaded', () => {
+            if (autoCoupon) {
+                const input = document.getElementById('couponInput');
+                if (input) {
+                    input.value = autoCoupon;
+                    applyCoupon();
+                }
+            }
+        });
+
+        window.applyCoupon = function () {
+            const input = document.getElementById('couponInput');
+            const code = input.value.trim().toUpperCase();
+            const msgEl = document.getElementById('couponMessage');
+            const coupon = mockCoupons[code];
+
+            if (!code) return;
+
+            if (!coupon) {
+                showCouponMsg('Cupom não encontrado.', 'text-red-500');
+                resetCoupon();
+                return;
+            }
+
+            // Validation 1: Seller Matching
+            if (coupon.sellerId !== sellerId) {
+                showCouponMsg('Este cupom não é válido para este vendedor.', 'text-red-500');
+                resetCoupon();
+                return;
+            }
+
+            // Validation 2: Product Binding
+            // Detection: ID 101/102 = CPF, ID 201 = CNPJ
+            const category = productId.startsWith('2') ? 'CNPJ' : 'CPF';
+            if (!coupon.validFor.includes(category)) {
+                showCouponMsg('Este cupom não é válido para este tipo de certificado.', 'text-red-500');
+                resetCoupon();
+                return;
+            }
+
+            // Validation 2: Profitability Check (No negative commission)
+            let tempFinalPrice = originalPrice;
+            if (coupon.type === 'PERCENT') {
+                tempFinalPrice = originalPrice * (1 - (coupon.value / 100));
+            } else {
+                tempFinalPrice = Math.max(0, originalPrice - coupon.value);
+            }
+
+            // Regra: Preço Final - Custo - Impostos (6%) não pode ser < 0
+            const estimatedCommission = tempFinalPrice - productCost - (tempFinalPrice * 0.06);
+
+            if (estimatedCommission < 0) {
+                showCouponMsg('Este cupom não está disponível para esta oferta (margem insuficiente).', 'text-red-500 font-bold');
+                resetCoupon();
+                return;
+            }
+
+            appliedCoupon = code;
+            finalPrice = tempFinalPrice;
+
+            showCouponMsg(`Cupom ${code} aplicado com sucesso!`, 'text-emerald-500');
+            updatePriceDisplay();
+        };
+
+        function showCouponMsg(msg, colorClass) {
+            const msgEl = document.getElementById('couponMessage');
+            msgEl.innerText = msg;
+            msgEl.className = `mt-2 text-[10px] font-bold uppercase transition-all ${colorClass}`;
+            msgEl.classList.remove('hidden');
+        }
+
+        function resetCoupon() {
+            appliedCoupon = null;
+            finalPrice = originalPrice;
+            updatePriceDisplay();
+        }
+
+        function updatePriceDisplay() {
+            document.getElementById('productPrice').innerText = `R$ ${finalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            const priceEl = document.getElementById('productPrice');
+            priceEl.classList.add('scale-110');
+            setTimeout(() => priceEl.classList.remove('scale-110'), 200);
+        }
+
+        // Product Catalog Mock
+        const products = {
+            '101': { name: 'e-CPF A1', icon: 'person' },
+            '102': { name: 'e-CPF A3 (1 Ano)', icon: 'badge' },
+            '201': { name: 'e-CNPJ A1', icon: 'business' },
+            '202': { name: 'e-CNPJ A3 (1 Ano)', icon: 'account_balance' }
+        };
+
+        const product = products[productId] || products['101'];
+        document.getElementById('productName').innerText = product.name;
+        document.getElementById('productIcon').innerText = product.icon;
+        updatePriceDisplay();
+
+        const stepDots = document.querySelectorAll('.step-dot');
+        const stepContents = document.querySelectorAll('.step-content');
+        const btnNext = document.getElementById('btnNext');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnConfirm = document.getElementById('btnConfirm');
+        const stepperProgress = document.getElementById('stepper-progress');
+
+        function updateUI() {
+            stepContents.forEach((c, i) => c.classList.toggle('hidden', i + 1 !== currentStep));
+            stepDots.forEach((d, i) => {
+                const step = i + 1;
+                d.classList.toggle('active', step === currentStep);
+                d.classList.toggle('bg-primary', step <= currentStep);
+                d.classList.toggle('text-white', step <= currentStep);
+            });
+
+            const progress = ((currentStep - 1) / (stepDots.length - 1)) * 100;
+            stepperProgress.style.width = `${progress}%`;
+
+            btnPrev.classList.toggle('hidden', currentStep === 1);
+            btnNext.classList.toggle('hidden', currentStep === 3);
+            btnConfirm.classList.toggle('hidden', currentStep !== 3);
+        }
+
+        btnNext.onclick = () => { if (validateStep()) { currentStep++; updateUI(); } };
+        btnPrev.onclick = () => { currentStep--; updateUI(); };
+
+        function validateStep() {
+            if (currentStep === 1) {
+                if (!document.getElementById('customerName').value) { alert('Informe seu nome.'); return false; }
+                if (!document.getElementById('customerDoc').value) { alert('Informe seu documento.'); return false; }
+            }
+            if (currentStep === 2) {
+                if (!document.getElementById('customerEmail').value) { alert('Informe seu e-mail.'); return false; }
+            }
+            return true;
+        }
+
+        btnConfirm.onclick = async () => {
+            btnConfirm.disabled = true;
+            btnConfirm.innerText = 'Processando...';
+
+            const payload = {
+                venda: {
+                    vendedor_id: sellerId,
+                    produto_id: productId,
+                    valor_total: finalPrice,
+                    cupom_aplicado: appliedCoupon,
+                    origem: 'VENDA_DIRETA_LINK'
+                },
+                cliente: {
+                    nome: document.getElementById('customerName').value,
+                    documento: document.getElementById('customerDoc').value,
+                    email: document.getElementById('customerEmail').value
+                }
+            };
+
+            console.log('ENVIANDO PEDIDO (AUTO-ATRIBUIÇÃO):', payload);
+
+            setTimeout(() => {
+                alert('Pedido realizado com sucesso! Você será redirecionado para o pagamento.');
+                window.location.href = 'https://pagamento.deltaestrategista.com.br/checkout/' + btoa(Date.now());
+            }, 1500);
+        };
+    </script>
+</body>
+
+</html>

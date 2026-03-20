@@ -1,0 +1,47 @@
+[00:00:07.538] Server  LOG     ✓ Ready in 5.9s
+[00:01:34.575] Server  LOG     ○ Compiling / ...
+[00:01:44.477] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:45.001] Browser LOG     AppWrapper: --- INICIANDO DIAGNÓSTICO DE CONEXÃO ---
+[00:01:45.001] Browser LOG     AppWrapper: URL: https://vbbjrrwgjxmdzgpnnryy.supabase.co
+[00:01:45.001] Browser LOG     AppWrapper: Key (inicio): sb_publishable_...
+[00:01:47.978] Browser LOG     AppWrapper: Teste 1 (products): 4 itens OK
+[00:01:47.979] Browser LOG     AppWrapper: Teste 2 (full select): [{"category":"CNPJ","commission":99.9,"commission_bronze":99.9,"commission_ouro":79.9,"commission_prata":89.9,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para empresas, validade de 1 ano em nuvem ou arquivo.","id":1,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A1 (12 meses)","price":195,"sku":"inv_001","supplier_product_id":3,"type":"A1"},{"category":"CNPJ","commission":99,"commission_bronze":99,"commission_ouro":79,"commission_prata":89,"created_at":"2026-02-22T20:42:48.803822+00:00","description":null,"id":7,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A3 (12 meses) sem mídia","price":195,"sku":null,"supplier_product_id":4,"type":"A3"},{"category":"CPF","commission":90,"commission_bronze":90,"commission_ouro":75,"commission_prata":80,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para pessoa física, validade de 1 ano em nuvem.","id":4,"is_active":true,"media_type":"Arquivo","name":"e-CPF A1 (12 Meses)","price":165,"sku":"inv_004","supplier_product_id":1,"type":"A1"},{"category":"CPF","commission":0,"commission_bronze":0,"commission_ouro":0,"commission_prata":0,"created_at":"2026-02-23T01:54:30.669611+00:00","description":null,"id":8,"is_active":true,"media_type":"Nuvem","name":"BIRDID TRIAL 5 ANOS","price":1,"sku":null,"supplier_product_id":5,"type":"A3"}]
+[00:01:47.980] Browser LOG     AppWrapper: Teste 3 (profiles access): SUCESSO 
+[00:01:58.267] Server  LOG     ✓ Compiled in 1392ms
+[00:02:33.937] Server  LOG     🚀 Triggering Supabase Edge Function Sync (Manual)...
+[00:04:08.101] Server  LOG     ✓ Compiled in 2.1s
+[00:05:07.301] Server  LOG     ✓ Compiled in 1668ms
+[00:05:45.294] Server  LOG     ✓ Finished filesystem cache database compaction in 35.4s
+[00:06:41.645] Server  LOG     ✓ Compiled in 2.8s
+[00:07:13.532] Server  LOG     🔍 Fetching detailed withdrawal for ID: "e4b8d49c-171e-4f5a-9e81-86905e003dbe"
+[00:07:38.559] Server  LOG     ✓ Compiled in 2.6s
+[00:07:56.516] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:56.816] Browser LOG     AppWrapper: --- INICIANDO DIAGNÓSTICO DE CONEXÃO ---
+[00:07:56.816] Browser LOG     AppWrapper: URL: https://vbbjrrwgjxmdzgpnnryy.supabase.co
+[00:07:56.816] Browser LOG     AppWrapper: Key (inicio): sb_publishable_...
+[00:07:56.991] Browser LOG     AppWrapper: Teste 1 (products): 4 itens OK
+[00:07:57.121] Browser LOG     AppWrapper: Teste 2 (full select): [{"category":"CNPJ","commission":99.9,"commission_bronze":99.9,"commission_ouro":79.9,"commission_prata":89.9,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para empresas, validade de 1 ano em nuvem ou arquivo.","id":1,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A1 (12 meses)","price":195,"sku":"inv_001","supplier_product_id":3,"type":"A1"},{"category":"CNPJ","commission":99,"commission_bronze":99,"commission_ouro":79,"commission_prata":89,"created_at":"2026-02-22T20:42:48.803822+00:00","description":null,"id":7,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A3 (12 meses) sem mídia","price":195,"sku":null,"supplier_product_id":4,"type":"A3"},{"category":"CPF","commission":90,"commission_bronze":90,"commission_ouro":75,"commission_prata":80,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para pessoa física, validade de 1 ano em nuvem.","id":4,"is_active":true,"media_type":"Arquivo","name":"e-CPF A1 (12 Meses)","price":165,"sku":"inv_004","supplier_product_id":1,"type":"A1"},{"category":"CPF","commission":0,"commission_bronze":0,"commission_ouro":0,"commission_prata":0,"created_at":"2026-02-23T01:54:30.669611+00:00","description":null,"id":8,"is_active":true,"media_type":"Nuvem","name":"BIRDID TRIAL 5 ANOS","price":1,"sku":null,"supplier_product_id":5,"type":"A3"}]
+[00:07:57.342] Browser LOG     AppWrapper: Teste 3 (profiles access): SUCESSO 
+[00:10:35.295] Browser ERROR   uncaughtError: ReferenceError: Zap is not defined
+[00:11:03.023] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:03.339] Browser LOG     AppWrapper: --- INICIANDO DIAGNÓSTICO DE CONEXÃO ---
+[00:11:03.339] Browser LOG     AppWrapper: URL: https://vbbjrrwgjxmdzgpnnryy.supabase.co
+[00:11:03.339] Browser LOG     AppWrapper: Key (inicio): sb_publishable_...
+[00:11:03.681] Browser LOG     AppWrapper: Teste 1 (products): 4 itens OK
+[00:11:04.157] Browser LOG     AppWrapper: Teste 2 (full select): [{"category":"CNPJ","commission":99.9,"commission_bronze":99.9,"commission_ouro":79.9,"commission_prata":89.9,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para empresas, validade de 1 ano em nuvem ou arquivo.","id":1,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A1 (12 meses)","price":195,"sku":"inv_001","supplier_product_id":3,"type":"A1"},{"category":"CNPJ","commission":99,"commission_bronze":99,"commission_ouro":79,"commission_prata":89,"created_at":"2026-02-22T20:42:48.803822+00:00","description":null,"id":7,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A3 (12 meses) sem mídia","price":195,"sku":null,"supplier_product_id":4,"type":"A3"},{"category":"CPF","commission":90,"commission_bronze":90,"commission_ouro":75,"commission_prata":80,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para pessoa física, validade de 1 ano em nuvem.","id":4,"is_active":true,"media_type":"Arquivo","name":"e-CPF A1 (12 Meses)","price":165,"sku":"inv_004","supplier_product_id":1,"type":"A1"},{"category":"CPF","commission":0,"commission_bronze":0,"commission_ouro":0,"commission_prata":0,"created_at":"2026-02-23T01:54:30.669611+00:00","description":null,"id":8,"is_active":true,"media_type":"Nuvem","name":"BIRDID TRIAL 5 ANOS","price":1,"sku":null,"supplier_product_id":5,"type":"A3"}]
+[00:11:04.260] Browser LOG     AppWrapper: Teste 3 (profiles access): SUCESSO 
+[00:11:12.008] Server  LOG     ✓ Compiled in 1939ms
+[00:11:30.147] Browser ERROR   uncaughtError: ReferenceError: Zap is not defined
+[00:11:46.445] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:46.742] Browser LOG     AppWrapper: --- INICIANDO DIAGNÓSTICO DE CONEXÃO ---
+[00:11:46.742] Browser LOG     AppWrapper: URL: https://vbbjrrwgjxmdzgpnnryy.supabase.co
+[00:11:46.743] Browser LOG     AppWrapper: Key (inicio): sb_publishable_...
+[00:11:47.063] Browser LOG     AppWrapper: Teste 1 (products): 4 itens OK
+[00:11:47.585] Browser LOG     AppWrapper: Teste 2 (full select): [{"category":"CNPJ","commission":99.9,"commission_bronze":99.9,"commission_ouro":79.9,"commission_prata":89.9,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para empresas, validade de 1 ano em nuvem ou arquivo.","id":1,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A1 (12 meses)","price":195,"sku":"inv_001","supplier_product_id":3,"type":"A1"},{"category":"CNPJ","commission":99,"commission_bronze":99,"commission_ouro":79,"commission_prata":89,"created_at":"2026-02-22T20:42:48.803822+00:00","description":null,"id":7,"is_active":true,"media_type":"Arquivo","name":"e-CNPJ A3 (12 meses) sem mídia","price":195,"sku":null,"supplier_product_id":4,"type":"A3"},{"category":"CPF","commission":90,"commission_bronze":90,"commission_ouro":75,"commission_prata":80,"created_at":"2026-02-21T19:14:16.466218+00:00","description":"Certificado para pessoa física, validade de 1 ano em nuvem.","id":4,"is_active":true,"media_type":"Arquivo","name":"e-CPF A1 (12 Meses)","price":165,"sku":"inv_004","supplier_product_id":1,"type":"A1"},{"category":"CPF","commission":0,"commission_bronze":0,"commission_ouro":0,"commission_prata":0,"created_at":"2026-02-23T01:54:30.669611+00:00","description":null,"id":8,"is_active":true,"media_type":"Nuvem","name":"BIRDID TRIAL 5 ANOS","price":1,"sku":null,"supplier_product_id":5,"type":"A3"}]
+[00:11:47.987] Browser LOG     AppWrapper: Teste 3 (profiles access): SUCESSO 
+[00:17:52.680] Server  LOG     ✓ Compiled in 8.7s
+[00:18:29.760] Server  LOG     ✓ Compiled in 2.1s
+[00:28:17.730] Server  LOG     ✓ Compiled in 1161ms
+[00:33:17.457] Server  LOG     ✓ Compiled in 723ms
+[02:24:29.233] Server  LOG     🚀 Triggering Supabase Edge Function Sync (Manual)...
+[02:32:17.480] Server  LOG     ✓ Finished filesystem cache database compaction in 33.5s
