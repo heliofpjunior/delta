@@ -176,8 +176,10 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
 
             // Use custom price if available in user profile, otherwise use product default
             const customPrices = currentUser?.custom_prices || {};
-            const defaultPrice = customPrices[selectedProduct.id] || selectedProduct.price;
-            setValue("customPrice", defaultPrice);
+            let defaultPrice = customPrices[selectedProduct.id] || selectedProduct.price;
+            
+            // Garantir cast numérico seguro, evitando que strings fiquem como 0 no valueAsNumber
+            setValue("customPrice", Number(defaultPrice) || 0);
         }
     }, [selectedProductId, selectedProduct, setValue, currentUser]);
 
@@ -435,13 +437,30 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                             <h4 className="text-[12px] font-black uppercase tracking-[0.3em] text-primary mb-1">Engenharia de Preço</h4>
                             <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest opacity-60">Ajuste o valor final para o consumidor</p>
                         </div>
-                        <div className="flex items-center bg-[var(--card)] rounded-2xl border-4 border-primary/20 p-1 shadow-2xl">
-                            <span className="px-5 text-sm font-black text-primary">R$</span>
-                            <input
-                                type="number"
-                                {...register("customPrice", { valueAsNumber: true })}
-                                className="w-28 bg-transparent border-0 focus:ring-0 text-xl font-black text-[var(--foreground)] p-3"
-                            />
+                        <div className="flex flex-col items-end gap-2">
+                            <div className={cn(
+                                "flex items-center bg-[var(--card)] rounded-2xl border-4 p-1 shadow-2xl transition-all",
+                                commissionData && commissionData.repasse < 0 ? "border-rose-500 shadow-rose-500/20" : "border-primary/20"
+                            )}>
+                                <span className={cn(
+                                    "px-5 text-sm font-black",
+                                    commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-primary"
+                                )}>R$</span>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    {...register("customPrice", { valueAsNumber: true })}
+                                    className={cn(
+                                        "w-28 bg-transparent border-0 focus:ring-0 text-xl font-black p-3 transition-colors",
+                                        commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-[var(--foreground)]"
+                                    )}
+                                />
+                            </div>
+                            {commissionData && commissionData.repasse < 0 && (
+                                <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest animate-in slide-in-from-top-1">
+                                    Margem Negativa Detectada!
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -791,6 +810,11 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
     );
 
     const onSubmitAction = async (data: OrderFormData, isDraft: boolean = false) => {
+        if (commissionData && commissionData.repasse < 0) {
+            alert("Erro: O Valor Final está abaixo do mínimo permitido (Margem Negativa). Aumente o valor de venda.");
+            return;
+        }
+
         setIsConsulting(true);
         try {
             const formData = new FormData();
@@ -847,8 +871,9 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                 // Update metrics locally (Only for real sales)
                 if (commissionData) {
                     updateUser({
-                        xp: currentUser.xp + Math.floor(data.customPrice),
-                        wallet: currentUser.wallet + (commissionData.repasse || 0)
+                        xp: currentUser.xp + Math.floor(data.customPrice)
+                        // A carteira NÃO deve ser atualizada aqui, pois o pagamento ainda não foi efetuado.
+                        // O saldo será atualizado automaticamente pelo webhook da plataforma quando o status mudar para 'Pago'.
                     });
                 }
                 mutate('/api/certificates');
@@ -1002,7 +1027,7 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                                         handleNext();
                                     }
                                 }}
-                                disabled={isConsulting || (step === 1 && !selectedProductId) || (step === 2 && attachedFiles.length === 0)}
+                                disabled={isConsulting || (step === 1 && !selectedProductId) || (step === 1 && commissionData && commissionData.repasse < 0) || (step === 2 && attachedFiles.length === 0)}
                                 className={cn(
                                     "w-full md:w-80 px-12 py-5 rounded-2xl font-black text-[12px] uppercase tracking-[0.3em] transition-all shadow-2xl active:scale-95 disabled:opacity-50 flex items-center justify-center border-2 border-white/10 group",
                                     step === 4
