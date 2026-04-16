@@ -172,7 +172,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib
 ;
 ;
 const CERTCONTROL_API_URL = 'https://service.certcontrol.com.br';
-const CERTCONTROL_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1IiwianRpIjoiYjE5MzFhZjdhMzY1NzI3YmMyYWIxYmVmMDVhMzVkYzM3MmY1Njk2NjY5MzU3OGRlYjEwZjg1OTE5MmNjNDhkZGQ2ZTE3MGNkMDNkODAzMjkiLCJpYXQiOjE3NzE3OTIyNjEuOTk1MjYzLCJuYmYiOjE3NzE3OTIyNjEuOTk1MjY1LCJleHAiOjE4MDMyNjUyMDAuMDA0MjUzLCJzdWIiOiI1NzYxIiwic2NvcGVzIjpbImludGVncmFjYW8iXX0.k-TPY21xekFRxvFU_vbXux_aBh5MRoFAuzdkigCyPJDHVh27J9DvvZqG_3Lnr3QhPvXAx4AmI9dk_DDxQtM_Uw6F0LEaqeUBsK5kTtnkuKodqnIfCG5vbKzvqztoAyn7yV0uLPS_Bk7UTSIxAKdHfwX0zrV1vA9qKppne3OsaifKvhTCfkEacJHPTC4zXhqN1IgyIczW6MNOy5U654NRYgOZzvr-Ajx7BS_8bLnVbn0cfQxnD5bKS_KGtmEgy4NR-tLZZPh2u3c4T2rhuK7KtZ7OUW54gYefwd77oQvGh-HRm_xAVsLPJ3XhvoWr_zf8av1nom7w_2YO9Ne_roSkZFSZrcOozeVXipNHPD91Zp52oBLmN6RPmAUN5iECXNEY8zUSMJKZ-e26o4IXBed1wPg8H1-tS64nd3w2v2yZLGQJLKTiXFsu6tfyxAmn7ZwGZ8YlTsRtG_PixEubTK2CI2flWsBuju8wBWNTMKYc7bI1UY0zJYAWlNfXfGdEj0s5qNT0DCLCr4c4OfWNjkx_1sMWXnFcPVIRjKohHS0agZU8LXJVsqVvsH5pO5jy2YorgmjXoV0jG_nPd29HL_4vugR91ABbF4bpU1suGPGCefuZUmE0x3UpAWh7TZ5RiExUclJLZE--NIEFRYvWv1E-_zjDzW2sjxwkAWDT2fEK6Qw';
+const CERTCONTROL_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1IiwianRpIjoiZGRkZDRlNjdhNWRjZDcxMTJiMWUyZjI5ZDZlYmYwZjFjNmIxNDA3MWQxNWZkNzY5NzgwOTVlOWU2ZmM1MjRmNTk4MzFjOTQwMTM1OWZjMzIiLCJpYXQiOjE3NzYyNTc5NTkuNDYxOTM4LCJuYmYiOjE3NzYyNTc5NTkuNDYxOTQxLCJleHAiOjE4MDc3NTgwMDAuMDA2MzczLCJzdWIiOiI1NzYxIiwic2NvcGVzIjpbImludGVncmFjYW8iXX0.st0TAVv9cydPqAZH25C1KCNWHZsnKNmKbwd8xHBUKPshLkKImYzetuBtzqc-Ey7OO7C0FY04WMbgTaV9V44frs3dhYgxerwbTcmf1OVz6DVwe6Q-r28LQxxXsHX_8Q-J2Mh_2tuMf324cONr4uQZAJBLmVRgh2CFZTyCAlnsyI0dOi-Kqt_8OZOldBb52O0JjxvY1OS38xq_PbLhnkMkvZgZevay8NKeORXUki_YUv3zRDgZkPcQ8Orn8oHeaTzGxf3pn3YfC5yxY48ItLAiSB4-_2mLryt88HNCGr0ib2zcz_V2Ko3QprFKbbVo_O4c4ACSDXF5q6oQ5trYQweInVZglMcb9nsnqcgu9it1qT1YEcII1hTrBhXk4yNoe1kJOgg_HX3lRNCUx7ZOjrb2RU56MRZIRLOKYr19whS_3WBzGsUBvfo2ikDFars3s1WcGWoHKk9LiY8NChCq5gzFPF0nbdzVb-kQ0F0W0pQMCi0mpmYQV4hETJdTTAXA6WY-nilSpRbcndW-eGIFyFbTJWtp9al8aIVvm2nQgvv6HZpfhsGQQDzElXKDbzXstqwwNcdMIbzBh-tzqCVePlRJ6Wfx3uwd10QGWfGnDFH59Vln7duD_bjnv9-77JM-MzO4Dqh47gJ97jczZak4zPO13GysuQLisHcrD87VHFyY514';
 async function POST(request) {
     try {
         const formData = await request.formData();
@@ -267,7 +267,7 @@ async function POST(request) {
                 venda: {
                     produto_id: String(supplierProduct.external_id),
                     tabela_id: String(supplierTable.external_id),
-                    valor_total: String(customPrice),
+                    valor_total: Number(customPrice),
                     tipo_lancamento_id: String(launchType)
                 },
                 certificado: {

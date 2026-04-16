@@ -3,8 +3,6 @@ import { supabase } from '@/lib/supabase';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import axios from 'axios';
 
-const CERTCONTROL_API_URL = 'https://service.certcontrol.com.br';
-const CERTCONTROL_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI1IiwianRpIjoiZGRkZDRlNjdhNWRjZDcxMTJiMWUyZjI5ZDZlYmYwZjFjNmIxNDA3MWQxNWZkNzY5NzgwOTVlOWU2ZmM1MjRmNTk4MzFjOTQwMTM1OWZjMzIiLCJpYXQiOjE3NzYyNTc5NTkuNDYxOTM4LCJuYmYiOjE3NzYyNTc5NTkuNDYxOTQxLCJleHAiOjE4MDc3NTgwMDAuMDA2MzczLCJzdWIiOiI1NzYxIiwic2NvcGVzIjpbImludGVncmFjYW8iXX0.st0TAVv9cydPqAZH25C1KCNWHZsnKNmKbwd8xHBUKPshLkKImYzetuBtzqc-Ey7OO7C0FY04WMbgTaV9V44frs3dhYgxerwbTcmf1OVz6DVwe6Q-r28LQxxXsHX_8Q-J2Mh_2tuMf324cONr4uQZAJBLmVRgh2CFZTyCAlnsyI0dOi-Kqt_8OZOldBb52O0JjxvY1OS38xq_PbLhnkMkvZgZevay8NKeORXUki_YUv3zRDgZkPcQ8Orn8oHeaTzGxf3pn3YfC5yxY48ItLAiSB4-_2mLryt88HNCGr0ib2zcz_V2Ko3QprFKbbVo_O4c4ACSDXF5q6oQ5trYQweInVZglMcb9nsnqcgu9it1qT1YEcII1hTrBhXk4yNoe1kJOgg_HX3lRNCUx7ZOjrb2RU56MRZIRLOKYr19whS_3WBzGsUBvfo2ikDFars3s1WcGWoHKk9LiY8NChCq5gzFPF0nbdzVb-kQ0F0W0pQMCi0mpmYQV4hETJdTTAXA6WY-nilSpRbcndW-eGIFyFbTJWtp9al8aIVvm2nQgvv6HZpfhsGQQDzElXKDbzXstqwwNcdMIbzBh-tzqCVePlRJ6Wfx3uwd10QGWfGnDFH59Vln7duD_bjnv9-77JM-MzO4Dqh47gJ97jczZak4zPO13GysuQLisHcrD87VHFyY514';
 
 export async function POST(request: Request) {
     try {
@@ -67,6 +65,31 @@ export async function POST(request: Request) {
         let productMediaType: string | undefined = undefined;
 
         if (!isDraft) {
+            // 0. Fetch CertControl settings (token + URL) from database
+            const { data: settings, error: settingsError } = await supabaseAdmin
+                .from('system_settings')
+                .select('key, value')
+                .in('key', ['certcontrol_api_token', 'certcontrol_api_url']);
+
+            const settingsMap = Object.fromEntries(
+                (settings || []).map((s: any) => [s.key, s.value])
+            );
+
+            const CERTCONTROL_TOKEN = settingsMap['certcontrol_api_token'];
+            const CERTCONTROL_API_URL = settingsMap['certcontrol_api_url'];
+
+            if (!CERTCONTROL_TOKEN) {
+                return NextResponse.json({
+                    error: "Token da API CertControl não configurado. Acesse Admin > Fornecedores para configurar."
+                }, { status: 503 });
+            }
+
+            if (!CERTCONTROL_API_URL) {
+                return NextResponse.json({
+                    error: "URL da API CertControl não configurada. Acesse Admin > Fornecedores para configurar."
+                }, { status: 503 });
+            }
+
             // 1. Fetch linkage details for the product (Only needed for real sales)
             const { data: product, error: productError } = await supabase
                 .from('products')

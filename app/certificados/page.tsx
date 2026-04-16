@@ -106,7 +106,8 @@ const STATUSES = [
     "Emitido", // Acts as "Finalizados"
     "Rascunho", // Added Rascunho
     "Cancelado",
-    "Expirado"
+    "Expirado",
+    "Outros"
 ];
 
 const getExpiryInfo = (expiryDate: string | null) => {
@@ -142,7 +143,7 @@ export default function CertificatesPage() {
     });
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [statusFilter, setStatusFilter] = useState("Todos");
+    const [statusFilters, setStatusFilters] = useState<string[]>(["Todos"]);
     const [showArchived, setShowArchived] = useState(false);
     const [isJourneyOpen, setIsJourneyOpen] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -176,18 +177,46 @@ export default function CertificatesPage() {
         const matchesArchivedToggle = showArchived ? true : !isArchived;
 
         let matchesStatus = false;
-        if (statusFilter === "Todos") {
+        if (statusFilters.includes("Todos")) {
             matchesStatus = matchesArchivedToggle;
-        } else if (statusFilter === "Emitido") {
-            matchesStatus = cert.supplier_status === "Emitido";
-        } else if (statusFilter === "Aprovado") {
-            matchesStatus = cert.supplier_status === "Aprovado";
         } else {
-            matchesStatus = cert.status === statusFilter;
+            matchesStatus = statusFilters.some(filter => {
+                if (filter === "Emitido") return cert.supplier_status === "Emitido";
+                if (filter === "Aprovado") return cert.supplier_status === "Aprovado";
+                if (filter === "Outros") {
+                    const knownStatuses = ["Pendente", "Pago", "Agendado", "Validado", "Rascunho", "Cancelado", "Expirado"];
+                    return !knownStatuses.includes(cert.status) && cert.supplier_status !== "Emitido" && cert.supplier_status !== "Aprovado";
+                }
+                return cert.status === filter;
+            });
+            // Apply archive logic to 'Outros' or any specific filter matching 'Arquivado'
+            if (matchesStatus && !matchesArchivedToggle && cert.status === "Arquivado") {
+                matchesStatus = false;
+            }
         }
 
         return matchesSearch && matchesStatus;
     });
+
+    const handleStatusToggle = (status: string) => {
+        if (status === "Todos") {
+            setStatusFilters(["Todos"]);
+            return;
+        }
+
+        let newFilters = statusFilters.filter(s => s !== "Todos");
+        if (newFilters.includes(status)) {
+            newFilters = newFilters.filter(s => s !== status);
+        } else {
+            newFilters.push(status);
+        }
+
+        if (newFilters.length === 0) {
+            setStatusFilters(["Todos"]);
+        } else {
+            setStatusFilters(newFilters);
+        }
+    };
 
     const handleArchive = async (id: string) => {
         if (!confirm("Deseja realmente arquivar este rascunho?")) return;
@@ -352,10 +381,10 @@ export default function CertificatesPage() {
                     {STATUSES.map((status) => (
                         <button
                             key={status}
-                            onClick={() => setStatusFilter(status)}
+                            onClick={() => handleStatusToggle(status)}
                             className={cn(
                                 "px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest transition-all border",
-                                statusFilter === status
+                                statusFilters.includes(status)
                                     ? "bg-primary text-white border-primary shadow-sm"
                                     : "bg-[var(--background)] text-[var(--muted)] border-[var(--border)] hover:border-primary/30 hover:text-primary"
                             )}

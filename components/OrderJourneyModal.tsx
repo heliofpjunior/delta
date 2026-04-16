@@ -305,8 +305,8 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">
             <div className="group/section">
                 <div className="flex items-center gap-3 mb-4">
-                    <div className="size-6 rounded-none bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black">1</div>
-                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Inicie o Pedido</h3>
+                    <div className="size-6 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">1</div>
+                    <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Inicie o Pedido</h3>
                 </div>
 
                 {/* Category Selection - More compact grid */}
@@ -318,22 +318,22 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                             setValue("productId", 0);
                         }}
                         className={cn(
-                            "p-6 rounded-[2rem] border-4 text-left transition-all relative group overflow-hidden shadow-sm",
+                            "p-5 rounded-2xl border-2 text-left transition-all relative group overflow-hidden shadow-sm",
                             selectedCategory === "PF"
-                                ? "border-primary bg-primary/[0.05] scale-[1.02]"
+                                ? "border-primary bg-primary/[0.05] ring-2 ring-primary/20 scale-[1.01]"
                                 : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"
                         )}
                     >
-                        <div className="flex items-center gap-4 relative z-10">
+                        <div className="flex flex-col gap-3 relative z-10">
                             <div className={cn(
-                                "size-12 rounded-2xl flex items-center justify-center transition-all shadow-lg",
-                                selectedCategory === "PF" ? "bg-primary text-white scale-110" : "bg-[var(--background)] text-[var(--muted)]"
+                                "size-10 rounded-xl flex items-center justify-center transition-all",
+                                selectedCategory === "PF" ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)] border border-[var(--border)]"
                             )}>
-                                <User size={24} strokeWidth={3} />
+                                <User size={20} strokeWidth={2.5} />
                             </div>
                             <div>
-                                <p className="text-[13px] font-black text-[var(--foreground)] uppercase tracking-tight">Pessoa Física</p>
-                                <p className="text-[9px] font-black text-[var(--muted)] uppercase tracking-widest leading-none opacity-60">Para CPFs</p>
+                                <p className="text-sm font-bold text-[var(--foreground)] uppercase">Pessoa Física</p>
+                                <p className="text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wide opacity-80">Para CPFs</p>
                             </div>
                         </div>
                     </button>
@@ -345,22 +345,22 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                             setValue("productId", 0);
                         }}
                         className={cn(
-                            "p-6 rounded-[2rem] border-4 text-left transition-all relative group overflow-hidden shadow-sm",
+                            "p-5 rounded-2xl border-2 text-left transition-all relative group overflow-hidden shadow-sm",
                             selectedCategory === "PJ"
-                                ? "border-primary bg-primary/[0.05] scale-[1.02]"
+                                ? "border-primary bg-primary/[0.05] ring-2 ring-primary/20 scale-[1.01]"
                                 : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"
                         )}
                     >
-                        <div className="flex items-center gap-4 relative z-10">
+                        <div className="flex flex-col gap-3 relative z-10">
                             <div className={cn(
-                                "size-12 rounded-2xl flex items-center justify-center transition-all shadow-lg",
-                                selectedCategory === "PJ" ? "bg-primary text-white scale-110" : "bg-[var(--background)] text-[var(--muted)]"
+                                "size-10 rounded-xl flex items-center justify-center transition-all",
+                                selectedCategory === "PJ" ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)] border border-[var(--border)]"
                             )}>
-                                <Briefcase size={24} strokeWidth={3} />
+                                <Briefcase size={20} strokeWidth={2.5} />
                             </div>
                             <div>
-                                <p className="text-[13px] font-black text-[var(--foreground)] uppercase tracking-tight">Pessoa Jurídica</p>
-                                <p className="text-[9px] font-black text-[var(--muted)] uppercase tracking-widest leading-none opacity-60">Para Empresas</p>
+                                <p className="text-sm font-bold text-[var(--foreground)] uppercase">Pessoa Jurídica</p>
+                                <p className="text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wide opacity-80">Para Empresas</p>
                             </div>
                         </div>
                     </button>
@@ -368,27 +368,27 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
 
                 {selectedCategory && (
                     <div className="animate-in fade-in slide-in-from-top-2 duration-300">
-                        <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 px-1">
+                        <h3 className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-3 px-1">
                             Produtos Disponíveis {selectedCategory && `(${filteredProducts.length} de ${products?.length || 0} carregados)`}
                         </h3>
 
                         {isLoading && (
                             <div className="p-10 text-center animate-pulse">
-                                <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Carregando Catálogo...</p>
+                                <p className="text-xs font-semibold text-primary uppercase tracking-wider">Carregando Catálogo...</p>
                             </div>
                         )}
 
                         {error && (
-                            <div className="p-6 bg-rose-500/5 border border-rose-500/20 rounded-none text-center">
-                                <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest mb-1">Erro de Conexão</p>
-                                <p className="text-[8px] text-rose-400 font-bold uppercase">{error.message || "Falha ao consultar banco de dados"}</p>
+                            <div className="p-4 bg-rose-500/5 border border-rose-500/20 rounded-xl text-center">
+                                <p className="text-xs font-bold text-rose-500 uppercase tracking-wide mb-1">Erro de Conexão</p>
+                                <p className="text-[10px] text-rose-400 font-medium">{error.message || "Falha ao consultar banco de dados"}</p>
                             </div>
                         )}
 
                         {!isLoading && !error && products?.length === 0 && (
-                            <div className="p-6 border border-dashed border-slate-200 dark:border-slate-800 rounded-none text-center">
-                                <p className="text-[10px] text-amber-500 font-black uppercase tracking-widest mb-1">Base de Dados Vazia</p>
-                                <p className="text-[8px] text-slate-400 font-bold uppercase">Nenhum produto cadastrado na tabela 'products'.</p>
+                            <div className="p-6 border border-dashed border-[var(--border)] rounded-xl text-center">
+                                <p className="text-xs text-amber-500 font-bold uppercase tracking-wide mb-1">Base de Dados Vazia</p>
+                                <p className="text-[10px] text-slate-400 font-medium">Nenhum produto cadastrado na tabela 'products'.</p>
                             </div>
                         )}
 
@@ -399,30 +399,30 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                                     type="button"
                                     onClick={() => setValue("productId", product.id)}
                                     className={cn(
-                                        "p-4 rounded-2xl border-2 text-left transition-all relative group shadow-sm",
+                                        "p-4 rounded-xl border-2 text-left transition-all relative group",
                                         selectedProductId === product.id
-                                            ? "border-primary bg-primary/[0.05] ring-4 ring-primary/10"
-                                            : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"
+                                            ? "border-primary bg-primary/[0.05] ring-2 ring-primary/20"
+                                            : "border-[var(--border)] hover:border-primary/30 bg-[var(--card)]"
                                     )}
                                 >
                                     <div className="flex items-center gap-4">
                                         <div className={cn(
-                                            "size-10 rounded-xl flex items-center justify-center transition-all shadow-md",
-                                            selectedProductId === product.id ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)]"
+                                            "size-9 rounded-lg flex items-center justify-center transition-all",
+                                            selectedProductId === product.id ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)] border border-[var(--border)]"
                                         )}>
-                                            {product.type === "A1" ? <Cloud size={20} strokeWidth={3} /> : <HardDrive size={20} strokeWidth={3} />}
+                                            {product.type === "A1" ? <Cloud size={18} strokeWidth={2.5} /> : <HardDrive size={18} strokeWidth={2.5} />}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-tight truncate leading-tight">{product.name}</p>
-                                            <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">{product.type}</p>
+                                            <p className="text-xs font-bold text-[var(--foreground)] uppercase truncate">{product.name}</p>
+                                            <p className="text-[10px] font-semibold text-primary uppercase tracking-widest">{product.type}</p>
                                         </div>
-                                        {selectedProductId === product.id && <CheckCircle2 className="text-primary animate-in zoom-in" size={20} strokeWidth={3} />}
+                                        {selectedProductId === product.id && <CheckCircle2 className="text-primary animate-in zoom-in" size={20} strokeWidth={2.5} />}
                                     </div>
                                 </button>
                             ))}
                             {filteredProducts.length === 0 && (
-                                <div className="col-span-2 p-10 border-4 border-dashed border-[var(--border)] rounded-[2rem] text-center bg-[var(--background)]">
-                                    <p className="text-[12px] text-[var(--muted)] font-black uppercase tracking-[0.2em]">Nenhum produto em estoque para esta categoria.</p>
+                                <div className="col-span-2 p-8 border-2 border-dashed border-[var(--border)] rounded-2xl text-center bg-[var(--background)]/50">
+                                    <p className="text-xs text-[var(--muted)] font-semibold uppercase tracking-wider">Nenhum produto em estoque para esta categoria.</p>
                                 </div>
                             )}
                         </div>
@@ -431,33 +431,33 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
             </div>
 
             {selectedProduct && (
-                <div className="bg-primary/[0.05] rounded-[2rem] p-8 border-4 border-primary/10 animate-in zoom-in-95 duration-500 shadow-xl shadow-primary/5">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="bg-[var(--card)] rounded-2xl p-6 border-2 border-primary/20 animate-in zoom-in-95 duration-500 shadow-sm mt-6">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div>
-                            <h4 className="text-[12px] font-black uppercase tracking-[0.3em] text-primary mb-1">Engenharia de Preço</h4>
-                            <p className="text-[10px] text-[var(--muted)] font-black uppercase tracking-widest opacity-60">Ajuste o valor final para o consumidor</p>
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Engenharia de Preço</h4>
+                            <p className="text-[10px] text-[var(--muted)] font-medium">Ajuste o valor final para o consumidor</p>
                         </div>
-                        <div className="flex flex-col items-end gap-2">
+                        <div className="flex flex-col items-end gap-1.5">
                             <div className={cn(
-                                "flex items-center bg-[var(--card)] rounded-2xl border-4 p-1 shadow-2xl transition-all",
-                                commissionData && commissionData.repasse < 0 ? "border-rose-500 shadow-rose-500/20" : "border-primary/20"
+                                "flex items-center bg-[var(--background)] rounded-xl border-2 p-1 transition-all shadow-sm",
+                                commissionData && commissionData.repasse < 0 ? "border-rose-500 shadow-rose-500/10" : "border-[var(--border)] focus-within:border-primary/50 text-[var(--foreground)]"
                             )}>
                                 <span className={cn(
-                                    "px-5 text-sm font-black",
-                                    commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-primary"
+                                    "px-4 text-xs font-bold opacity-80",
+                                    commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-[var(--foreground)]"
                                 )}>R$</span>
                                 <input
                                     type="number"
                                     min="0"
                                     {...register("customPrice", { valueAsNumber: true })}
                                     className={cn(
-                                        "w-28 bg-transparent border-0 focus:ring-0 text-xl font-black p-3 transition-colors",
+                                        "w-24 bg-transparent border-0 focus:ring-0 text-lg font-bold p-2 transition-colors",
                                         commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-[var(--foreground)]"
                                     )}
                                 />
                             </div>
                             {commissionData && commissionData.repasse < 0 && (
-                                <p className="text-[10px] font-black text-rose-500 uppercase tracking-widest animate-in slide-in-from-top-1">
+                                <p className="text-[10px] font-bold text-rose-500 uppercase tracking-widest animate-in slide-in-from-top-1">
                                     Margem Negativa Detectada!
                                 </p>
                             )}
@@ -469,104 +469,107 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
     );
 
     const renderStep2 = () => (
-        <div className="space-y-10 animate-in fade-in slide-in-from-right-8 duration-500">
-            <div className="group/section p-8 bg-primary/[0.02] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm">
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20">02</div>
-                    <h3 className="text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]">IDENTIFICAÇÃO DO TITULAR</h3>
+        <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
+            <div className="group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm">
+                <div className="flex items-center gap-4 mb-6">
+                    <div className="size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm">02</div>
+                    <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">IDENTIFICAÇÃO DO TITULAR</h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="md:col-span-2">
                         <Input
                             label={isPJ ? "CNPJ DA EMPRESA" : "CPF DO TITULAR"}
                             {...register("doc")}
                             error={errors.doc?.message}
-                            placeholder="DIGITE O DOCUMENTO PARA BUSCA..."
-                            helpText={isConsulting ? "CONSULTANDO BIG DATA..." : identifiedCustomer ? "✅ PERFIL ENCONTRADO NO DELTA CRM" : ""}
-                            className={cn("py-4 rounded-2xl border-4 font-black uppercase", identifiedCustomer && "border-emerald-500/30 bg-emerald-500/[0.02]")}
+                            placeholder="DIGITE O DOCUMENTO..."
+                            helpText={isConsulting ? "CONSULTANDO SERASA..." : identifiedCustomer ? "✅ PERFIL ENCONTRADO NO CRM" : ""}
+                            className={cn("py-2.5 rounded-xl border-2 font-medium uppercase", identifiedCustomer && "border-emerald-500/30 bg-emerald-500/[0.02]")}
                         />
                         {identifiedCustomer && (
-                            <div className="mt-4 flex items-center gap-3 px-6 py-3 bg-emerald-500 text-white rounded-2xl animate-in slide-in-from-top-2 shadow-lg shadow-emerald-500/20">
-                                <Sparkles size={16} strokeWidth={3} className="animate-pulse" />
-                                <span className="text-[10px] font-black uppercase tracking-widest">
+                            <div className="mt-3 flex items-center gap-3 px-5 py-2.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 rounded-xl animate-in slide-in-from-top-2">
+                                <Sparkles size={16} strokeWidth={2.5} />
+                                <span className="text-[11px] font-bold uppercase tracking-wider">
                                     CLIENTE FIDELIDADE: {identifiedCustomer.total_spent?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} EM COMPRAS
                                 </span>
                             </div>
                         )}
                     </div>
                     <div className="md:col-span-2">
-                        <Input label={isPJ ? "NOME EMPRESARIAL" : "NOME COMPLETO"} {...register("name")} error={errors.name?.message} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                        <Input label={isPJ ? "NOME EMPRESARIAL" : "NOME COMPLETO"} {...register("name")} error={errors.name?.message} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                     </div>
 
                     {isPJ && (
                         <>
-                            <Input label="INSCRIÇÃO ESTADUAL" {...register("fantasyName")} placeholder="ISENTO" className="py-4 rounded-2xl border-4 font-black uppercase" />
-                            <div className="md:col-span-2 pt-8 border-t-4 border-[var(--border)] mt-4">
-                                <p className="text-[11px] font-black text-primary uppercase tracking-[0.3em] mb-6">REPRESENTAÇÃO LEGAL</p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <Input label="NOME DO REPRESENTANTE" {...register("legalRepName")} placeholder="NOME" className="py-4 rounded-2xl border-4 font-black uppercase" />
-                                    <Input label="CPF DO REPRESENTANTE" {...register("legalRepCpf")} placeholder="000.000.000-00" className="py-4 rounded-2xl border-4 font-black uppercase" />
+                            <Input label="INSCRIÇÃO ESTADUAL" {...register("fantasyName")} placeholder="ISENTO" className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                            <div className="md:col-span-2 pt-6 border-t border-[var(--border)] mt-2">
+                                <p className="text-xs font-bold text-primary uppercase tracking-wider mb-4">Representação Legal</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <Input label="NOME DO REPRESENTANTE" {...register("legalRepName")} placeholder="NOME" className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                                    <Input label="CPF DO REPRESENTANTE" {...register("legalRepCpf")} placeholder="000.000.000-00" className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                                 </div>
                             </div>
                         </>
                     )}
 
-                    <Input label="WHATSAPP / CELULAR" {...register("phone")} error={errors.phone?.message} className="py-4 rounded-2xl border-4 font-black uppercase text-blue-600" />
-                    <Input label="E-MAIL DE NOTIFICAÇÃO" {...register("email")} error={errors.email?.message} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                    <Input label="WHATSAPP / CELULAR" {...register("phone")} error={errors.phone?.message} className="py-2.5 rounded-xl border-2 font-medium uppercase text-blue-600" />
+                    <Input label="E-MAIL DE NOTIFICAÇÃO" {...register("email")} error={errors.email?.message} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                 </div>
             </div>
 
-            <div className="group/section p-8 bg-[var(--background)] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm">
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20">03</div>
-                    <h3 className="text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]">LOCALIZAÇÃO E LOGÍSTICA</h3>
+            <div className="group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm">
+                <div className="flex items-center gap-4 mb-6">
+                    <div className="size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm">03</div>
+                    <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">LOCALIZAÇÃO E LOGÍSTICA</h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <Input label="CEP" {...register("cep")} error={errors.cep?.message} placeholder="00000-000" className="py-4 rounded-2xl border-4 font-black uppercase" />
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <Input label="CEP" {...register("cep")} error={errors.cep?.message} placeholder="00000-000" className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                     <div className="md:col-span-3">
-                        <Input label="LOGRADOURO" {...register("street")} error={errors.street?.message} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                        <Input label="LOGRADOURO" {...register("street")} error={errors.street?.message} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                     </div>
-                    <Input label="Nº" {...register("number")} error={errors.number?.message} className="py-4 rounded-2xl border-4 font-black uppercase" />
-                    <Input label="BAIRRO" {...register("neighborhood")} error={errors.neighborhood?.message} className="py-4 rounded-2xl border-4 font-black uppercase" />
-                    <Input label="CIDADE" {...register("city")} error={errors.city?.message} className="py-4 rounded-2xl border-4 font-black uppercase" />
-                    <Input label="UF" {...register("state")} error={errors.state?.message} maxLength={2} className="py-4 rounded-2xl border-4 font-black uppercase text-center" />
+                    <Input label="Nº" {...register("number")} error={errors.number?.message} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                    <Input label="BAIRRO" {...register("neighborhood")} error={errors.neighborhood?.message} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                    <Input label="CIDADE" {...register("city")} error={errors.city?.message} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                    <Input label="UF" {...register("state")} error={errors.state?.message} maxLength={2} className="py-2.5 rounded-xl border-2 font-medium uppercase text-center" />
                 </div>
             </div>
 
             {/* Multi-Document Attachment */}
-            <div className="p-8 bg-indigo-500/[0.03] rounded-[2.5rem] border-4 border-indigo-500/10">
-                <div className="space-y-6">
+            <div className="p-6 bg-slate-50 dark:bg-slate-800/20 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                <div className="space-y-4">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-[11px] font-black text-indigo-600 uppercase tracking-[0.3em] leading-none">DOCUMENTAÇÃO OBRIGATÓRIA (FOTOS/PDF)</p>
-                        <label className="cursor-pointer px-8 py-4 bg-indigo-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-xl shadow-indigo-600/20 hover:scale-105 active:scale-95 transition-all border-2 border-white/20">
-                            EFETUAR UPLOAD
+                        <div>
+                            <p className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase">DOCUMENTAÇÃO ANEXA</p>
+                            <p className="text-xs text-[var(--muted)]">CNH, Contrato Social, etc.</p>
+                        </div>
+                        <label className="cursor-pointer px-6 py-2.5 bg-[var(--background)] hover:bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-xl text-xs font-bold uppercase transition-all shadow-sm">
+                            ADICIONAR ARQUIVOS
                             <input type="file" className="hidden" onChange={handleFileChange} accept="image/*,application/pdf" multiple />
                         </label>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {attachedFiles.map((file, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-4 bg-[var(--card)] border-2 border-emerald-500/30 rounded-2xl shadow-sm group">
-                                <div className="flex items-center gap-4 overflow-hidden">
-                                    <div className="size-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20 group-hover:rotate-6 transition-transform">
-                                        <FileUp size={24} strokeWidth={3} />
+                            <div key={idx} className="flex items-center justify-between p-3 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm group">
+                                <div className="flex items-center gap-3 overflow-hidden">
+                                    <div className="size-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0">
+                                        <FileUp size={20} strokeWidth={2} />
                                     </div>
                                     <div className="overflow-hidden">
-                                        <p className="text-[11px] font-black text-[var(--foreground)] uppercase truncate tracking-tight">{file.name}</p>
-                                        <p className="text-[9px] text-emerald-600 font-black uppercase tracking-widest">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                                        <p className="text-xs font-semibold text-[var(--foreground)] truncate">{file.name}</p>
+                                        <p className="text-[10px] text-[var(--muted)]">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                                     </div>
                                 </div>
-                                <button type="button" onClick={() => removeFile(idx)} className="size-10 flex items-center justify-center text-[var(--muted)] hover:text-rose-500 transition-all hover:bg-rose-500/10 rounded-xl">
-                                    <XCircle size={20} strokeWidth={3} />
+                                <button type="button" onClick={() => removeFile(idx)} className="size-8 flex items-center justify-center text-[var(--muted)] hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors">
+                                    <XCircle size={18} strokeWidth={2.5} />
                                 </button>
                             </div>
                         ))}
                         {attachedFiles.length === 0 && (
-                            <div className="col-span-2 p-12 border-4 border-dashed border-indigo-500/20 rounded-[2rem] text-center bg-white/30">
-                                <p className="text-[12px] text-indigo-400 font-black uppercase tracking-[0.25em]">NENHUM DOCUMENTO ANEXADO</p>
-                                <p className="text-[10px] text-indigo-300 font-black uppercase tracking-widest mt-2 whitespace-nowrap opacity-60 italic">ANEXE O CPF/CNPJ E CNH/RG DO TITULAR</p>
+                            <div className="col-span-2 p-8 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-center bg-transparent">
+                                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Nenhum Documento Anexado</p>
+                                <p className="text-[10px] text-slate-400 opacity-80">Você pode anexar comprovação posteriormente via app também.</p>
                             </div>
                         )}
                     </div>
@@ -576,39 +579,39 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
     );
 
     const renderStep3 = () => (
-        <div className="space-y-10 animate-in fade-in slide-in-from-right-8 duration-500">
-            <div className="group/section p-8 bg-primary/[0.02] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm">
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20">04</div>
-                    <h3 className="text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]">ESPECIFICAÇÕES TÉCNICAS</h3>
+        <div className="space-y-8 animate-in fade-in slide-in-from-right-8 duration-500">
+            <div className="group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm">
+                <div className="flex items-center gap-4 mb-6">
+                    <div className="size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm">04</div>
+                    <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">ESPECIFICAÇÕES TÉCNICAS</h3>
                 </div>
 
                 <div className="space-y-6">
-                    <div className="p-8 bg-indigo-600 text-white rounded-[2rem] border-4 border-white/10 shadow-xl shadow-indigo-600/20 relative overflow-hidden group">
+                    <div className="p-6 bg-indigo-600 text-white rounded-2xl border border-indigo-500 shadow-lg relative overflow-hidden group">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rotate-45 transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-1000" />
-                        <p className="text-[11px] font-black uppercase text-indigo-100 tracking-[0.3em] mb-3 opacity-80 relative z-10">Mídia & Validade</p>
-                        <p className="text-2xl font-black uppercase tracking-tighter relative z-10">{watch("mediaType")} — Ciclo de 12 Meses</p>
-                        <p className="text-[9px] text-indigo-200 font-black uppercase tracking-widest mt-2 relative z-10 italic">Configuração otimizada para o produto selecionado.</p>
+                        <p className="text-xs font-semibold uppercase text-indigo-200 tracking-wider mb-2 relative z-10">Mídia & Validade</p>
+                        <p className="text-xl font-bold uppercase tracking-tight relative z-10">{watch("mediaType")} — Ciclo de 12 Meses</p>
+                        <p className="text-[10px] text-indigo-200 font-medium uppercase tracking-widest mt-1 relative z-10 opacity-80">Configuração otimizada para o produto selecionado.</p>
                     </div>
 
-                    <div className="p-2 bg-[var(--background)] rounded-[2rem] border-2 border-[var(--border)]">
+                    <div className="p-2 bg-[var(--background)] rounded-2xl border border-[var(--border)] shadow-sm">
                         <SegmentedControl
                             label="MODALIDADE DE EMISSÃO"
                             value={videoConference ? "video" : "presencial"}
                             onChange={(v) => setValue("videoConference", v === "video")}
                             options={[
-                                { label: "VIDEOCONFERÊNCIA (ONLINE)", value: "video" },
-                                { label: "PRESENCIAL (PONTO FÍSICO)", value: "presencial" },
+                                { label: "VIDEOCONFERÊNCIA", value: "video" },
+                                { label: "PRESENCIAL (FÍSICO)", value: "presencial" },
                             ]}
                         />
                     </div>
 
                     {!videoConference && (
-                        <div className="p-6 bg-amber-500/10 border-4 border-amber-500/20 rounded-[2rem] flex items-center gap-6 animate-in zoom-in-95">
-                            <div className="size-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-lg shadow-amber-500/20 shrink-0">
-                                <MapPin size={28} strokeWidth={3} />
+                        <div className="p-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center gap-4 animate-in zoom-in-95">
+                            <div className="size-10 rounded-lg bg-amber-500 text-white flex items-center justify-center shadow-sm shrink-0">
+                                <MapPin size={20} strokeWidth={2.5} />
                             </div>
-                            <p className="text-[11px] font-black text-amber-700 dark:text-amber-500 uppercase tracking-widest leading-relaxed">
+                            <p className="text-xs font-bold text-amber-700 dark:text-amber-500 uppercase tracking-wide leading-relaxed">
                                 ATENÇÃO: A EMISSÃO PRESENCIAL REQUER AGENDAMENTO POSTERIOR NO HUB FÍSICO MAIS PRÓXIMO.
                             </p>
                         </div>
@@ -616,14 +619,14 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                 </div>
             </div>
 
-            <div className="group/section p-8 bg-[var(--background)] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm">
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20">05</div>
-                    <h3 className="text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]">FLUXO DE FATURAMENTO</h3>
+            <div className="group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm">
+                <div className="flex items-center gap-4 mb-6">
+                    <div className="size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm">05</div>
+                    <h3 className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wider">FLUXO DE FATURAMENTO</h3>
                 </div>
 
-                <div className="space-y-8">
-                    <div className="p-2 bg-[var(--accent)]/30 rounded-[2rem] border-2 border-[var(--border)]">
+                <div className="space-y-6">
+                    <div className="p-2 bg-[var(--background)] rounded-2xl border border-[var(--border)] shadow-sm">
                         <SegmentedControl
                             label="DESTINO DA NOTA FISCAL:"
                             value={billingType}
@@ -636,26 +639,26 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                     </div>
 
                     {billingType === "Diferente" && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-top-4 duration-500">
-                            <Input label="CPF/CNPJ DO PAGADOR" {...register("billingDoc")} className="py-4 rounded-2xl border-4 font-black uppercase" />
-                            <Input label="NOME COMPLETO / RAZÃO" {...register("billingName")} className="py-4 rounded-2xl border-4 font-black uppercase" />
-                            <Input label="E-MAIL PARA XML/DANFE" {...register("billingEmail")} className="py-4 rounded-2xl border-4 font-black uppercase" />
-                            <Input label="TELEFONE DE COBRANÇA" {...register("billingPhone")} className="py-4 rounded-2xl border-4 font-black uppercase" />
-                            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-6 gap-6 pt-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in slide-in-from-top-4 duration-500">
+                            <Input label="CPF/CNPJ DO PAGADOR" {...register("billingDoc")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                            <Input label="NOME COMPLETO / RAZÃO" {...register("billingName")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                            <Input label="E-MAIL PARA XML/DANFE" {...register("billingEmail")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                            <Input label="TELEFONE DE COBRANÇA" {...register("billingPhone")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
+                            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-6 gap-4 pt-4">
                                 <div className="sm:col-span-2">
-                                    <Input label="CEP" {...register("billingCep")} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                                    <Input label="CEP" {...register("billingCep")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                                 </div>
                                 <div className="sm:col-span-4">
-                                    <Input label="ENDEREÇO COMPLETO" {...register("billingStreet")} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                                    <Input label="ENDEREÇO COMPLETO" {...register("billingStreet")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                                 </div>
-                                <Input label="Nº" {...register("billingNumber")} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                                <Input label="Nº" {...register("billingNumber")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                                 <div className="sm:col-span-2">
-                                    <Input label="BAIRRO" {...register("billingNeighborhood")} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                                    <Input label="BAIRRO" {...register("billingNeighborhood")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                                 </div>
                                 <div className="sm:col-span-2">
-                                    <Input label="CIDADE" {...register("billingCity")} className="py-4 rounded-2xl border-4 font-black uppercase" />
+                                    <Input label="CIDADE" {...register("billingCity")} className="py-2.5 rounded-xl border-2 font-medium uppercase" />
                                 </div>
-                                <Input label="UF" {...register("billingState")} className="py-4 rounded-2xl border-4 font-black uppercase text-center" maxLength={2} />
+                                <Input label="UF" {...register("billingState")} className="py-2.5 rounded-xl border-2 font-medium uppercase text-center" maxLength={2} />
                             </div>
                         </div>
                     )}
@@ -665,99 +668,99 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
     );
 
     const renderStep4 = () => (
-        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-200 text-center">
-            <div className="bg-primary/[0.03] border-2 border-primary/10 rounded-none p-8 relative overflow-hidden">
+        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">
+            <div className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 relative overflow-hidden shadow-sm">
                 <div className="relative z-10 flex flex-col items-center">
-                    <div className="size-16 rounded-none bg-primary/10 text-primary flex items-center justify-center mb-4 shadow-sm">
-                        <DollarSign size={32} />
+                    <div className="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                        <DollarSign size={24} />
                     </div>
 
-                    <h3 className="text-3xl font-black text-[var(--foreground)] mb-2 tracking-tighter uppercase">REVISÃO ESTRATÉGICA</h3>
-                    <p className="text-[11px] text-[var(--muted)] max-w-xs mx-auto mb-10 font-black uppercase tracking-[0.3em] opacity-60">CONFIRME OS DETALHES E ASSEGURE SUA PERFORMANCE</p>
+                    <h3 className="text-xl font-bold text-[var(--foreground)] mb-1 uppercase tracking-wider">Revisão Estratégica</h3>
+                    <p className="text-xs text-[var(--muted)] font-medium mb-8">Confirme os detalhes e assegure o repasse</p>
 
-                    <div className="w-full bg-[var(--card)] rounded-[2rem] border-4 border-primary/10 overflow-hidden shadow-2xl">
-                        <table className="w-full text-left text-[10px] uppercase font-black text-[var(--muted)]">
-                            <thead className="bg-primary text-white border-b-4 border-white/10">
+                    <div className="w-full bg-[var(--background)] rounded-xl border border-[var(--border)] overflow-hidden">
+                        <table className="w-full text-left text-xs uppercase font-semibold text-[var(--muted)]">
+                            <thead className="bg-[var(--card)] border-b border-[var(--border)]">
                                 <tr>
-                                    <th className="px-8 py-5 tracking-[0.2em]">PRODUTO SELECIONADO</th>
-                                    <th className="px-8 py-5 text-right tracking-[0.2em]">VALOR FINAL</th>
-                                    <th className="px-8 py-5 text-right text-emerald-300 tracking-[0.2em]">SEU REPASSE</th>
+                                    <th className="px-6 py-4">Produto Selecionado</th>
+                                    <th className="px-6 py-4 text-right">Valor Final</th>
+                                    <th className="px-6 py-4 text-right text-emerald-600 dark:text-emerald-400">Seu Repasse</th>
                                 </tr>
                             </thead>
                             <tbody className="text-[var(--foreground)]">
                                 <tr>
-                                    <td className="px-8 py-6 truncate max-w-[200px] border-b-2 border-[var(--border)]">{selectedProduct?.name}</td>
-                                    <td className="px-8 py-6 text-right font-black border-b-2 border-[var(--border)]">{customPrice?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                                    <td className="px-8 py-6 text-right font-black text-emerald-600 dark:text-emerald-400 text-lg border-b-2 border-[var(--border)]">
+                                    <td className="px-6 py-4 truncate max-w-[200px] border-b border-[var(--border)]">{selectedProduct?.name}</td>
+                                    <td className="px-6 py-4 text-right font-bold border-b border-[var(--border)]">{customPrice?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                    <td className="px-6 py-4 text-right font-bold text-emerald-600 dark:text-emerald-400 text-base border-b border-[var(--border)]">
                                         {commissionData?.repasse?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div className="p-6 bg-indigo-600 text-white flex justify-between items-center shadow-inner">
-                            <div className="flex items-center gap-3">
-                                <Sparkles size={20} className="animate-pulse" />
-                                <span className="text-sm font-black uppercase tracking-[0.2em]">RECOMPENSA: +{selectedProduct && Math.floor(customPrice)} XP PARA EVOLUÇÃO</span>
+                        <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 flex justify-between items-center text-xs font-bold uppercase tracking-wide">
+                            <div className="flex items-center gap-2">
+                                <Sparkles size={16} />
+                                <span>Recompensa: +{selectedProduct && Math.floor(customPrice)} XP</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-10 space-y-6 text-left">
-                    <div className="p-8 bg-[var(--card)] border-4 border-[var(--border)] rounded-[2.5rem] shadow-xl hover:border-primary/20 transition-all">
-                        <p className="text-[11px] font-black text-primary uppercase tracking-[0.3em] mb-6">IDENTIFICAÇÃO DO TITULAR</p>
-                        <div className="grid grid-cols-2 gap-8">
+                <div className="mt-8 space-y-4 text-left">
+                    <div className="p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl">
+                        <p className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider mb-4">Identificação do Titular</p>
+                        <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <p className="text-[9px] text-[var(--muted)] font-black uppercase tracking-widest mb-1 opacity-60">NOME / RAZÃO SOCIAL</p>
-                                <p className="text-[13px] font-black text-[var(--foreground)] truncate uppercase tracking-tight">{watch("name")}</p>
+                                <p className="text-[10px] text-[var(--muted)] uppercase mb-1">Nome / Razão Social</p>
+                                <p className="text-sm font-semibold truncate">{watch("name")}</p>
                             </div>
                             <div>
-                                <p className="text-[9px] text-[var(--muted)] font-black uppercase tracking-widest mb-1 opacity-60">NÚMERO DO DOCUMENTO</p>
-                                <p className="text-[13px] font-black text-[var(--foreground)] uppercase tracking-tight">{watch("doc")}</p>
+                                <p className="text-[10px] text-[var(--muted)] uppercase mb-1">Número do Documento</p>
+                                <p className="text-sm font-semibold uppercase">{watch("doc")}</p>
                             </div>
-                            <div className="col-span-2 pt-4 border-t-2 border-[var(--border)]">
-                                <p className="text-[9px] text-[var(--muted)] font-black uppercase tracking-widest mb-1 opacity-60">LOGRADOURO DE REGISTRO</p>
-                                <p className="text-[13px] font-black text-[var(--foreground)] truncate uppercase tracking-tight">
+                            <div className="col-span-2 pt-4 border-t border-[var(--border)]">
+                                <p className="text-[10px] text-[var(--muted)] uppercase mb-1">Endereço</p>
+                                <p className="text-sm font-semibold truncate">
                                     {watch("street")}, {watch("number")} — {watch("city")}/{watch("state")}
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-[var(--card)] border-4 border-[var(--border)] rounded-[2.5rem] shadow-xl overflow-hidden transition-all hover:border-indigo-500/30">
+                    <div className="bg-[var(--background)] border border-[var(--border)] rounded-xl overflow-hidden hover:border-primary/30 transition-all">
                         <button
                             type="button"
                             onClick={() => setShowCalcMemory(!showCalcMemory)}
-                            className="w-full flex items-center justify-between p-8 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                            className="w-full flex items-center justify-between p-6 hover:bg-[var(--card)] transition-colors"
                         >
-                            <div className="flex items-center gap-5">
-                                <div className="size-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shadow-lg">
-                                    <ReceiptText size={24} strokeWidth={3} />
+                            <div className="flex items-center gap-4">
+                                <div className="size-8 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                                    <ReceiptText size={20} strokeWidth={2.5} />
                                 </div>
-                                <p className="text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.2em]">MEMÓRIA TÉCNICA DE CÁLCULO</p>
+                                <p className="text-xs font-bold uppercase tracking-wide">Memória Técnica de Cálculo</p>
                             </div>
-                            {showCalcMemory ? <ChevronUp size={24} strokeWidth={3} className="text-indigo-500" /> : <ChevronDown size={24} strokeWidth={3} className="text-slate-400" />}
+                            {showCalcMemory ? <ChevronUp size={20} className="text-indigo-500" /> : <ChevronDown size={20} className="text-[var(--muted)]" />}
                         </button>
 
                         {showCalcMemory && (
-                            <div className="px-8 pb-8 animate-in slide-in-from-top-4 duration-500">
-                                <div className="space-y-4 pt-6 border-t-4 border-[var(--border)]">
+                            <div className="px-6 pb-6 animate-in slide-in-from-top-4 duration-500">
+                                <div className="space-y-3 pt-4 border-t border-[var(--border)]">
                                     {commissionData?.calculationSteps.map((step, idx) => (
-                                        <div key={idx} className="flex justify-between items-center text-[11px] font-black uppercase tracking-widest">
-                                            <span className="text-[var(--muted)] opacity-60">{step.label}</span>
+                                        <div key={idx} className="flex justify-between items-center text-[11px] font-semibold">
+                                            <span className="text-[var(--muted)]">{step.label}</span>
                                             <span className={cn(
-                                                "px-3 py-1 rounded-lg",
-                                                step.type === "positive" ? "bg-emerald-500/10 text-emerald-600" :
-                                                    step.type === "negative" ? "bg-rose-500/10 text-rose-600" :
-                                                        "bg-indigo-500/10 text-indigo-600"
+                                                "px-2 py-0.5 rounded",
+                                                step.type === "positive" ? "text-emerald-600 bg-emerald-500/10" :
+                                                    step.type === "negative" ? "text-rose-600 bg-rose-500/10" :
+                                                        "text-indigo-600 bg-indigo-500/10"
                                             )}>
                                                 {step.value > 0 ? "+" : ""}{step.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                             </span>
                                         </div>
                                     ))}
-                                    <div className="pt-6 mt-4 border-t-4 border-[var(--border)] flex justify-between items-center bg-emerald-500/[0.02] p-4 rounded-2xl">
-                                        <span className="text-[13px] font-black text-[var(--foreground)] uppercase tracking-[0.1em]">LUCRO LÍQUIDO PROJETADO</span>
-                                        <span className="text-lg font-black text-emerald-600 dark:text-emerald-400">
+                                    <div className="pt-4 mt-3 border-t border-[var(--border)] flex justify-between items-center bg-[var(--card)] p-3 rounded-lg">
+                                        <span className="text-xs font-bold uppercase">Lucro Líquido Projetado</span>
+                                        <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
                                             {commissionData?.repasse.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                         </span>
                                     </div>
@@ -766,24 +769,24 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                         )}
                     </div>
 
-                    <div className="p-8 bg-blue-600 text-white rounded-[2.5rem] shadow-xl hover:scale-[1.01] transition-all border-4 border-white/10 group">
-                        <p className="text-[11px] font-black uppercase tracking-[0.3em] mb-6 opacity-80">CONFIGURAÇÕES DE ENTREGA</p>
-                        <div className="flex justify-between items-center">
-                            <div>
-                                <p className="text-[9px] font-black uppercase tracking-widest mb-1 opacity-70">MÍDIA ATIVA</p>
-                                <p className="text-sm font-black uppercase tracking-tighter">{watch("mediaType")}</p>
-                            </div>
-                            <div className="h-10 w-px bg-white/20" />
-                            <div>
-                                <p className="text-[9px] font-black uppercase tracking-widest mb-1 opacity-70">MODALIDADE</p>
-                                <p className="text-sm font-black uppercase tracking-tighter">{videoConference ? "VIDEOCONFERÊNCIA" : "PRESENCIAL"}</p>
-                            </div>
-                            <div className="h-10 w-px bg-white/20" />
-                            <div className="text-right">
-                                <p className="text-[9px] font-black uppercase tracking-widest mb-1 opacity-70">DOCUMENTOS</p>
-                                <div className="flex items-center gap-2 justify-end">
-                                    <span className="text-sm font-black uppercase tracking-tighter">{attachedFiles.length} ANEXOS</span>
-                                    <CheckCircle2 size={16} strokeWidth={3} className="text-emerald-300" />
+                    <div className="p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl flex items-center justify-between">
+                        <div>
+                            <p className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider mb-2">Configurações Base</p>
+                            <div className="flex gap-4">
+                                <div>
+                                    <p className="text-[9px] text-[var(--muted)] uppercase">Mídia</p>
+                                    <p className="text-xs font-semibold">{watch("mediaType")}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[9px] text-[var(--muted)] uppercase">Modal</p>
+                                    <p className="text-xs font-semibold uppercase">{videoConference ? "Vídeo" : "Presencial"}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[9px] text-[var(--muted)] uppercase">Anexos</p>
+                                    <div className="flex items-center gap-1">
+                                        <span className="text-xs font-semibold">{attachedFiles.length} arq</span>
+                                        {attachedFiles.length > 0 && <CheckCircle2 size={12} className="text-emerald-500" />}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -791,22 +794,21 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                 </div>
             </div>
 
-            <div className="bg-slate-900 text-white p-10 rounded-[2.5rem] border-4 border-white/5 flex items-center justify-between shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/20 blur-3xl rounded-full translate-x-20 -translate-y-20 group-hover:scale-150 transition-transform duration-1000" />
-                <div className="flex items-center gap-6 relative z-10">
-                    <div className="size-16 rounded-2xl bg-indigo-500 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 border-2 border-white/10">
-                        <Flame size={32} strokeWidth={3} className="animate-bounce" />
+            <div className="bg-[var(--card)] p-6 rounded-2xl border border-indigo-500/20 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div className="size-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                        <Flame size={20} />
                     </div>
-                    <div className="text-left">
-                        <p className="text-[14px] font-black uppercase tracking-tight mb-1">MULTIPLICADOR DE PERFORMANCE</p>
-                        <p className="text-[10px] text-indigo-300 font-black uppercase tracking-widest opacity-80">SEQUÊNCIA DE 5 DIAS ATIVA NO SISTEMA</p>
+                    <div>
+                        <p className="text-xs font-bold uppercase tracking-wide text-indigo-900 dark:text-indigo-100">Multiplicador</p>
+                        <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-medium">Bônus de constância (5 dias)</p>
                     </div>
                 </div>
-                <div className="text-xl font-black text-white bg-indigo-600 px-6 py-3 rounded-2xl uppercase tracking-[0.2em] shadow-lg shadow-indigo-600/30 border-2 border-white/20 relative z-10">
+                <div className="text-sm font-bold text-white bg-indigo-500 px-4 py-2 rounded-lg">
                     2x XP
                 </div>
             </div>
-        </div >
+        </div>
     );
 
     const onSubmitAction = async (data: OrderFormData, isDraft: boolean = false) => {
@@ -889,52 +891,52 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
 
     if (isSuccess) {
         return (
-            <Modal isOpen={isOpen} onClose={onClose} title="PEDIDO DISPARADO!" width="2xl">
-                <div className="p-10 flex flex-col items-center text-center space-y-10 animate-in zoom-in-95 duration-700">
-                    <div className="size-24 bg-emerald-500/10 text-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-emerald-500/20 border-4 border-emerald-500/20 scale-110 active:scale-95 transition-transform">
-                        <CheckCircle2 size={56} strokeWidth={3} className="animate-in zoom-in duration-500 delay-200" />
+            <Modal isOpen={isOpen} onClose={onClose} title="Pedido Disparado" width="2xl">
+                <div className="p-8 flex flex-col items-center text-center space-y-8 animate-in zoom-in-95 duration-700 mt-4">
+                    <div className="size-20 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/10 border-2 border-emerald-500/20 scale-110 active:scale-95 transition-transform">
+                        <CheckCircle2 size={40} strokeWidth={3} className="animate-in zoom-in duration-500 delay-200" />
                     </div>
 
-                    <div className="space-y-3">
-                        <h2 className="text-4xl font-black text-[var(--foreground)] tracking-tighter uppercase leading-tight">OPERAÇÃO CONCLUÍDA</h2>
-                        <p className="text-[var(--muted)] text-[11px] font-black uppercase tracking-[0.3em] opacity-60">O PROTOCOLO <span className="text-primary font-black px-2 py-0.5 bg-primary/10 rounded-lg">{protocol}</span> FOI REGISTRADO NA BLOCKCHAIN DE VENDAS.</p>
+                    <div className="space-y-2">
+                        <h2 className="text-3xl font-bold text-[var(--foreground)] tracking-tight uppercase">Operação Concluída</h2>
+                        <p className="text-[var(--muted)] text-xs font-medium uppercase tracking-wider">Protocolo gerado: <span className="text-primary font-bold px-2 py-1 bg-primary/10 rounded-md tracking-widest">{protocol}</span></p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                         <a
                             href={paymentLink}
                             target="_blank"
-                            className="flex flex-col items-center p-8 bg-primary text-white rounded-[2.5rem] shadow-2xl shadow-primary/30 hover:scale-[1.05] transition-all group border-4 border-white/10"
+                            className="flex flex-col items-center p-6 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all group border border-white/10"
                         >
-                            <DollarSign size={32} strokeWidth={3} className="mb-4 group-hover:rotate-12 transition-transform" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80">COBRANÇA VIA PIX/CARTÃO</span>
-                            <span className="text-sm font-black uppercase tracking-tighter">LINK DE PAGAMENTO</span>
+                            <DollarSign size={24} strokeWidth={3} className="mb-2 group-hover:rotate-12 transition-transform" />
+                            <span className="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80">COBRANÇA VIA PIX/CARTÃO</span>
+                            <span className="text-sm font-bold uppercase">LINK DE PAGAMENTO</span>
                         </a>
 
                         <button
                             onClick={() => window.open(scheduleLink || `https://agenda.delta.com.br/schedule/${protocol}`, '_blank')}
-                            className="flex flex-col items-center p-8 bg-slate-900 text-white rounded-[2.5rem] shadow-2xl shadow-black/30 hover:scale-[1.05] transition-all group border-4 border-white/5"
+                            className="flex flex-col items-center p-6 bg-slate-900 text-white rounded-2xl shadow-lg shadow-black/20 hover:scale-[1.02] transition-all group border border-slate-700"
                         >
-                            <Calendar size={32} strokeWidth={3} className="mb-4 group-hover:-rotate-12 transition-transform" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80">RESERVAR HORÁRIO</span>
-                            <span className="text-sm font-black uppercase tracking-tighter">LINK DE AGENDAMENTO</span>
+                            <Calendar size={24} strokeWidth={3} className="mb-2 group-hover:-rotate-12 transition-transform" />
+                            <span className="text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80">RESERVAR HORÁRIO</span>
+                            <span className="text-sm font-bold uppercase">LINK DE AGENDAMENTO</span>
                         </button>
 
-                        <div className="md:col-span-2 p-8 bg-blue-600 text-white rounded-3xl border-4 border-white/10 text-left flex items-start gap-6 shadow-xl relative overflow-hidden group">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-1000" />
-                            <div className="size-14 rounded-2xl bg-white/20 text-white flex items-center justify-center shrink-0 border-2 border-white/20 shadow-lg">
-                                <Clock size={28} strokeWidth={3} />
+                        <div className="md:col-span-2 p-6 bg-blue-600 text-white rounded-2xl border border-white/10 text-left flex items-center gap-4 shadow-md relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-125 transition-transform duration-1000" />
+                            <div className="size-12 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/20 shadow-sm">
+                                <Clock size={24} strokeWidth={2.5} />
                             </div>
                             <div className="relative z-10">
-                                <h4 className="text-[13px] font-black uppercase tracking-[0.1em] mb-1">STATUS DO PEDIDO: AGUARDANDO PAGAMENTO</h4>
-                                <p className="text-[10px] font-black uppercase tracking-widest opacity-70 leading-relaxed italic">A LIBERAÇÃO DA EMISSÃO OCORRE INSTANTANEAMENTE APÓS A CONFIRMAÇÃO DO RECEBIMENTO.</p>
+                                <h4 className="text-sm font-bold uppercase tracking-wider mb-1">Status: Aguardando Pagamento</h4>
+                                <p className="text-[10px] font-medium uppercase tracking-wide opacity-80 leading-relaxed">A liberação da emissão ocorre instantaneamente após a confirmação do pagamento.</p>
                             </div>
                         </div>
                     </div>
 
                     <button
                         onClick={onClose}
-                        className="px-12 py-5 rounded-2xl border-4 border-[var(--border)] text-[11px] font-black text-[var(--muted)] uppercase tracking-[0.5em] hover:text-[var(--foreground)] hover:border-primary/40 transition-all active:scale-95 shadow-lg"
+                        className="px-8 py-3 rounded-xl border-2 border-[var(--border)] text-xs font-bold text-[var(--muted)] uppercase tracking-widest hover:text-[var(--foreground)] hover:border-primary/40 transition-all active:scale-95 shadow-sm mt-4"
                     >
                         RETORNAR AO PAINEL
                     </button>
@@ -947,22 +949,22 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            title="Nova Emissão de Certificado"
+            title="Nova Emissão"
             width="2xl"
         >
-            <div className="flex flex-col h-auto md:h-auto min-h-[600px] -m-4 md:-m-8 bg-[var(--background)]">
-                {/* Premium Top Stepper */}
-                <div className="px-10 pt-10 pb-6 border-b-4 border-[var(--border)] bg-primary/[0.02]">
-                    <div className="flex items-center justify-between gap-6 max-w-4xl mx-auto">
+            <div className="flex flex-col h-auto md:h-auto min-h-[600px] -m-4 md:-m-6 bg-[var(--background)]">
+                {/* Clean Top Stepper */}
+                <div className="px-6 md:px-10 pt-8 pb-4 border-b border-[var(--border)] bg-[var(--card)]">
+                    <div className="flex items-center justify-between gap-4 max-w-4xl mx-auto">
                         {[1, 2, 3, 4].map((s) => (
-                            <div key={s} className="flex-1 flex flex-col gap-3 group">
+                            <div key={s} className="flex-1 flex flex-col gap-2 group">
                                 <div className={cn(
-                                    "h-2 rounded-full transition-all duration-700 shadow-sm",
+                                    "h-1.5 rounded-full transition-all duration-500",
                                     step >= s ? "bg-primary" : "bg-[var(--border)]"
                                 )} />
                                 <span className={cn(
-                                    "text-[10px] font-black uppercase tracking-[0.4em] text-center transition-all duration-300",
-                                    step === s ? "text-primary scale-110" : "text-[var(--muted)] opacity-40 group-hover:opacity-60"
+                                    "text-[9px] font-bold uppercase tracking-widest text-center transition-all duration-300",
+                                    step === s ? "text-primary" : "text-[var(--muted)] opacity-50"
                                 )}>
                                     PASSO 0{s}
                                 </span>
@@ -973,19 +975,12 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
 
                 {/* Main Content Area */}
                 <div className="flex-1 flex flex-col">
-                    <div className="flex-1 overflow-y-auto p-10 md:p-14 max-w-4xl mx-auto w-full custom-scrollbar">
+                    <div className="flex-1 overflow-y-auto p-6 md:p-10 max-w-4xl mx-auto w-full custom-scrollbar">
                         {/* Mobile Stepper Indicator */}
-                        <div className="flex md:hidden flex-col gap-4 mb-10 pb-6 border-b-4 border-[var(--border)]">
-                            <div className="flex items-center justify-between">
-                                <p className="text-[11px] font-black uppercase text-primary tracking-[0.4em] leading-none mb-1">PROCESSO: {step}/04</p>
-                                <div className="flex gap-2">
-                                    {[1, 2, 3, 4].map(i => (
-                                        <div key={i} className={cn("h-2 w-8 rounded-full transition-all duration-500", step === i ? "bg-primary w-14" : step > i ? "bg-emerald-500" : "bg-[var(--border)]")} />
-                                    ))}
-                                </div>
-                            </div>
-                            <p className="text-xl font-black text-[var(--foreground)] uppercase tracking-tighter">
-                                {step === 1 ? "ESCOLHA DO PRODUTO" : step === 2 ? "DADOS DO TITULAR" : step === 3 ? "TÉCNICO & FATURA" : "CONFERÊNCIA FINAL"}
+                        <div className="flex md:hidden flex-col gap-2 mb-8 pb-4 border-b border-[var(--border)]">
+                            <p className="text-[10px] font-bold uppercase text-primary tracking-widest leading-none mb-1">PROCESSO: {step}/04</p>
+                            <p className="text-lg font-bold text-[var(--foreground)] uppercase tracking-tight">
+                                {step === 1 ? "Produto" : step === 2 ? "Titular" : step === 3 ? "Logística" : "Revisão Final"}
                             </p>
                         </div>
 
@@ -995,24 +990,24 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                         {step === 4 && renderStep4()}
                     </div>
 
-                    <div className="p-10 md:p-12 bg-[var(--card)] border-t-4 border-[var(--border)] flex flex-col md:flex-row gap-6 justify-between items-center shadow-[0_-20px_40px_-20px_rgba(0,0,0,0.1)]">
+                    <div className="p-6 md:p-8 bg-[var(--card)] border-t border-[var(--border)] flex flex-col md:flex-row gap-4 justify-between items-center z-10">
                         <button
                             type="button"
                             onClick={step === 1 ? onClose : handleBack}
-                            className="order-3 md:order-1 w-full md:w-auto px-10 py-5 text-[11px] font-black uppercase tracking-[0.4em] text-[var(--muted)] hover:text-rose-500 hover:bg-rose-500/5 rounded-2xl transition-all border-2 border-transparent active:scale-95"
+                            className="order-3 md:order-1 w-full md:w-auto px-6 py-3 text-xs font-bold uppercase tracking-wider text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--background)] rounded-xl transition-all active:scale-95"
                         >
-                            {step === 1 ? "ABANDONAR FLUXO" : "VOLTAR ETAPA"}
+                            {step === 1 ? "Cancelar" : "Voltar"}
                         </button>
 
-                        <div className="order-1 md:order-2 w-full md:w-auto flex flex-col md:flex-row gap-4">
+                        <div className="order-1 md:order-2 w-full md:w-auto flex flex-col md:flex-row gap-3">
                             <button
                                 type="button"
                                 onClick={() => onSubmitAction(watch() as any, true)}
                                 disabled={isConsulting}
-                                className="w-full md:w-auto px-10 py-5 rounded-2xl bg-[var(--background)] text-[var(--muted)] text-[11px] font-black uppercase tracking-[0.3em] hover:text-[var(--foreground)] hover:border-primary/40 border-2 border-[var(--border)] transition-all flex items-center justify-center gap-3 group disabled:opacity-50 active:scale-95 shadow-lg"
+                                className="w-full md:w-auto px-6 py-3 rounded-xl bg-[var(--background)] text-[var(--muted)] text-xs font-bold uppercase tracking-wider hover:text-[var(--foreground)] hover:border-primary/40 border-2 border-[var(--border)] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 active:scale-95"
                             >
-                                <Save size={18} strokeWidth={3} className="group-hover:scale-125 transition-transform" />
-                                SALVAR RASCUNHO
+                                <Save size={16} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" />
+                                Salvar Rascunho
                             </button>
 
                             <button
@@ -1029,18 +1024,18 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
                                 }}
                                 disabled={isConsulting || (step === 1 && !selectedProductId) || (step === 1 && commissionData && commissionData.repasse < 0) || (step === 2 && attachedFiles.length === 0)}
                                 className={cn(
-                                    "w-full md:w-80 px-12 py-5 rounded-2xl font-black text-[12px] uppercase tracking-[0.3em] transition-all shadow-2xl active:scale-95 disabled:opacity-50 flex items-center justify-center border-2 border-white/10 group",
+                                    "w-full md:w-64 px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 disabled:opacity-50 flex items-center justify-center group",
                                     step === 4
-                                        ? "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-600/30"
-                                        : "bg-primary text-white hover:bg-primary/90 shadow-primary/30"
+                                        ? "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-500/20"
+                                        : "bg-primary text-white hover:bg-primary/90 shadow-primary/20"
                                 )}
                             >
                                 {isConsulting ? (
-                                    <div className="size-5 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                 ) : (
                                     <>
                                         {step === 4 ? "FINALIZAR EMISSÃO" : "AVANÇAR AGORA"}
-                                        <ArrowRight size={18} strokeWidth={3} className="ml-3 group-hover:translate-x-2 transition-transform" />
+                                        <ArrowRight size={16} strokeWidth={3} className="ml-2 group-hover:translate-x-1 transition-transform" />
                                     </>
                                 )}
                             </button>

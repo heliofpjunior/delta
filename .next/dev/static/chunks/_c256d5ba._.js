@@ -1288,58 +1288,47 @@ var _s = __turbopack_context__.k.signature();
 function ThemeToggle({ className }) {
     _s();
     const { currentUser, updateThemePreference } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$SimulationProvider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSimulation"])();
-    const theme = currentUser.preferences?.darkMode ? "dark" : "light";
     const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    // Prevent hydration mismatch
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ThemeToggle.useEffect": ()=>{
             setMounted(true);
         }
     }["ThemeToggle.useEffect"], []);
-    if (!mounted) return null;
-    const handleToggle = ()=>{
-        updateThemePreference(!currentUser.preferences?.darkMode);
-    };
+    // Placeholder com mesmo tamanho para evitar layout shift durante hidratação
+    if (!mounted) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-8 rounded-lg shrink-0", className)
+        }, void 0, false, {
+            fileName: "[project]/components/ThemeToggle.tsx",
+            lineNumber: 18,
+            columnNumber: 16
+        }, this);
+    }
+    const isDark = currentUser.preferences?.darkMode ?? true;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-        onClick: handleToggle,
-        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("relative flex items-center gap-2 p-2 rounded-2xl transition-all duration-300", "bg-surface-variant/20 dark:bg-white/5 hover:bg-surface-variant/40 dark:hover:bg-white/10", "border border-outline dark:border-white/5 shadow-sm active:scale-95", className),
-        title: theme === "dark" ? "Alternar para modo claro" : "Alternar para modo escuro",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "relative size-6 flex items-center justify-center",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sun$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sun$3e$__["Sun"], {
-                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("absolute size-5 transition-all duration-500", theme === "dark" ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100 text-amber-500")
-                    }, void 0, false, {
-                        fileName: "[project]/components/ThemeToggle.tsx",
-                        lineNumber: 36,
-                        columnNumber: 17
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Moon$3e$__["Moon"], {
-                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("absolute size-5 transition-all duration-500", theme === "dark" ? "rotate-0 scale-100 opacity-100 text-indigo-400" : "-rotate-90 scale-0 opacity-0")
-                    }, void 0, false, {
-                        fileName: "[project]/components/ThemeToggle.tsx",
-                        lineNumber: 42,
-                        columnNumber: 17
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/ThemeToggle.tsx",
-                lineNumber: 35,
-                columnNumber: 13
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                className: "text-[10px] font-black uppercase tracking-widest text-[var(--muted)] px-1",
-                children: theme === "dark" ? "Modo Escuro" : "Modo Claro"
-            }, void 0, false, {
-                fileName: "[project]/components/ThemeToggle.tsx",
-                lineNumber: 49,
-                columnNumber: 13
-            }, this)
-        ]
-    }, void 0, true, {
+        onClick: ()=>updateThemePreference(!isDark),
+        title: isDark ? "Alternar para modo claro" : "Alternar para modo escuro",
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-8 shrink-0 flex items-center justify-center rounded-lg border", "bg-[var(--background)] border-[var(--border)]", "hover:bg-[var(--card)] hover:border-primary/30", "text-[var(--muted)] hover:text-[var(--foreground)]", "transition-colors active:scale-95", className),
+        children: isDark ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sun$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sun$3e$__["Sun"], {
+            size: 16,
+            strokeWidth: 2,
+            className: "text-amber-500"
+        }, void 0, false, {
+            fileName: "[project]/components/ThemeToggle.tsx",
+            lineNumber: 37,
+            columnNumber: 19
+        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Moon$3e$__["Moon"], {
+            size: 16,
+            strokeWidth: 2,
+            className: "text-indigo-400"
+        }, void 0, false, {
+            fileName: "[project]/components/ThemeToggle.tsx",
+            lineNumber: 38,
+            columnNumber: 19
+        }, this)
+    }, void 0, false, {
         fileName: "[project]/components/ThemeToggle.tsx",
-        lineNumber: 25,
+        lineNumber: 24,
         columnNumber: 9
     }, this);
 }
@@ -2341,8 +2330,9 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                 if (selectedProduct.media_type) setValue("mediaType", selectedProduct.media_type);
                 // Use custom price if available in user profile, otherwise use product default
                 const customPrices = currentUser?.custom_prices || {};
-                const defaultPrice = customPrices[selectedProduct.id] || selectedProduct.price;
-                setValue("customPrice", defaultPrice);
+                let defaultPrice = customPrices[selectedProduct.id] || selectedProduct.price;
+                // Garantir cast numérico seguro, evitando que strings fiquem como 0 no valueAsNumber
+                setValue("customPrice", Number(defaultPrice) || 0);
             }
         }
     }["OrderJourneyModal.useEffect"], [
@@ -2481,25 +2471,25 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                             className: "flex items-center gap-3 mb-4",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "size-6 rounded-none bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black",
+                                    className: "size-6 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold",
                                     children: "1"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 306,
+                                    lineNumber: 308,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]",
+                                    className: "text-xs font-semibold text-slate-500 uppercase tracking-wider",
                                     children: "Inicie o Pedido"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 307,
+                                    lineNumber: 309,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 305,
+                            lineNumber: 307,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2511,58 +2501,58 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         setSelectedCategory("PF");
                                         setValue("productId", 0);
                                     },
-                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-6 rounded-[2rem] border-4 text-left transition-all relative group overflow-hidden shadow-sm", selectedCategory === "PF" ? "border-primary bg-primary/[0.05] scale-[1.02]" : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"),
+                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-5 rounded-2xl border-2 text-left transition-all relative group overflow-hidden shadow-sm", selectedCategory === "PF" ? "border-primary bg-primary/[0.05] ring-2 ring-primary/20 scale-[1.01]" : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-4 relative z-10",
+                                        className: "flex flex-col gap-3 relative z-10",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-12 rounded-2xl flex items-center justify-center transition-all shadow-lg", selectedCategory === "PF" ? "bg-primary text-white scale-110" : "bg-[var(--background)] text-[var(--muted)]"),
+                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-10 rounded-xl flex items-center justify-center transition-all", selectedCategory === "PF" ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)] border border-[var(--border)]"),
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
-                                                    size: 24,
-                                                    strokeWidth: 3
+                                                    size: 20,
+                                                    strokeWidth: 2.5
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 330,
+                                                    lineNumber: 332,
                                                     columnNumber: 33
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 326,
+                                                lineNumber: 328,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-[13px] font-black text-[var(--foreground)] uppercase tracking-tight",
+                                                        className: "text-sm font-bold text-[var(--foreground)] uppercase",
                                                         children: "Pessoa Física"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 333,
+                                                        lineNumber: 335,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-[9px] font-black text-[var(--muted)] uppercase tracking-widest leading-none opacity-60",
+                                                        className: "text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wide opacity-80",
                                                         children: "Para CPFs"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 334,
+                                                        lineNumber: 336,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 332,
+                                                lineNumber: 334,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 325,
+                                        lineNumber: 327,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 312,
+                                    lineNumber: 314,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2571,143 +2561,143 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         setSelectedCategory("PJ");
                                         setValue("productId", 0);
                                     },
-                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-6 rounded-[2rem] border-4 text-left transition-all relative group overflow-hidden shadow-sm", selectedCategory === "PJ" ? "border-primary bg-primary/[0.05] scale-[1.02]" : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"),
+                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-5 rounded-2xl border-2 text-left transition-all relative group overflow-hidden shadow-sm", selectedCategory === "PJ" ? "border-primary bg-primary/[0.05] ring-2 ring-primary/20 scale-[1.01]" : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-4 relative z-10",
+                                        className: "flex flex-col gap-3 relative z-10",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-12 rounded-2xl flex items-center justify-center transition-all shadow-lg", selectedCategory === "PJ" ? "bg-primary text-white scale-110" : "bg-[var(--background)] text-[var(--muted)]"),
+                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-10 rounded-xl flex items-center justify-center transition-all", selectedCategory === "PJ" ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)] border border-[var(--border)]"),
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$briefcase$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Briefcase$3e$__["Briefcase"], {
-                                                    size: 24,
-                                                    strokeWidth: 3
+                                                    size: 20,
+                                                    strokeWidth: 2.5
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 357,
+                                                    lineNumber: 359,
                                                     columnNumber: 33
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 353,
+                                                lineNumber: 355,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-[13px] font-black text-[var(--foreground)] uppercase tracking-tight",
+                                                        className: "text-sm font-bold text-[var(--foreground)] uppercase",
                                                         children: "Pessoa Jurídica"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 360,
+                                                        lineNumber: 362,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-[9px] font-black text-[var(--muted)] uppercase tracking-widest leading-none opacity-60",
+                                                        className: "text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wide opacity-80",
                                                         children: "Para Empresas"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 361,
+                                                        lineNumber: 363,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 359,
+                                                lineNumber: 361,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 352,
+                                        lineNumber: 354,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 339,
+                                    lineNumber: 341,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 311,
+                            lineNumber: 313,
                             columnNumber: 17
                         }, this),
                         selectedCategory && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "animate-in fade-in slide-in-from-top-2 duration-300",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 px-1",
+                                    className: "text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-3 px-1",
                                     children: [
                                         "Produtos Disponíveis ",
                                         selectedCategory && `(${filteredProducts.length} de ${products?.length || 0} carregados)`
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 369,
+                                    lineNumber: 371,
                                     columnNumber: 25
                                 }, this),
                                 isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "p-10 text-center animate-pulse",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-[10px] font-black text-primary uppercase tracking-[0.2em]",
+                                        className: "text-xs font-semibold text-primary uppercase tracking-wider",
                                         children: "Carregando Catálogo..."
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 375,
+                                        lineNumber: 377,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 374,
+                                    lineNumber: 376,
                                     columnNumber: 29
                                 }, this),
                                 error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-6 bg-rose-500/5 border border-rose-500/20 rounded-none text-center",
+                                    className: "p-4 bg-rose-500/5 border border-rose-500/20 rounded-xl text-center",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[10px] font-black text-rose-500 uppercase tracking-widest mb-1",
+                                            className: "text-xs font-bold text-rose-500 uppercase tracking-wide mb-1",
                                             children: "Erro de Conexão"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 381,
+                                            lineNumber: 383,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[8px] text-rose-400 font-bold uppercase",
+                                            className: "text-[10px] text-rose-400 font-medium",
                                             children: error.message || "Falha ao consultar banco de dados"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 382,
+                                            lineNumber: 384,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 380,
+                                    lineNumber: 382,
                                     columnNumber: 29
                                 }, this),
                                 !isLoading && !error && products?.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-6 border border-dashed border-slate-200 dark:border-slate-800 rounded-none text-center",
+                                    className: "p-6 border border-dashed border-[var(--border)] rounded-xl text-center",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[10px] text-amber-500 font-black uppercase tracking-widest mb-1",
+                                            className: "text-xs text-amber-500 font-bold uppercase tracking-wide mb-1",
                                             children: "Base de Dados Vazia"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 388,
+                                            lineNumber: 390,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[8px] text-slate-400 font-bold uppercase",
+                                            className: "text-[10px] text-slate-400 font-medium",
                                             children: "Nenhum produto cadastrado na tabela 'products'."
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 389,
+                                            lineNumber: 391,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 387,
+                                    lineNumber: 389,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2716,217 +2706,235 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         filteredProducts.map((product)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 type: "button",
                                                 onClick: ()=>setValue("productId", product.id),
-                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-4 rounded-2xl border-2 text-left transition-all relative group shadow-sm", selectedProductId === product.id ? "border-primary bg-primary/[0.05] ring-4 ring-primary/10" : "border-[var(--border)] hover:border-primary/20 bg-[var(--card)]"),
+                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-4 rounded-xl border-2 text-left transition-all relative group", selectedProductId === product.id ? "border-primary bg-primary/[0.05] ring-2 ring-primary/20" : "border-[var(--border)] hover:border-primary/30 bg-[var(--card)]"),
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex items-center gap-4",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-10 rounded-xl flex items-center justify-center transition-all shadow-md", selectedProductId === product.id ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)]"),
+                                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-9 rounded-lg flex items-center justify-center transition-all", selectedProductId === product.id ? "bg-primary text-white" : "bg-[var(--background)] text-[var(--muted)] border border-[var(--border)]"),
                                                             children: product.type === "A1" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Cloud$3e$__["Cloud"], {
-                                                                size: 20,
-                                                                strokeWidth: 3
+                                                                size: 18,
+                                                                strokeWidth: 2.5
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 411,
+                                                                lineNumber: 413,
                                                                 columnNumber: 70
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$hard$2d$drive$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__HardDrive$3e$__["HardDrive"], {
-                                                                size: 20,
-                                                                strokeWidth: 3
+                                                                size: 18,
+                                                                strokeWidth: 2.5
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 411,
-                                                                columnNumber: 108
+                                                                lineNumber: 413,
+                                                                columnNumber: 110
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 407,
+                                                            lineNumber: 409,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "flex-1 min-w-0",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-[11px] font-black text-[var(--foreground)] uppercase tracking-tight truncate leading-tight",
+                                                                    className: "text-xs font-bold text-[var(--foreground)] uppercase truncate",
                                                                     children: product.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 414,
+                                                                    lineNumber: 416,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-[9px] font-black text-primary uppercase tracking-[0.2em]",
+                                                                    className: "text-[10px] font-semibold text-primary uppercase tracking-widest",
                                                                     children: product.type
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 415,
+                                                                    lineNumber: 417,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 413,
+                                                            lineNumber: 415,
                                                             columnNumber: 41
                                                         }, this),
                                                         selectedProductId === product.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                                                             className: "text-primary animate-in zoom-in",
                                                             size: 20,
-                                                            strokeWidth: 3
+                                                            strokeWidth: 2.5
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 417,
+                                                            lineNumber: 419,
                                                             columnNumber: 78
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 406,
+                                                    lineNumber: 408,
                                                     columnNumber: 37
                                                 }, this)
                                             }, product.id, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 395,
+                                                lineNumber: 397,
                                                 columnNumber: 33
                                             }, this)),
                                         filteredProducts.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "col-span-2 p-10 border-4 border-dashed border-[var(--border)] rounded-[2rem] text-center bg-[var(--background)]",
+                                            className: "col-span-2 p-8 border-2 border-dashed border-[var(--border)] rounded-2xl text-center bg-[var(--background)]/50",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-[12px] text-[var(--muted)] font-black uppercase tracking-[0.2em]",
+                                                className: "text-xs text-[var(--muted)] font-semibold uppercase tracking-wider",
                                                 children: "Nenhum produto em estoque para esta categoria."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 423,
+                                                lineNumber: 425,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 422,
+                                            lineNumber: 424,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 393,
+                                    lineNumber: 395,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 368,
+                            lineNumber: 370,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 304,
+                    lineNumber: 306,
                     columnNumber: 13
                 }, this),
                 selectedProduct && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "bg-primary/[0.05] rounded-[2rem] p-8 border-4 border-primary/10 animate-in zoom-in-95 duration-500 shadow-xl shadow-primary/5",
+                    className: "bg-[var(--card)] rounded-2xl p-6 border-2 border-primary/20 animate-in zoom-in-95 duration-500 shadow-sm mt-6",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col sm:flex-row items-center justify-between gap-6",
+                        className: "flex flex-col sm:flex-row items-center justify-between gap-4",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                        className: "text-[12px] font-black uppercase tracking-[0.3em] text-primary mb-1",
+                                        className: "text-xs font-bold uppercase tracking-wider text-primary mb-1",
                                         children: "Engenharia de Preço"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 435,
+                                        lineNumber: 437,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-[10px] text-[var(--muted)] font-black uppercase tracking-widest opacity-60",
+                                        className: "text-[10px] text-[var(--muted)] font-medium",
                                         children: "Ajuste o valor final para o consumidor"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 436,
+                                        lineNumber: 438,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 434,
+                                lineNumber: 436,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex items-center bg-[var(--card)] rounded-2xl border-4 border-primary/20 p-1 shadow-2xl",
+                                className: "flex flex-col items-end gap-1.5",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "px-5 text-sm font-black text-primary",
-                                        children: "R$"
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex items-center bg-[var(--background)] rounded-xl border-2 p-1 transition-all shadow-sm", commissionData && commissionData.repasse < 0 ? "border-rose-500 shadow-rose-500/10" : "border-[var(--border)] focus-within:border-primary/50 text-[var(--foreground)]"),
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("px-4 text-xs font-bold opacity-80", commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-[var(--foreground)]"),
+                                                children: "R$"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                lineNumber: 445,
+                                                columnNumber: 33
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                type: "number",
+                                                min: "0",
+                                                ...register("customPrice", {
+                                                    valueAsNumber: true
+                                                }),
+                                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("w-24 bg-transparent border-0 focus:ring-0 text-lg font-bold p-2 transition-colors", commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-[var(--foreground)]")
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                lineNumber: 449,
+                                                columnNumber: 33
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 439,
+                                        lineNumber: 441,
                                         columnNumber: 29
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                        type: "number",
-                                        ...register("customPrice", {
-                                            valueAsNumber: true
-                                        }),
-                                        className: "w-28 bg-transparent border-0 focus:ring-0 text-xl font-black text-[var(--foreground)] p-3"
+                                    commissionData && commissionData.repasse < 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-[10px] font-bold text-rose-500 uppercase tracking-widest animate-in slide-in-from-top-1",
+                                        children: "Margem Negativa Detectada!"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 440,
-                                        columnNumber: 29
+                                        lineNumber: 460,
+                                        columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 438,
+                                lineNumber: 440,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 433,
+                        lineNumber: 435,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 432,
+                    lineNumber: 434,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 303,
+            lineNumber: 305,
             columnNumber: 9
         }, this);
     const renderStep2 = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "space-y-10 animate-in fade-in slide-in-from-right-8 duration-500",
+            className: "space-y-8 animate-in fade-in slide-in-from-right-8 duration-500",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "group/section p-8 bg-primary/[0.02] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm",
+                    className: "group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-4 mb-8",
+                            className: "flex items-center gap-4 mb-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20",
+                                    className: "size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm",
                                     children: "02"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 456,
+                                    lineNumber: 475,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]",
+                                    className: "text-sm font-bold text-[var(--foreground)] uppercase tracking-wider",
                                     children: "IDENTIFICAÇÃO DO TITULAR"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 457,
+                                    lineNumber: 476,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 455,
+                            lineNumber: 474,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+                            className: "grid grid-cols-1 md:grid-cols-2 gap-4",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "md:col-span-2",
@@ -2935,28 +2943,27 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             label: isPJ ? "CNPJ DA EMPRESA" : "CPF DO TITULAR",
                                             ...register("doc"),
                                             error: errors.doc?.message,
-                                            placeholder: "DIGITE O DOCUMENTO PARA BUSCA...",
-                                            helpText: isConsulting ? "CONSULTANDO BIG DATA..." : identifiedCustomer ? "✅ PERFIL ENCONTRADO NO DELTA CRM" : "",
-                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("py-4 rounded-2xl border-4 font-black uppercase", identifiedCustomer && "border-emerald-500/30 bg-emerald-500/[0.02]")
+                                            placeholder: "DIGITE O DOCUMENTO...",
+                                            helpText: isConsulting ? "CONSULTANDO SERASA..." : identifiedCustomer ? "✅ PERFIL ENCONTRADO NO CRM" : "",
+                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("py-2.5 rounded-xl border-2 font-medium uppercase", identifiedCustomer && "border-emerald-500/30 bg-emerald-500/[0.02]")
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 462,
+                                            lineNumber: 481,
                                             columnNumber: 25
                                         }, this),
                                         identifiedCustomer && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "mt-4 flex items-center gap-3 px-6 py-3 bg-emerald-500 text-white rounded-2xl animate-in slide-in-from-top-2 shadow-lg shadow-emerald-500/20",
+                                            className: "mt-3 flex items-center gap-3 px-5 py-2.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 rounded-xl animate-in slide-in-from-top-2",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"], {
                                                     size: 16,
-                                                    strokeWidth: 3,
-                                                    className: "animate-pulse"
+                                                    strokeWidth: 2.5
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 472,
+                                                    lineNumber: 491,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-[10px] font-black uppercase tracking-widest",
+                                                    className: "text-[11px] font-bold uppercase tracking-wider",
                                                     children: [
                                                         "CLIENTE FIDELIDADE: ",
                                                         identifiedCustomer.total_spent?.toLocaleString('pt-BR', {
@@ -2967,19 +2974,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 473,
+                                                    lineNumber: 492,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 471,
+                                            lineNumber: 490,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 461,
+                                    lineNumber: 480,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2988,15 +2995,15 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         label: isPJ ? "NOME EMPRESARIAL" : "NOME COMPLETO",
                                         ...register("name"),
                                         error: errors.name?.message,
-                                        className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                        className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 480,
+                                        lineNumber: 499,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 479,
+                                    lineNumber: 498,
                                     columnNumber: 21
                                 }, this),
                                 isPJ && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -3005,56 +3012,56 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             label: "INSCRIÇÃO ESTADUAL",
                                             ...register("fantasyName"),
                                             placeholder: "ISENTO",
-                                            className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                            className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 485,
+                                            lineNumber: 504,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "md:col-span-2 pt-8 border-t-4 border-[var(--border)] mt-4",
+                                            className: "md:col-span-2 pt-6 border-t border-[var(--border)] mt-2",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-[11px] font-black text-primary uppercase tracking-[0.3em] mb-6",
-                                                    children: "REPRESENTAÇÃO LEGAL"
+                                                    className: "text-xs font-bold text-primary uppercase tracking-wider mb-4",
+                                                    children: "Representação Legal"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 487,
+                                                    lineNumber: 506,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+                                                    className: "grid grid-cols-1 md:grid-cols-2 gap-4",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                             label: "NOME DO REPRESENTANTE",
                                                             ...register("legalRepName"),
                                                             placeholder: "NOME",
-                                                            className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                                            className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 489,
+                                                            lineNumber: 508,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                             label: "CPF DO REPRESENTANTE",
                                                             ...register("legalRepCpf"),
                                                             placeholder: "000.000.000-00",
-                                                            className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                                            className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 490,
+                                                            lineNumber: 509,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 488,
+                                                    lineNumber: 507,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 486,
+                                            lineNumber: 505,
                                             columnNumber: 29
                                         }, this)
                                     ]
@@ -3063,74 +3070,74 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     label: "WHATSAPP / CELULAR",
                                     ...register("phone"),
                                     error: errors.phone?.message,
-                                    className: "py-4 rounded-2xl border-4 font-black uppercase text-blue-600"
+                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase text-blue-600"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 496,
+                                    lineNumber: 515,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     label: "E-MAIL DE NOTIFICAÇÃO",
                                     ...register("email"),
                                     error: errors.email?.message,
-                                    className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 497,
+                                    lineNumber: 516,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 460,
+                            lineNumber: 479,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 454,
+                    lineNumber: 473,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "group/section p-8 bg-[var(--background)] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm",
+                    className: "group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-4 mb-8",
+                            className: "flex items-center gap-4 mb-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20",
+                                    className: "size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm",
                                     children: "03"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 503,
+                                    lineNumber: 522,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]",
+                                    className: "text-sm font-bold text-[var(--foreground)] uppercase tracking-wider",
                                     children: "LOCALIZAÇÃO E LOGÍSTICA"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 504,
+                                    lineNumber: 523,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 502,
+                            lineNumber: 521,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid grid-cols-1 md:grid-cols-4 gap-6",
+                            className: "grid grid-cols-1 md:grid-cols-4 gap-4",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     label: "CEP",
                                     ...register("cep"),
                                     error: errors.cep?.message,
                                     placeholder: "00000-000",
-                                    className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 508,
+                                    lineNumber: 527,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3139,45 +3146,45 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         label: "LOGRADOURO",
                                         ...register("street"),
                                         error: errors.street?.message,
-                                        className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                        className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 510,
+                                        lineNumber: 529,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 509,
+                                    lineNumber: 528,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     label: "Nº",
                                     ...register("number"),
                                     error: errors.number?.message,
-                                    className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 512,
+                                    lineNumber: 531,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     label: "BAIRRO",
                                     ...register("neighborhood"),
                                     error: errors.neighborhood?.message,
-                                    className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 513,
+                                    lineNumber: 532,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     label: "CIDADE",
                                     ...register("city"),
                                     error: errors.city?.message,
-                                    className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 514,
+                                    lineNumber: 533,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -3185,44 +3192,60 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     ...register("state"),
                                     error: errors.state?.message,
                                     maxLength: 2,
-                                    className: "py-4 rounded-2xl border-4 font-black uppercase text-center"
+                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase text-center"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 515,
+                                    lineNumber: 534,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 507,
+                            lineNumber: 526,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 501,
+                    lineNumber: 520,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "p-8 bg-indigo-500/[0.03] rounded-[2.5rem] border-4 border-indigo-500/10",
+                    className: "p-6 bg-slate-50 dark:bg-slate-800/20 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-6",
+                        className: "space-y-4",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex flex-col sm:flex-row items-center justify-between gap-4",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-[11px] font-black text-indigo-600 uppercase tracking-[0.3em] leading-none",
-                                        children: "DOCUMENTAÇÃO OBRIGATÓRIA (FOTOS/PDF)"
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm font-bold text-slate-700 dark:text-slate-300 uppercase",
+                                                children: "DOCUMENTAÇÃO ANEXA"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                lineNumber: 543,
+                                                columnNumber: 29
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-xs text-[var(--muted)]",
+                                                children: "CNH, Contrato Social, etc."
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                lineNumber: 544,
+                                                columnNumber: 29
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 523,
+                                        lineNumber: 542,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                        className: "cursor-pointer px-8 py-4 bg-indigo-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] shadow-xl shadow-indigo-600/20 hover:scale-105 active:scale-95 transition-all border-2 border-white/20",
+                                        className: "cursor-pointer px-6 py-2.5 bg-[var(--background)] hover:bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-xl text-xs font-bold uppercase transition-all shadow-sm",
                                         children: [
-                                            "EFETUAR UPLOAD",
+                                            "ADICIONAR ARQUIVOS",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                 type: "file",
                                                 className: "hidden",
@@ -3231,330 +3254,330 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 multiple: true
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 526,
+                                                lineNumber: 548,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 524,
+                                        lineNumber: 546,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 522,
+                                lineNumber: 541,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
+                                className: "grid grid-cols-1 sm:grid-cols-2 gap-3",
                                 children: [
                                     attachedFiles.map((file, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex items-center justify-between p-4 bg-[var(--card)] border-2 border-emerald-500/30 rounded-2xl shadow-sm group",
+                                            className: "flex items-center justify-between p-3 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm group",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-4 overflow-hidden",
+                                                    className: "flex items-center gap-3 overflow-hidden",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "size-12 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20 group-hover:rotate-6 transition-transform",
+                                                            className: "size-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center shrink-0",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FileUp$3e$__["FileUp"], {
-                                                                size: 24,
-                                                                strokeWidth: 3
+                                                                size: 20,
+                                                                strokeWidth: 2
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 535,
+                                                                lineNumber: 557,
                                                                 columnNumber: 41
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 534,
+                                                            lineNumber: 556,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "overflow-hidden",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-[11px] font-black text-[var(--foreground)] uppercase truncate tracking-tight",
+                                                                    className: "text-xs font-semibold text-[var(--foreground)] truncate",
                                                                     children: file.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 538,
+                                                                    lineNumber: 560,
                                                                     columnNumber: 41
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-[9px] text-emerald-600 font-black uppercase tracking-widest",
+                                                                    className: "text-[10px] text-[var(--muted)]",
                                                                     children: [
                                                                         (file.size / 1024 / 1024).toFixed(2),
                                                                         " MB"
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 539,
+                                                                    lineNumber: 561,
                                                                     columnNumber: 41
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 537,
+                                                            lineNumber: 559,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 533,
+                                                    lineNumber: 555,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     type: "button",
                                                     onClick: ()=>removeFile(idx),
-                                                    className: "size-10 flex items-center justify-center text-[var(--muted)] hover:text-rose-500 transition-all hover:bg-rose-500/10 rounded-xl",
+                                                    className: "size-8 flex items-center justify-center text-[var(--muted)] hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__["XCircle"], {
-                                                        size: 20,
-                                                        strokeWidth: 3
+                                                        size: 18,
+                                                        strokeWidth: 2.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 543,
+                                                        lineNumber: 565,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 542,
+                                                    lineNumber: 564,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, idx, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 532,
+                                            lineNumber: 554,
                                             columnNumber: 29
                                         }, this)),
                                     attachedFiles.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "col-span-2 p-12 border-4 border-dashed border-indigo-500/20 rounded-[2rem] text-center bg-white/30",
+                                        className: "col-span-2 p-8 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-center bg-transparent",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-[12px] text-indigo-400 font-black uppercase tracking-[0.25em]",
-                                                children: "NENHUM DOCUMENTO ANEXADO"
+                                                className: "text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1",
+                                                children: "Nenhum Documento Anexado"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 549,
+                                                lineNumber: 571,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-[10px] text-indigo-300 font-black uppercase tracking-widest mt-2 whitespace-nowrap opacity-60 italic",
-                                                children: "ANEXE O CPF/CNPJ E CNH/RG DO TITULAR"
+                                                className: "text-[10px] text-slate-400 opacity-80",
+                                                children: "Você pode anexar comprovação posteriormente via app também."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 550,
+                                                lineNumber: 572,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 548,
+                                        lineNumber: 570,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 530,
+                                lineNumber: 552,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 521,
+                        lineNumber: 540,
                         columnNumber: 17
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 520,
+                    lineNumber: 539,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 453,
+            lineNumber: 472,
             columnNumber: 9
         }, this);
     const renderStep3 = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "space-y-10 animate-in fade-in slide-in-from-right-8 duration-500",
+            className: "space-y-8 animate-in fade-in slide-in-from-right-8 duration-500",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "group/section p-8 bg-primary/[0.02] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm",
+                    className: "group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-4 mb-8",
+                            className: "flex items-center gap-4 mb-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20",
+                                    className: "size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm",
                                     children: "04"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 563,
+                                    lineNumber: 585,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]",
+                                    className: "text-sm font-bold text-[var(--foreground)] uppercase tracking-wider",
                                     children: "ESPECIFICAÇÕES TÉCNICAS"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 564,
+                                    lineNumber: 586,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 562,
+                            lineNumber: 584,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "space-y-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-8 bg-indigo-600 text-white rounded-[2rem] border-4 border-white/10 shadow-xl shadow-indigo-600/20 relative overflow-hidden group",
+                                    className: "p-6 bg-indigo-600 text-white rounded-2xl border border-indigo-500 shadow-lg relative overflow-hidden group",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rotate-45 transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-1000"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 569,
+                                            lineNumber: 591,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[11px] font-black uppercase text-indigo-100 tracking-[0.3em] mb-3 opacity-80 relative z-10",
+                                            className: "text-xs font-semibold uppercase text-indigo-200 tracking-wider mb-2 relative z-10",
                                             children: "Mídia & Validade"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 570,
+                                            lineNumber: 592,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-2xl font-black uppercase tracking-tighter relative z-10",
+                                            className: "text-xl font-bold uppercase tracking-tight relative z-10",
                                             children: [
                                                 watch("mediaType"),
                                                 " — Ciclo de 12 Meses"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 571,
+                                            lineNumber: 593,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[9px] text-indigo-200 font-black uppercase tracking-widest mt-2 relative z-10 italic",
+                                            className: "text-[10px] text-indigo-200 font-medium uppercase tracking-widest mt-1 relative z-10 opacity-80",
                                             children: "Configuração otimizada para o produto selecionado."
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 572,
+                                            lineNumber: 594,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 568,
+                                    lineNumber: 590,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-2 bg-[var(--background)] rounded-[2rem] border-2 border-[var(--border)]",
+                                    className: "p-2 bg-[var(--background)] rounded-2xl border border-[var(--border)] shadow-sm",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$SegmentedControl$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         label: "MODALIDADE DE EMISSÃO",
                                         value: videoConference ? "video" : "presencial",
                                         onChange: (v)=>setValue("videoConference", v === "video"),
                                         options: [
                                             {
-                                                label: "VIDEOCONFERÊNCIA (ONLINE)",
+                                                label: "VIDEOCONFERÊNCIA",
                                                 value: "video"
                                             },
                                             {
-                                                label: "PRESENCIAL (PONTO FÍSICO)",
+                                                label: "PRESENCIAL (FÍSICO)",
                                                 value: "presencial"
                                             }
                                         ]
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 576,
+                                        lineNumber: 598,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 575,
+                                    lineNumber: 597,
                                     columnNumber: 21
                                 }, this),
                                 !videoConference && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-6 bg-amber-500/10 border-4 border-amber-500/20 rounded-[2rem] flex items-center gap-6 animate-in zoom-in-95",
+                                    className: "p-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center gap-4 animate-in zoom-in-95",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "size-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-lg shadow-amber-500/20 shrink-0",
+                                            className: "size-10 rounded-lg bg-amber-500 text-white flex items-center justify-center shadow-sm shrink-0",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
-                                                size: 28,
-                                                strokeWidth: 3
+                                                size: 20,
+                                                strokeWidth: 2.5
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 590,
+                                                lineNumber: 612,
                                                 columnNumber: 33
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 589,
+                                            lineNumber: 611,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[11px] font-black text-amber-700 dark:text-amber-500 uppercase tracking-widest leading-relaxed",
+                                            className: "text-xs font-bold text-amber-700 dark:text-amber-500 uppercase tracking-wide leading-relaxed",
                                             children: "ATENÇÃO: A EMISSÃO PRESENCIAL REQUER AGENDAMENTO POSTERIOR NO HUB FÍSICO MAIS PRÓXIMO."
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 592,
+                                            lineNumber: 614,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 588,
+                                    lineNumber: 610,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 567,
+                            lineNumber: 589,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 561,
+                    lineNumber: 583,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "group/section p-8 bg-[var(--background)] rounded-[2.5rem] border-2 border-[var(--border)] transition-all hover:border-primary/20 shadow-sm",
+                    className: "group/section p-6 bg-[var(--card)] rounded-2xl border border-[var(--border)] transition-all hover:border-primary/30 shadow-sm",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-4 mb-8",
+                            className: "flex items-center gap-4 mb-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "size-10 rounded-2xl bg-primary text-white flex items-center justify-center text-sm font-black shadow-lg shadow-primary/20",
+                                    className: "size-8 rounded-lg bg-primary text-white flex items-center justify-center text-sm font-bold shadow-sm",
                                     children: "05"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 602,
+                                    lineNumber: 624,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]",
+                                    className: "text-sm font-bold text-[var(--foreground)] uppercase tracking-wider",
                                     children: "FLUXO DE FATURAMENTO"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 603,
+                                    lineNumber: 625,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 601,
+                            lineNumber: 623,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "space-y-8",
+                            className: "space-y-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-2 bg-[var(--accent)]/30 rounded-[2rem] border-2 border-[var(--border)]",
+                                    className: "p-2 bg-[var(--background)] rounded-2xl border border-[var(--border)] shadow-sm",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$SegmentedControl$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         label: "DESTINO DA NOTA FISCAL:",
                                         value: billingType,
@@ -3571,70 +3594,70 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         ]
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 608,
+                                        lineNumber: 630,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 607,
+                                    lineNumber: 629,
                                     columnNumber: 21
                                 }, this),
                                 billingType === "Diferente" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-top-4 duration-500",
+                                    className: "grid grid-cols-1 md:grid-cols-2 gap-4 animate-in slide-in-from-top-4 duration-500",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             label: "CPF/CNPJ DO PAGADOR",
                                             ...register("billingDoc"),
-                                            className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                            className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 621,
+                                            lineNumber: 643,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             label: "NOME COMPLETO / RAZÃO",
                                             ...register("billingName"),
-                                            className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                            className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 622,
+                                            lineNumber: 644,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             label: "E-MAIL PARA XML/DANFE",
                                             ...register("billingEmail"),
-                                            className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                            className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 623,
+                                            lineNumber: 645,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             label: "TELEFONE DE COBRANÇA",
                                             ...register("billingPhone"),
-                                            className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                            className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 624,
+                                            lineNumber: 646,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "md:col-span-2 grid grid-cols-1 sm:grid-cols-6 gap-6 pt-4",
+                                            className: "md:col-span-2 grid grid-cols-1 sm:grid-cols-6 gap-4 pt-4",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "sm:col-span-2",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                         label: "CEP",
                                                         ...register("billingCep"),
-                                                        className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                                        className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 627,
+                                                        lineNumber: 649,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 626,
+                                                    lineNumber: 648,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3642,24 +3665,24 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                         label: "ENDEREÇO COMPLETO",
                                                         ...register("billingStreet"),
-                                                        className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                                        className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 630,
+                                                        lineNumber: 652,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 629,
+                                                    lineNumber: 651,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                     label: "Nº",
                                                     ...register("billingNumber"),
-                                                    className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 632,
+                                                    lineNumber: 654,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3667,15 +3690,15 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                         label: "BAIRRO",
                                                         ...register("billingNeighborhood"),
-                                                        className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                                        className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 634,
+                                                        lineNumber: 656,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 633,
+                                                    lineNumber: 655,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3683,139 +3706,139 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                         label: "CIDADE",
                                                         ...register("billingCity"),
-                                                        className: "py-4 rounded-2xl border-4 font-black uppercase"
+                                                        className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 637,
+                                                        lineNumber: 659,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 636,
+                                                    lineNumber: 658,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                     label: "UF",
                                                     ...register("billingState"),
-                                                    className: "py-4 rounded-2xl border-4 font-black uppercase text-center",
+                                                    className: "py-2.5 rounded-xl border-2 font-medium uppercase text-center",
                                                     maxLength: 2
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 639,
+                                                    lineNumber: 661,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 625,
+                                            lineNumber: 647,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 620,
+                                    lineNumber: 642,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 606,
+                            lineNumber: 628,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 600,
+                    lineNumber: 622,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 560,
+            lineNumber: 582,
             columnNumber: 9
         }, this);
     const renderStep4 = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "space-y-6 animate-in fade-in slide-in-from-right-4 duration-200 text-center",
+            className: "space-y-6 animate-in fade-in slide-in-from-right-4 duration-200",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "bg-primary/[0.03] border-2 border-primary/10 rounded-none p-8 relative overflow-hidden",
+                    className: "bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 relative overflow-hidden shadow-sm",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "relative z-10 flex flex-col items-center",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "size-16 rounded-none bg-primary/10 text-primary flex items-center justify-center mb-4 shadow-sm",
+                                    className: "size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"], {
-                                        size: 32
+                                        size: 24
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 653,
+                                        lineNumber: 675,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 652,
+                                    lineNumber: 674,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                    className: "text-3xl font-black text-[var(--foreground)] mb-2 tracking-tighter uppercase",
-                                    children: "REVISÃO ESTRATÉGICA"
+                                    className: "text-xl font-bold text-[var(--foreground)] mb-1 uppercase tracking-wider",
+                                    children: "Revisão Estratégica"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 656,
+                                    lineNumber: 678,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-[11px] text-[var(--muted)] max-w-xs mx-auto mb-10 font-black uppercase tracking-[0.3em] opacity-60",
-                                    children: "CONFIRME OS DETALHES E ASSEGURE SUA PERFORMANCE"
+                                    className: "text-xs text-[var(--muted)] font-medium mb-8",
+                                    children: "Confirme os detalhes e assegure o repasse"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 657,
+                                    lineNumber: 679,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "w-full bg-[var(--card)] rounded-[2rem] border-4 border-primary/10 overflow-hidden shadow-2xl",
+                                    className: "w-full bg-[var(--background)] rounded-xl border border-[var(--border)] overflow-hidden",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
-                                            className: "w-full text-left text-[10px] uppercase font-black text-[var(--muted)]",
+                                            className: "w-full text-left text-xs uppercase font-semibold text-[var(--muted)]",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                                                    className: "bg-primary text-white border-b-4 border-white/10",
+                                                    className: "bg-[var(--card)] border-b border-[var(--border)]",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                                className: "px-8 py-5 tracking-[0.2em]",
-                                                                children: "PRODUTO SELECIONADO"
+                                                                className: "px-6 py-4",
+                                                                children: "Produto Selecionado"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 663,
+                                                                lineNumber: 685,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                                className: "px-8 py-5 text-right tracking-[0.2em]",
-                                                                children: "VALOR FINAL"
+                                                                className: "px-6 py-4 text-right",
+                                                                children: "Valor Final"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 664,
+                                                                lineNumber: 686,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                                className: "px-8 py-5 text-right text-emerald-300 tracking-[0.2em]",
-                                                                children: "SEU REPASSE"
+                                                                className: "px-6 py-4 text-right text-emerald-600 dark:text-emerald-400",
+                                                                children: "Seu Repasse"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 665,
+                                                                lineNumber: 687,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 662,
+                                                        lineNumber: 684,
                                                         columnNumber: 33
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 661,
+                                                    lineNumber: 683,
                                                     columnNumber: 29
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -3823,178 +3846,176 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                                className: "px-8 py-6 truncate max-w-[200px] border-b-2 border-[var(--border)]",
+                                                                className: "px-6 py-4 truncate max-w-[200px] border-b border-[var(--border)]",
                                                                 children: selectedProduct?.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 670,
+                                                                lineNumber: 692,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                                className: "px-8 py-6 text-right font-black border-b-2 border-[var(--border)]",
+                                                                className: "px-6 py-4 text-right font-bold border-b border-[var(--border)]",
                                                                 children: customPrice?.toLocaleString('pt-BR', {
                                                                     style: 'currency',
                                                                     currency: 'BRL'
                                                                 })
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 671,
+                                                                lineNumber: 693,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                                className: "px-8 py-6 text-right font-black text-emerald-600 dark:text-emerald-400 text-lg border-b-2 border-[var(--border)]",
+                                                                className: "px-6 py-4 text-right font-bold text-emerald-600 dark:text-emerald-400 text-base border-b border-[var(--border)]",
                                                                 children: commissionData?.repasse?.toLocaleString('pt-BR', {
                                                                     style: 'currency',
                                                                     currency: 'BRL'
                                                                 })
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 672,
+                                                                lineNumber: 694,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 669,
+                                                        lineNumber: 691,
                                                         columnNumber: 33
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 668,
+                                                    lineNumber: 690,
                                                     columnNumber: 29
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 660,
+                                            lineNumber: 682,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "p-6 bg-indigo-600 text-white flex justify-between items-center shadow-inner",
+                                            className: "p-4 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 flex justify-between items-center text-xs font-bold uppercase tracking-wide",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex items-center gap-3",
+                                                className: "flex items-center gap-2",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"], {
-                                                        size: 20,
-                                                        className: "animate-pulse"
+                                                        size: 16
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 680,
+                                                        lineNumber: 702,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "text-sm font-black uppercase tracking-[0.2em]",
                                                         children: [
-                                                            "RECOMPENSA: +",
+                                                            "Recompensa: +",
                                                             selectedProduct && Math.floor(customPrice),
-                                                            " XP PARA EVOLUÇÃO"
+                                                            " XP"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 681,
+                                                        lineNumber: 703,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 679,
+                                                lineNumber: 701,
                                                 columnNumber: 29
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 678,
+                                            lineNumber: 700,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 659,
+                                    lineNumber: 681,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 651,
+                            lineNumber: 673,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-10 space-y-6 text-left",
+                            className: "mt-8 space-y-4 text-left",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-8 bg-[var(--card)] border-4 border-[var(--border)] rounded-[2.5rem] shadow-xl hover:border-primary/20 transition-all",
+                                    className: "p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[11px] font-black text-primary uppercase tracking-[0.3em] mb-6",
-                                            children: "IDENTIFICAÇÃO DO TITULAR"
+                                            className: "text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider mb-4",
+                                            children: "Identificação do Titular"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 689,
+                                            lineNumber: 711,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-2 gap-8",
+                                            className: "grid grid-cols-2 gap-6",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[9px] text-[var(--muted)] font-black uppercase tracking-widest mb-1 opacity-60",
-                                                            children: "NOME / RAZÃO SOCIAL"
+                                                            className: "text-[10px] text-[var(--muted)] uppercase mb-1",
+                                                            children: "Nome / Razão Social"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 692,
+                                                            lineNumber: 714,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[13px] font-black text-[var(--foreground)] truncate uppercase tracking-tight",
+                                                            className: "text-sm font-semibold truncate",
                                                             children: watch("name")
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 693,
+                                                            lineNumber: 715,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 691,
+                                                    lineNumber: 713,
                                                     columnNumber: 29
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[9px] text-[var(--muted)] font-black uppercase tracking-widest mb-1 opacity-60",
-                                                            children: "NÚMERO DO DOCUMENTO"
+                                                            className: "text-[10px] text-[var(--muted)] uppercase mb-1",
+                                                            children: "Número do Documento"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 696,
+                                                            lineNumber: 718,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[13px] font-black text-[var(--foreground)] uppercase tracking-tight",
+                                                            className: "text-sm font-semibold uppercase",
                                                             children: watch("doc")
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 697,
+                                                            lineNumber: 719,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 695,
+                                                    lineNumber: 717,
                                                     columnNumber: 29
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "col-span-2 pt-4 border-t-2 border-[var(--border)]",
+                                                    className: "col-span-2 pt-4 border-t border-[var(--border)]",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[9px] text-[var(--muted)] font-black uppercase tracking-widest mb-1 opacity-60",
-                                                            children: "LOGRADOURO DE REGISTRO"
+                                                            className: "text-[10px] text-[var(--muted)] uppercase mb-1",
+                                                            children: "Endereço"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 700,
+                                                            lineNumber: 722,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[13px] font-black text-[var(--foreground)] truncate uppercase tracking-tight",
+                                                            className: "text-sm font-semibold truncate",
                                                             children: [
                                                                 watch("street"),
                                                                 ", ",
@@ -4006,108 +4027,106 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 701,
+                                                            lineNumber: 723,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 699,
+                                                    lineNumber: 721,
                                                     columnNumber: 29
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 690,
+                                            lineNumber: 712,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 688,
+                                    lineNumber: 710,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "bg-[var(--card)] border-4 border-[var(--border)] rounded-[2.5rem] shadow-xl overflow-hidden transition-all hover:border-indigo-500/30",
+                                    className: "bg-[var(--background)] border border-[var(--border)] rounded-xl overflow-hidden hover:border-primary/30 transition-all",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                             type: "button",
                                             onClick: ()=>setShowCalcMemory(!showCalcMemory),
-                                            className: "w-full flex items-center justify-between p-8 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors",
+                                            className: "w-full flex items-center justify-between p-6 hover:bg-[var(--card)] transition-colors",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-5",
+                                                    className: "flex items-center gap-4",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "size-12 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center shadow-lg",
+                                                            className: "size-8 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$receipt$2d$text$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ReceiptText$3e$__["ReceiptText"], {
-                                                                size: 24,
-                                                                strokeWidth: 3
+                                                                size: 20,
+                                                                strokeWidth: 2.5
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 716,
+                                                                lineNumber: 738,
                                                                 columnNumber: 37
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 715,
+                                                            lineNumber: 737,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[12px] font-black text-[var(--foreground)] uppercase tracking-[0.2em]",
-                                                            children: "MEMÓRIA TÉCNICA DE CÁLCULO"
+                                                            className: "text-xs font-bold uppercase tracking-wide",
+                                                            children: "Memória Técnica de Cálculo"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 718,
+                                                            lineNumber: 740,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 714,
+                                                    lineNumber: 736,
                                                     columnNumber: 29
                                                 }, this),
                                                 showCalcMemory ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$up$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronUp$3e$__["ChevronUp"], {
-                                                    size: 24,
-                                                    strokeWidth: 3,
+                                                    size: 20,
                                                     className: "text-indigo-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 720,
+                                                    lineNumber: 742,
                                                     columnNumber: 47
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
-                                                    size: 24,
-                                                    strokeWidth: 3,
-                                                    className: "text-slate-400"
+                                                    size: 20,
+                                                    className: "text-[var(--muted)]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 720,
-                                                    columnNumber: 117
+                                                    lineNumber: 742,
+                                                    columnNumber: 101
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 709,
+                                            lineNumber: 731,
                                             columnNumber: 25
                                         }, this),
                                         showCalcMemory && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "px-8 pb-8 animate-in slide-in-from-top-4 duration-500",
+                                            className: "px-6 pb-6 animate-in slide-in-from-top-4 duration-500",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "space-y-4 pt-6 border-t-4 border-[var(--border)]",
+                                                className: "space-y-3 pt-4 border-t border-[var(--border)]",
                                                 children: [
                                                     commissionData?.calculationSteps.map((step, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex justify-between items-center text-[11px] font-black uppercase tracking-widest",
+                                                            className: "flex justify-between items-center text-[11px] font-semibold",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-[var(--muted)] opacity-60",
+                                                                    className: "text-[var(--muted)]",
                                                                     children: step.label
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 728,
+                                                                    lineNumber: 750,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("px-3 py-1 rounded-lg", step.type === "positive" ? "bg-emerald-500/10 text-emerald-600" : step.type === "negative" ? "bg-rose-500/10 text-rose-600" : "bg-indigo-500/10 text-indigo-600"),
+                                                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("px-2 py-0.5 rounded", step.type === "positive" ? "text-emerald-600 bg-emerald-500/10" : step.type === "negative" ? "text-rose-600 bg-rose-500/10" : "text-indigo-600 bg-indigo-500/10"),
                                                                     children: [
                                                                         step.value > 0 ? "+" : "",
                                                                         step.value.toLocaleString('pt-BR', {
@@ -4117,287 +4136,271 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 729,
+                                                                    lineNumber: 751,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, idx, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 727,
+                                                            lineNumber: 749,
                                                             columnNumber: 41
                                                         }, this)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "pt-6 mt-4 border-t-4 border-[var(--border)] flex justify-between items-center bg-emerald-500/[0.02] p-4 rounded-2xl",
+                                                        className: "pt-4 mt-3 border-t border-[var(--border)] flex justify-between items-center bg-[var(--card)] p-3 rounded-lg",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-[13px] font-black text-[var(--foreground)] uppercase tracking-[0.1em]",
-                                                                children: "LUCRO LÍQUIDO PROJETADO"
+                                                                className: "text-xs font-bold uppercase",
+                                                                children: "Lucro Líquido Projetado"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 740,
+                                                                lineNumber: 762,
                                                                 columnNumber: 41
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-lg font-black text-emerald-600 dark:text-emerald-400",
+                                                                className: "text-sm font-bold text-emerald-600 dark:text-emerald-400",
                                                                 children: commissionData?.repasse.toLocaleString('pt-BR', {
                                                                     style: 'currency',
                                                                     currency: 'BRL'
                                                                 })
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 741,
+                                                                lineNumber: 763,
                                                                 columnNumber: 41
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 739,
+                                                        lineNumber: 761,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 725,
+                                                lineNumber: 747,
                                                 columnNumber: 33
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 724,
+                                            lineNumber: 746,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 708,
+                                    lineNumber: 730,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-8 bg-blue-600 text-white rounded-[2.5rem] shadow-xl hover:scale-[1.01] transition-all border-4 border-white/10 group",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[11px] font-black uppercase tracking-[0.3em] mb-6 opacity-80",
-                                            children: "CONFIGURAÇÕES DE ENTREGA"
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 751,
-                                            columnNumber: 25
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex justify-between items-center",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[9px] font-black uppercase tracking-widest mb-1 opacity-70",
-                                                            children: "MÍDIA ATIVA"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 754,
-                                                            columnNumber: 33
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-sm font-black uppercase tracking-tighter",
-                                                            children: watch("mediaType")
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 755,
-                                                            columnNumber: 33
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 753,
-                                                    columnNumber: 29
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-10 w-px bg-white/20"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 757,
-                                                    columnNumber: 29
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[9px] font-black uppercase tracking-widest mb-1 opacity-70",
-                                                            children: "MODALIDADE"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 759,
-                                                            columnNumber: 33
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-sm font-black uppercase tracking-tighter",
-                                                            children: videoConference ? "VIDEOCONFERÊNCIA" : "PRESENCIAL"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 760,
-                                                            columnNumber: 33
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 758,
-                                                    columnNumber: 29
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "h-10 w-px bg-white/20"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 762,
-                                                    columnNumber: 29
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-right",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[9px] font-black uppercase tracking-widest mb-1 opacity-70",
-                                                            children: "DOCUMENTOS"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 764,
-                                                            columnNumber: 33
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex items-center gap-2 justify-end",
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-sm font-black uppercase tracking-tighter",
-                                                                    children: [
-                                                                        attachedFiles.length,
-                                                                        " ANEXOS"
-                                                                    ]
-                                                                }, void 0, true, {
-                                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 766,
-                                                                    columnNumber: 37
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                                    size: 16,
-                                                                    strokeWidth: 3,
-                                                                    className: "text-emerald-300"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 767,
-                                                                    columnNumber: 37
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 765,
-                                                            columnNumber: 33
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 763,
-                                                    columnNumber: 29
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 752,
-                                            columnNumber: 25
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 750,
-                                    columnNumber: 21
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 687,
-                            columnNumber: 17
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 650,
-                    columnNumber: 13
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "bg-slate-900 text-white p-10 rounded-[2.5rem] border-4 border-white/5 flex items-center justify-between shadow-2xl relative overflow-hidden group",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "absolute top-0 right-0 w-48 h-48 bg-indigo-500/20 blur-3xl rounded-full translate-x-20 -translate-y-20 group-hover:scale-150 transition-transform duration-1000"
-                        }, void 0, false, {
-                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 776,
-                            columnNumber: 17
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center gap-6 relative z-10",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "size-16 rounded-2xl bg-indigo-500 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 border-2 border-white/10",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"], {
-                                        size: 32,
-                                        strokeWidth: 3,
-                                        className: "animate-bounce"
-                                    }, void 0, false, {
+                                    className: "p-6 bg-[var(--card)] border border-[var(--border)] rounded-xl flex items-center justify-between",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider mb-2",
+                                                children: "Configurações Base"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                lineNumber: 774,
+                                                columnNumber: 29
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex gap-4",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-[9px] text-[var(--muted)] uppercase",
+                                                                children: "Mídia"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                lineNumber: 777,
+                                                                columnNumber: 37
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs font-semibold",
+                                                                children: watch("mediaType")
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                lineNumber: 778,
+                                                                columnNumber: 37
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                        lineNumber: 776,
+                                                        columnNumber: 33
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-[9px] text-[var(--muted)] uppercase",
+                                                                children: "Modal"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                lineNumber: 781,
+                                                                columnNumber: 37
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs font-semibold uppercase",
+                                                                children: videoConference ? "Vídeo" : "Presencial"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                lineNumber: 782,
+                                                                columnNumber: 37
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                        lineNumber: 780,
+                                                        columnNumber: 33
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-[9px] text-[var(--muted)] uppercase",
+                                                                children: "Anexos"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                lineNumber: 785,
+                                                                columnNumber: 37
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "flex items-center gap-1",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        className: "text-xs font-semibold",
+                                                                        children: [
+                                                                            attachedFiles.length,
+                                                                            " arq"
+                                                                        ]
+                                                                    }, void 0, true, {
+                                                                        fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                        lineNumber: 787,
+                                                                        columnNumber: 41
+                                                                    }, this),
+                                                                    attachedFiles.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                                                        size: 12,
+                                                                        className: "text-emerald-500"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                        lineNumber: 788,
+                                                                        columnNumber: 70
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                                lineNumber: 786,
+                                                                columnNumber: 37
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                        lineNumber: 784,
+                                                        columnNumber: 33
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/components/OrderJourneyModal.tsx",
+                                                lineNumber: 775,
+                                                columnNumber: 29
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 779,
+                                        lineNumber: 773,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 778,
-                                    columnNumber: 21
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "text-left",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[14px] font-black uppercase tracking-tight mb-1",
-                                            children: "MULTIPLICADOR DE PERFORMANCE"
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 782,
-                                            columnNumber: 25
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-[10px] text-indigo-300 font-black uppercase tracking-widest opacity-80",
-                                            children: "SEQUÊNCIA DE 5 DIAS ATIVA NO SISTEMA"
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 783,
-                                            columnNumber: 25
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 781,
+                                    lineNumber: 772,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 777,
-                            columnNumber: 17
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "text-xl font-black text-white bg-indigo-600 px-6 py-3 rounded-2xl uppercase tracking-[0.2em] shadow-lg shadow-indigo-600/30 border-2 border-white/20 relative z-10",
-                            children: "2x XP"
-                        }, void 0, false, {
-                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 786,
+                            lineNumber: 709,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 775,
+                    lineNumber: 672,
+                    columnNumber: 13
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "bg-[var(--card)] p-6 rounded-2xl border border-indigo-500/20 flex items-center justify-between",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex items-center gap-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "size-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500 flex items-center justify-center",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"], {
+                                        size: 20
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/OrderJourneyModal.tsx",
+                                        lineNumber: 800,
+                                        columnNumber: 25
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/components/OrderJourneyModal.tsx",
+                                    lineNumber: 799,
+                                    columnNumber: 21
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-xs font-bold uppercase tracking-wide text-indigo-900 dark:text-indigo-100",
+                                            children: "Multiplicador"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/OrderJourneyModal.tsx",
+                                            lineNumber: 803,
+                                            columnNumber: 25
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-[10px] text-indigo-600 dark:text-indigo-400 font-medium",
+                                            children: "Bônus de constância (5 dias)"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/OrderJourneyModal.tsx",
+                                            lineNumber: 804,
+                                            columnNumber: 25
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/components/OrderJourneyModal.tsx",
+                                    lineNumber: 802,
+                                    columnNumber: 21
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/OrderJourneyModal.tsx",
+                            lineNumber: 798,
+                            columnNumber: 17
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "text-sm font-bold text-white bg-indigo-500 px-4 py-2 rounded-lg",
+                            children: "2x XP"
+                        }, void 0, false, {
+                            fileName: "[project]/components/OrderJourneyModal.tsx",
+                            lineNumber: 807,
+                            columnNumber: 17
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/components/OrderJourneyModal.tsx",
+                    lineNumber: 797,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 649,
+            lineNumber: 671,
             columnNumber: 9
         }, this);
     const onSubmitAction = async (data, isDraft = false)=>{
+        if (commissionData && commissionData.repasse < 0) {
+            alert("Erro: O Valor Final está abaixo do mínimo permitido (Margem Negativa). Aumente o valor de venda.");
+            return;
+        }
         setIsConsulting(true);
         try {
             const formData = new FormData();
@@ -4443,8 +4446,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                 // Update metrics locally (Only for real sales)
                 if (commissionData) {
                     updateUser({
-                        xp: currentUser.xp + Math.floor(data.customPrice),
-                        wallet: currentUser.wallet + (commissionData.repasse || 0)
+                        xp: currentUser.xp + Math.floor(data.customPrice)
                     });
                 }
                 mutate('/api/certificates');
@@ -4461,335 +4463,306 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
             isOpen: isOpen,
             onClose: onClose,
-            title: "PEDIDO DISPARADO!",
+            title: "Pedido Disparado",
             width: "2xl",
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "p-10 flex flex-col items-center text-center space-y-10 animate-in zoom-in-95 duration-700",
+                className: "p-8 flex flex-col items-center text-center space-y-8 animate-in zoom-in-95 duration-700 mt-4",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "size-24 bg-emerald-500/10 text-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-emerald-500/20 border-4 border-emerald-500/20 scale-110 active:scale-95 transition-transform",
+                        className: "size-20 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/10 border-2 border-emerald-500/20 scale-110 active:scale-95 transition-transform",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                            size: 56,
+                            size: 40,
                             strokeWidth: 3,
                             className: "animate-in zoom-in duration-500 delay-200"
                         }, void 0, false, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 870,
+                            lineNumber: 897,
                             columnNumber: 25
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 869,
+                        lineNumber: 896,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-3",
+                        className: "space-y-2",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                className: "text-4xl font-black text-[var(--foreground)] tracking-tighter uppercase leading-tight",
-                                children: "OPERAÇÃO CONCLUÍDA"
+                                className: "text-3xl font-bold text-[var(--foreground)] tracking-tight uppercase",
+                                children: "Operação Concluída"
                             }, void 0, false, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 874,
+                                lineNumber: 901,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-[var(--muted)] text-[11px] font-black uppercase tracking-[0.3em] opacity-60",
+                                className: "text-[var(--muted)] text-xs font-medium uppercase tracking-wider",
                                 children: [
-                                    "O PROTOCOLO ",
+                                    "Protocolo gerado: ",
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-primary font-black px-2 py-0.5 bg-primary/10 rounded-lg",
+                                        className: "text-primary font-bold px-2 py-1 bg-primary/10 rounded-md tracking-widest",
                                         children: protocol
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 875,
-                                        columnNumber: 133
-                                    }, this),
-                                    " FOI REGISTRADO NA BLOCKCHAIN DE VENDAS."
+                                        lineNumber: 902,
+                                        columnNumber: 123
+                                    }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 875,
+                                lineNumber: 902,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 873,
+                        lineNumber: 900,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "grid grid-cols-1 md:grid-cols-2 gap-6 w-full",
+                        className: "grid grid-cols-1 md:grid-cols-2 gap-4 w-full",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                 href: paymentLink,
                                 target: "_blank",
-                                className: "flex flex-col items-center p-8 bg-primary text-white rounded-[2.5rem] shadow-2xl shadow-primary/30 hover:scale-[1.05] transition-all group border-4 border-white/10",
+                                className: "flex flex-col items-center p-6 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all group border border-white/10",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"], {
-                                        size: 32,
+                                        size: 24,
                                         strokeWidth: 3,
-                                        className: "mb-4 group-hover:rotate-12 transition-transform"
+                                        className: "mb-2 group-hover:rotate-12 transition-transform"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 884,
+                                        lineNumber: 911,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80",
+                                        className: "text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80",
                                         children: "COBRANÇA VIA PIX/CARTÃO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 885,
+                                        lineNumber: 912,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-sm font-black uppercase tracking-tighter",
+                                        className: "text-sm font-bold uppercase",
                                         children: "LINK DE PAGAMENTO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 886,
+                                        lineNumber: 913,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 879,
+                                lineNumber: 906,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 onClick: ()=>window.open(scheduleLink || `https://agenda.delta.com.br/schedule/${protocol}`, '_blank'),
-                                className: "flex flex-col items-center p-8 bg-slate-900 text-white rounded-[2.5rem] shadow-2xl shadow-black/30 hover:scale-[1.05] transition-all group border-4 border-white/5",
+                                className: "flex flex-col items-center p-6 bg-slate-900 text-white rounded-2xl shadow-lg shadow-black/20 hover:scale-[1.02] transition-all group border border-slate-700",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
-                                        size: 32,
+                                        size: 24,
                                         strokeWidth: 3,
-                                        className: "mb-4 group-hover:-rotate-12 transition-transform"
+                                        className: "mb-2 group-hover:-rotate-12 transition-transform"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 893,
+                                        lineNumber: 920,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80",
+                                        className: "text-[10px] font-bold uppercase tracking-wider mb-1 opacity-80",
                                         children: "RESERVAR HORÁRIO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 894,
+                                        lineNumber: 921,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-sm font-black uppercase tracking-tighter",
+                                        className: "text-sm font-bold uppercase",
                                         children: "LINK DE AGENDAMENTO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 895,
+                                        lineNumber: 922,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 889,
+                                lineNumber: 916,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "md:col-span-2 p-8 bg-blue-600 text-white rounded-3xl border-4 border-white/10 text-left flex items-start gap-6 shadow-xl relative overflow-hidden group",
+                                className: "md:col-span-2 p-6 bg-blue-600 text-white rounded-2xl border border-white/10 text-left flex items-center gap-4 shadow-md relative overflow-hidden group",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-1000"
+                                        className: "absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-125 transition-transform duration-1000"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 899,
+                                        lineNumber: 926,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "size-14 rounded-2xl bg-white/20 text-white flex items-center justify-center shrink-0 border-2 border-white/20 shadow-lg",
+                                        className: "size-12 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/20 shadow-sm",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
-                                            size: 28,
-                                            strokeWidth: 3
+                                            size: 24,
+                                            strokeWidth: 2.5
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 901,
+                                            lineNumber: 928,
                                             columnNumber: 33
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 900,
+                                        lineNumber: 927,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "relative z-10",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
-                                                className: "text-[13px] font-black uppercase tracking-[0.1em] mb-1",
-                                                children: "STATUS DO PEDIDO: AGUARDANDO PAGAMENTO"
+                                                className: "text-sm font-bold uppercase tracking-wider mb-1",
+                                                children: "Status: Aguardando Pagamento"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 904,
+                                                lineNumber: 931,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-[10px] font-black uppercase tracking-widest opacity-70 leading-relaxed italic",
-                                                children: "A LIBERAÇÃO DA EMISSÃO OCORRE INSTANTANEAMENTE APÓS A CONFIRMAÇÃO DO RECEBIMENTO."
+                                                className: "text-[10px] font-medium uppercase tracking-wide opacity-80 leading-relaxed",
+                                                children: "A liberação da emissão ocorre instantaneamente após a confirmação do pagamento."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 905,
+                                                lineNumber: 932,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 903,
+                                        lineNumber: 930,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 898,
+                                lineNumber: 925,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 878,
+                        lineNumber: 905,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: onClose,
-                        className: "px-12 py-5 rounded-2xl border-4 border-[var(--border)] text-[11px] font-black text-[var(--muted)] uppercase tracking-[0.5em] hover:text-[var(--foreground)] hover:border-primary/40 transition-all active:scale-95 shadow-lg",
+                        className: "px-8 py-3 rounded-xl border-2 border-[var(--border)] text-xs font-bold text-[var(--muted)] uppercase tracking-widest hover:text-[var(--foreground)] hover:border-primary/40 transition-all active:scale-95 shadow-sm mt-4",
                         children: "RETORNAR AO PAINEL"
                     }, void 0, false, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 910,
+                        lineNumber: 937,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                lineNumber: 868,
+                lineNumber: 895,
                 columnNumber: 17
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 867,
+            lineNumber: 894,
             columnNumber: 13
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
         isOpen: isOpen,
         onClose: onClose,
-        title: "Nova Emissão de Certificado",
+        title: "Nova Emissão",
         width: "2xl",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "flex flex-col h-auto md:h-auto min-h-[600px] -m-4 md:-m-8 bg-[var(--background)]",
+            className: "flex flex-col h-auto md:h-auto min-h-[600px] -m-4 md:-m-6 bg-[var(--background)]",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "px-10 pt-10 pb-6 border-b-4 border-[var(--border)] bg-primary/[0.02]",
+                    className: "px-6 md:px-10 pt-8 pb-4 border-b border-[var(--border)] bg-[var(--card)]",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex items-center justify-between gap-6 max-w-4xl mx-auto",
+                        className: "flex items-center justify-between gap-4 max-w-4xl mx-auto",
                         children: [
                             1,
                             2,
                             3,
                             4
                         ].map((s)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex-1 flex flex-col gap-3 group",
+                                className: "flex-1 flex flex-col gap-2 group",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("h-2 rounded-full transition-all duration-700 shadow-sm", step >= s ? "bg-primary" : "bg-[var(--border)]")
+                                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("h-1.5 rounded-full transition-all duration-500", step >= s ? "bg-primary" : "bg-[var(--border)]")
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 934,
+                                        lineNumber: 961,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("text-[10px] font-black uppercase tracking-[0.4em] text-center transition-all duration-300", step === s ? "text-primary scale-110" : "text-[var(--muted)] opacity-40 group-hover:opacity-60"),
+                                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("text-[9px] font-bold uppercase tracking-widest text-center transition-all duration-300", step === s ? "text-primary" : "text-[var(--muted)] opacity-50"),
                                         children: [
                                             "PASSO 0",
                                             s
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 938,
+                                        lineNumber: 965,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, s, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 933,
+                                lineNumber: 960,
                                 columnNumber: 29
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 931,
+                        lineNumber: 958,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 930,
+                    lineNumber: 957,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex-1 flex flex-col",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex-1 overflow-y-auto p-10 md:p-14 max-w-4xl mx-auto w-full custom-scrollbar",
+                            className: "flex-1 overflow-y-auto p-6 md:p-10 max-w-4xl mx-auto w-full custom-scrollbar",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex md:hidden flex-col gap-4 mb-10 pb-6 border-b-4 border-[var(--border)]",
+                                    className: "flex md:hidden flex-col gap-2 mb-8 pb-4 border-b border-[var(--border)]",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex items-center justify-between",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-[10px] font-bold uppercase text-primary tracking-widest leading-none mb-1",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-[11px] font-black uppercase text-primary tracking-[0.4em] leading-none mb-1",
-                                                    children: [
-                                                        "PROCESSO: ",
-                                                        step,
-                                                        "/04"
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 955,
-                                                    columnNumber: 33
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex gap-2",
-                                                    children: [
-                                                        1,
-                                                        2,
-                                                        3,
-                                                        4
-                                                    ].map((i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("h-2 w-8 rounded-full transition-all duration-500", step === i ? "bg-primary w-14" : step > i ? "bg-emerald-500" : "bg-[var(--border)]")
-                                                        }, i, false, {
-                                                            fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 958,
-                                                            columnNumber: 41
-                                                        }, this))
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 956,
-                                                    columnNumber: 33
-                                                }, this)
+                                                "PROCESSO: ",
+                                                step,
+                                                "/04"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 954,
+                                            lineNumber: 981,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-xl font-black text-[var(--foreground)] uppercase tracking-tighter",
-                                            children: step === 1 ? "ESCOLHA DO PRODUTO" : step === 2 ? "DADOS DO TITULAR" : step === 3 ? "TÉCNICO & FATURA" : "CONFERÊNCIA FINAL"
+                                            className: "text-lg font-bold text-[var(--foreground)] uppercase tracking-tight",
+                                            children: step === 1 ? "Produto" : step === 2 ? "Titular" : step === 3 ? "Logística" : "Revisão Final"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 962,
+                                            lineNumber: 982,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 953,
+                                    lineNumber: 980,
                                     columnNumber: 25
                                 }, this),
                                 step === 1 && renderStep1(),
@@ -4799,45 +4772,45 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 951,
+                            lineNumber: 978,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "p-10 md:p-12 bg-[var(--card)] border-t-4 border-[var(--border)] flex flex-col md:flex-row gap-6 justify-between items-center shadow-[0_-20px_40px_-20px_rgba(0,0,0,0.1)]",
+                            className: "p-6 md:p-8 bg-[var(--card)] border-t border-[var(--border)] flex flex-col md:flex-row gap-4 justify-between items-center z-10",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "button",
                                     onClick: step === 1 ? onClose : handleBack,
-                                    className: "order-3 md:order-1 w-full md:w-auto px-10 py-5 text-[11px] font-black uppercase tracking-[0.4em] text-[var(--muted)] hover:text-rose-500 hover:bg-rose-500/5 rounded-2xl transition-all border-2 border-transparent active:scale-95",
-                                    children: step === 1 ? "ABANDONAR FLUXO" : "VOLTAR ETAPA"
+                                    className: "order-3 md:order-1 w-full md:w-auto px-6 py-3 text-xs font-bold uppercase tracking-wider text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--background)] rounded-xl transition-all active:scale-95",
+                                    children: step === 1 ? "Cancelar" : "Voltar"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 974,
+                                    lineNumber: 994,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "order-1 md:order-2 w-full md:w-auto flex flex-col md:flex-row gap-4",
+                                    className: "order-1 md:order-2 w-full md:w-auto flex flex-col md:flex-row gap-3",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                             type: "button",
                                             onClick: ()=>onSubmitAction(watch(), true),
                                             disabled: isConsulting,
-                                            className: "w-full md:w-auto px-10 py-5 rounded-2xl bg-[var(--background)] text-[var(--muted)] text-[11px] font-black uppercase tracking-[0.3em] hover:text-[var(--foreground)] hover:border-primary/40 border-2 border-[var(--border)] transition-all flex items-center justify-center gap-3 group disabled:opacity-50 active:scale-95 shadow-lg",
+                                            className: "w-full md:w-auto px-6 py-3 rounded-xl bg-[var(--background)] text-[var(--muted)] text-xs font-bold uppercase tracking-wider hover:text-[var(--foreground)] hover:border-primary/40 border-2 border-[var(--border)] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 active:scale-95",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
-                                                    size: 18,
-                                                    strokeWidth: 3,
-                                                    className: "group-hover:scale-125 transition-transform"
+                                                    size: 16,
+                                                    strokeWidth: 2.5,
+                                                    className: "group-hover:scale-110 transition-transform"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 989,
+                                                    lineNumber: 1009,
                                                     columnNumber: 33
                                                 }, this),
-                                                "SALVAR RASCUNHO"
+                                                "Salvar Rascunho"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 983,
+                                            lineNumber: 1003,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4852,60 +4825,60 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     handleNext();
                                                 }
                                             },
-                                            disabled: isConsulting || step === 1 && !selectedProductId || step === 2 && attachedFiles.length === 0,
-                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("w-full md:w-80 px-12 py-5 rounded-2xl font-black text-[12px] uppercase tracking-[0.3em] transition-all shadow-2xl active:scale-95 disabled:opacity-50 flex items-center justify-center border-2 border-white/10 group", step === 4 ? "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-600/30" : "bg-primary text-white hover:bg-primary/90 shadow-primary/30"),
+                                            disabled: isConsulting || step === 1 && !selectedProductId || step === 1 && commissionData && commissionData.repasse < 0 || step === 2 && attachedFiles.length === 0,
+                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("w-full md:w-64 px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 disabled:opacity-50 flex items-center justify-center group", step === 4 ? "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-500/20" : "bg-primary text-white hover:bg-primary/90 shadow-primary/20"),
                                             children: isConsulting ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "size-5 border-4 border-white/30 border-t-white rounded-full animate-spin"
+                                                className: "size-4 border-2 border-white/30 border-t-white rounded-full animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 1014,
+                                                lineNumber: 1034,
                                                 columnNumber: 37
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                                 children: [
                                                     step === 4 ? "FINALIZAR EMISSÃO" : "AVANÇAR AGORA",
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
-                                                        size: 18,
+                                                        size: 16,
                                                         strokeWidth: 3,
-                                                        className: "ml-3 group-hover:translate-x-2 transition-transform"
+                                                        className: "ml-2 group-hover:translate-x-1 transition-transform"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 1018,
+                                                        lineNumber: 1038,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 993,
+                                            lineNumber: 1013,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 982,
+                                    lineNumber: 1002,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 973,
+                            lineNumber: 993,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 950,
+                    lineNumber: 977,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 928,
+            lineNumber: 955,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/OrderJourneyModal.tsx",
-        lineNumber: 922,
+        lineNumber: 949,
         columnNumber: 9
     }, this);
 }

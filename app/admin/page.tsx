@@ -38,7 +38,11 @@ import {
     Fingerprint,
     ArrowRight,
     ExternalLink,
-    Database
+    Database,
+    Key,
+    Eye,
+    EyeOff,
+    Save
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSWR, { mutate } from "swr";
@@ -99,6 +103,13 @@ function AdminDashboardContent() {
     const [isSProductModalOpen, setIsSProductModalOpen] = useState(false);
     const [editingSProduct, setEditingSProduct] = useState<any>(null);
 
+    // CertControl API Settings State
+    const [certcontrolToken, setCertcontrolToken] = useState("");
+    const [certcontrolApiUrl, setCertcontrolApiUrl] = useState("");
+    const [showToken, setShowToken] = useState(false);
+    const [isSavingToken, setIsSavingToken] = useState(false);
+    const [tokenSaved, setTokenSaved] = useState(false);
+
     useEffect(() => {
         setMounted(true);
         if (tabParam) {
@@ -145,6 +156,20 @@ function AdminDashboardContent() {
     const { data: supplierProducts, mutate: mutateSupplierProducts } = useSWR("admin_supplier_products", async () => {
         const { data, error } = await supabase.from('supplier_products').select('*, supplier_tables(name)').order('name');
         if (error) throw error;
+        return data;
+    });
+
+    // Fetch CertControl API Settings from system_settings
+    useSWR("certcontrol_settings", async () => {
+        const { data } = await supabase
+            .from('system_settings')
+            .select('key, value')
+            .in('key', ['certcontrol_api_token', 'certcontrol_api_url']);
+        if (data) {
+            const map = Object.fromEntries(data.map((s: any) => [s.key, s.value]));
+            if (map['certcontrol_api_token']) setCertcontrolToken(map['certcontrol_api_token']);
+            if (map['certcontrol_api_url']) setCertcontrolApiUrl(map['certcontrol_api_url']);
+        }
         return data;
     });
 
@@ -829,6 +854,113 @@ function AdminDashboardContent() {
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-6 relative z-10 custom-scrollbar">
+
+                {/* Card: Configuração da API CertControl */}
+                <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl overflow-hidden shadow-sm">
+                    <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)] bg-[var(--background)]">
+                        <div className="size-6 rounded-md bg-indigo-500/10 text-indigo-600 flex items-center justify-center border border-indigo-500/20">
+                            <Key size={12} strokeWidth={2.5} />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground)]">Configuração da API — CertControl</h3>
+                            <p className="text-[8px] text-[var(--muted)] font-medium uppercase tracking-widest opacity-60">Credenciais de integração com a emissora parceira</p>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20">
+                            <div className={cn("size-1.5 rounded-full", certcontrolToken && certcontrolApiUrl ? "bg-emerald-500 animate-pulse" : "bg-amber-500")} />
+                            <span className={cn("text-[8px] font-bold uppercase tracking-widest", certcontrolToken && certcontrolApiUrl ? "text-emerald-600" : "text-amber-600")}>
+                                {certcontrolToken && certcontrolApiUrl ? "CONFIGURADO" : "PENDENTE"}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="divide-y divide-[var(--border)]">
+                        {/* Campo: URL da API */}
+                        <div className="p-4">
+                            <label className="text-[9px] font-bold uppercase tracking-widest text-[var(--muted)] block mb-2">
+                                URL Base da API
+                            </label>
+                            <div className="relative">
+                                <ExternalLink size={14} strokeWidth={2} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
+                                <input
+                                    type="url"
+                                    value={certcontrolApiUrl}
+                                    onChange={(e) => { setCertcontrolApiUrl(e.target.value); setTokenSaved(false); }}
+                                    placeholder="https://service.certcontrol.com.br"
+                                    className="w-full pl-9 pr-4 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-lg text-xs font-mono text-[var(--foreground)] placeholder:text-[var(--muted)]/50 focus:outline-none focus:border-indigo-500/50 transition-all"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Campo: Token / Chave */}
+                        <div className="p-4">
+                            <label className="text-[9px] font-bold uppercase tracking-widest text-[var(--muted)] block mb-2">
+                                Token de Acesso (Bearer)
+                            </label>
+                            <div className="relative">
+                                <Key size={14} strokeWidth={2} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" />
+                                <input
+                                    type={showToken ? "text" : "password"}
+                                    value={certcontrolToken}
+                                    onChange={(e) => { setCertcontrolToken(e.target.value); setTokenSaved(false); }}
+                                    placeholder="Cole aqui o JWT de acesso..."
+                                    className="w-full pl-9 pr-10 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-lg text-xs font-mono text-[var(--foreground)] placeholder:text-[var(--muted)]/50 focus:outline-none focus:border-indigo-500/50 transition-all"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowToken(!showToken)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+                                    title={showToken ? "Ocultar token" : "Exibir token"}
+                                >
+                                    {showToken ? <EyeOff size={14} strokeWidth={2} /> : <Eye size={14} strokeWidth={2} />}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Footer: Botao + Aviso */}
+                    <div className="flex items-center justify-between gap-3 px-4 py-3 border-t border-[var(--border)] bg-[var(--background)]">
+                        <p className="text-[9px] text-[var(--muted)] opacity-60 font-medium">
+                            ⚠ Armazenado em <span className="font-mono">system_settings</span>. Não compartilhe publicamente.
+                        </p>
+                        <button
+                            onClick={async () => {
+                                if (!certcontrolToken.trim() || !certcontrolApiUrl.trim()) return;
+                                setIsSavingToken(true);
+                                try {
+                                    const { error } = await supabase
+                                        .from('system_settings')
+                                        .upsert([
+                                            { key: 'certcontrol_api_token', value: certcontrolToken.trim() },
+                                            { key: 'certcontrol_api_url', value: certcontrolApiUrl.trim() }
+                                        ], { onConflict: 'key' });
+                                    if (error) throw error;
+                                    setTokenSaved(true);
+                                    setTimeout(() => setTokenSaved(false), 3000);
+                                } catch (err: any) {
+                                    alert('Erro ao salvar configurações: ' + err.message);
+                                } finally {
+                                    setIsSavingToken(false);
+                                }
+                            }}
+                            disabled={isSavingToken || !certcontrolToken.trim() || !certcontrolApiUrl.trim()}
+                            className={cn(
+                                "shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all active:scale-95 shadow-sm disabled:opacity-50",
+                                tokenSaved
+                                    ? "bg-emerald-600 text-white"
+                                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                            )}
+                        >
+                            {isSavingToken ? (
+                                <div className="size-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : tokenSaved ? (
+                                <CheckCircle2 size={14} strokeWidth={2.5} />
+                            ) : (
+                                <Save size={14} strokeWidth={2.5} />
+                            )}
+                            {tokenSaved ? "Salvo!" : "Salvar Configurações"}
+                        </button>
+                    </div>
+                </div>
                 {/* Section: Supplier Tables Grid */}
                 <div>
                     <div className="flex items-center gap-2 mb-3 border-b border-primary/5 pb-2">
