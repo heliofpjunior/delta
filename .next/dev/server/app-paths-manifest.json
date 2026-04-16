@@ -1,17 +1,13 @@
 {
   "/admin/page": "app/admin/page.js",
   "/api/admin/financials/route": "app/api/admin/financials/route.js",
-  "/api/campanhas/route": "app/api/campanhas/route.js",
   "/api/certificates/logs/route": "app/api/certificates/logs/route.js",
   "/api/certificates/route": "app/api/certificates/route.js",
   "/api/customers/route": "app/api/customers/route.js",
   "/api/financials/route": "app/api/financials/route.js",
   "/api/integracao/certificados/sync/route": "app/api/integracao/certificados/sync/route.js",
-  "/campanhas/page": "app/campanhas/page.js",
   "/certificados/page": "app/certificados/page.js",
   "/clientes/page": "app/clientes/page.js",
-  "/configuracoes/page": "app/configuracoes/page.js",
   "/financeiro/page": "app/financeiro/page.js",
-  "/page": "app/page.js",
-  "/relatorios/page": "app/relatorios/page.js"
+  "/page": "app/page.js"
 }
