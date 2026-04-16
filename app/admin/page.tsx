@@ -185,14 +185,32 @@ function AdminDashboardContent() {
 
     const tabs = [
         { id: "overview", label: "Painel", icon: LayoutDashboard },
-        { id: "usuarios", label: "Usuários", icon: Users, perm: 'manage_users' },
-        { id: "convites", label: "Convites", icon: Mail, perm: 'manage_invites' },
-        { id: "produtos", label: "Produtos", icon: Package, perm: 'manage_products' },
-        { id: "vendas", label: "Vendas", icon: ShoppingBag, perm: 'manage_sales' },
-        { id: "fornecedores", label: "Fornecedores", icon: Building2, perm: 'manage_products' },
-        { id: "financeiro", label: "Financeiro", icon: DollarSign, perm: 'view_financials' },
-        { id: "metas", label: "Metas & Selos", icon: Target, perm: 'manage_sales' },
+        { id: "usuarios", label: "Usuários", icon: Users, perm: 'admin_users' },
+        { id: "convites", label: "Convites", icon: Mail, perm: 'admin_invites' },
+        { id: "produtos", label: "Produtos", icon: Package, perm: 'admin_products' },
+        { id: "vendas", label: "Vendas", icon: ShoppingBag, perm: 'admin_sales' },
+        { id: "fornecedores", label: "Fornecedores", icon: Building2, perm: 'admin_suppliers' },
+        { id: "financeiro", label: "Financeiro", icon: DollarSign, perm: 'admin_financials' },
+        { id: "metas", label: "Metas & Selos", icon: Target, perm: 'admin_gamification' },
     ].filter(tab => !tab.perm || hasPermission(tab.perm));
+
+    const PERMISSIONS_LIST = [
+        { key: 'access_dashboard', label: 'Dashboard Principal', category: 'Menu Principal' },
+        { key: 'access_certificates', label: 'Certificados', category: 'Menu Principal' },
+        { key: 'access_store', label: 'Links de Venda', category: 'Menu Principal' },
+        { key: 'access_marketing', label: 'Marketing/Campanhas', category: 'Menu Principal' },
+        { key: 'access_customers', label: 'Gestão de Clientes', category: 'Menu Principal' },
+        { key: 'access_financial', label: 'Financeiro (Usuário)', category: 'Menu Principal' },
+        { key: 'access_reports', label: 'Relatórios de Venda', category: 'Menu Principal' },
+        { key: 'access_settings', label: 'Configurações de Perfil', category: 'Menu Principal' },
+        { key: 'admin_users', label: 'Gestão de Usuários', category: 'Administração' },
+        { key: 'admin_invites', label: 'Gestão de Convites', category: 'Administração' },
+        { key: 'admin_products', label: 'Catálogo de Produtos', category: 'Administração' },
+        { key: 'admin_sales', label: 'Visão Geral de Vendas', category: 'Administração' },
+        { key: 'admin_financials', label: 'Auditoria de Financeiro', category: 'Administração' },
+        { key: 'admin_gamification', label: 'Metas e Recompensas', category: 'Administração' },
+        { key: 'admin_suppliers', label: 'Gestão de Fornecedores', category: 'Administração' },
+    ];
 
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -455,53 +473,74 @@ function AdminDashboardContent() {
                         <div
                             key={user.id}
                             onClick={() => setSelectedUser(user)}
-                            className="flex flex-col lg:flex-row lg:items-center gap-3 px-4 py-2 hover:bg-primary/[0.01] transition-all group cursor-pointer border-l-2 border-l-transparent hover:border-l-primary relative"
+                            className="flex flex-col lg:flex-row lg:items-center gap-4 px-5 py-3 hover:bg-primary/[0.02] transition-all group cursor-pointer border-l-4 border-l-transparent hover:border-l-primary relative overflow-hidden"
                         >
-                            <div className="size-8 rounded-lg bg-[var(--background)] text-[var(--muted)] group-hover:bg-primary group-hover:text-white flex items-center justify-center font-bold text-sm shrink-0 transition-all border border-[var(--border)] group-hover:border-primary/20">
+                            <div className="absolute top-0 right-0 w-24 h-full bg-primary/[0.01] blur-2xl pointer-events-none group-hover:bg-primary/[0.03] transition-all" />
+                            
+                            <div className="size-11 rounded-2xl bg-[var(--background)] text-[var(--muted)] group-hover:bg-primary group-hover:text-white flex items-center justify-center font-black text-lg shrink-0 transition-all duration-500 border-2 border-[var(--border)] group-hover:border-primary/20 shadow-sm group-hover:shadow-primary/20 group-hover:rotate-3">
                                 {(user.full_name || '?').charAt(0).toUpperCase()}
                             </div>
+
                             <div className="flex-1 min-w-0 relative z-10">
-                                <div className="flex flex-wrap items-center gap-2 mb-0.5">
-                                    <span className="text-sm font-bold text-[var(--foreground)] truncate tracking-tight uppercase group-hover:text-primary transition-colors">{user.full_name}</span>
-                                    <div className="flex items-center gap-1">
-                                        <span className="px-1.5 py-0.5 bg-[var(--background)] border border-[var(--border)] text-[8px] font-bold uppercase text-[var(--muted)] rounded tracking-wider shadow-sm">
-                                            {user.role === 'admin' ? 'ADMIN' : user.role === 'moderador' ? 'MODERADOR' : user.role === 'financeiro' ? 'AUDITOR' : 'CONSULTOR'}
+                                <div className="flex flex-wrap items-center gap-3 mb-1.5">
+                                    <span className="text-base font-black text-[var(--foreground)] truncate tracking-tighter uppercase group-hover:text-primary transition-colors duration-300">
+                                        {user.full_name}
+                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 text-[9px] font-black uppercase text-indigo-600 rounded-lg tracking-wider shadow-sm">
+                                            {user.role === 'admin' ? 'DIRETOR MASTER' : user.role === 'moderador' ? 'GERENTE REGIONAL' : user.role === 'financeiro' ? 'AUDITOR FISCAL' : 'CONSULTOR PREMIUM'}
                                         </span>
                                         <span className={cn(
-                                            "px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest border shrink-0 inline-flex items-center gap-1 transition-all shadow-sm",
+                                            "px-2 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border shrink-0 inline-flex items-center gap-1.5 transition-all shadow-sm",
                                             user.level === 'Ouro'
-                                                ? "bg-amber-500 text-white border-amber-600 shadow-amber-500/10"
+                                                ? "bg-amber-500 text-white border-amber-600 shadow-amber-500/20"
                                                 : user.level === 'Prata'
-                                                    ? "bg-slate-500 text-white border-slate-600 shadow-slate-500/10"
-                                                    : "bg-indigo-600 text-white border-indigo-700 shadow-indigo-600/10"
+                                                    ? "bg-slate-500 text-white border-slate-600 shadow-slate-500/20"
+                                                    : "bg-indigo-600 text-white border-indigo-700 shadow-indigo-600/20"
                                         )}>
-                                            <Award size={10} strokeWidth={2} /> ELO {user.level || 'BRONZE'}
+                                            <Award size={10} strokeWidth={3} /> ELO {user.level || 'BRONZE'}
                                         </span>
+                                        {user.status === 'Inativo' && (
+                                            <span className="px-2 py-0.5 bg-rose-500 text-white border border-rose-600 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm">BLOQUEADO</span>
+                                        )}
                                     </div>
                                 </div>
-                                <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
-                                    <div className="flex items-center gap-1 text-[9px] font-bold text-[var(--muted)] opacity-70">
-                                        <Mail size={10} className="text-primary/60" />
-                                        <span className="text-[var(--foreground)] truncate max-w-[200px]">{user.email?.toLowerCase()}</span>
+                                
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+                                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-[var(--muted)]">
+                                        <div className="size-4 rounded-md bg-primary/5 flex items-center justify-center text-primary/60">
+                                            <Mail size={10} strokeWidth={2.5} />
+                                        </div>
+                                        <span className="text-[var(--foreground)] truncate max-w-[200px] lowercase tracking-tight">{user.email}</span>
                                     </div>
-                                    <div className="w-[1px] h-2 bg-[var(--border)] hidden lg:block" />
-                                    <div className="flex items-center gap-1 text-[9px] font-bold text-[var(--muted)] opacity-70">
-                                        <Building2 size={10} className="text-indigo-500/60" />
-                                        <span className="uppercase tracking-tight">{user.address_city && user.address_state ? `${user.address_city}/${user.address_state}` : 'LOCALIZAÇÃO'}</span>
+                                    <div className="w-[1px] h-3 bg-[var(--border)] hidden lg:block" />
+                                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-[var(--muted)]">
+                                        <div className="size-4 rounded-md bg-indigo-500/5 flex items-center justify-center text-indigo-500/60">
+                                            <Building2 size={10} strokeWidth={2.5} />
+                                        </div>
+                                        <span className="uppercase tracking-tighter">{user.address_city && user.address_state ? `${user.address_city}/${user.address_state}` : 'LOCALIZAÇÃO NÃO DEFINIDA'}</span>
+                                    </div>
+                                    <div className="w-[1px] h-3 bg-[var(--border)] hidden lg:block" />
+                                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-[var(--muted)]">
+                                        <div className="size-4 rounded-md bg-emerald-500/5 flex items-center justify-center text-emerald-500/60">
+                                            <Shield size={10} strokeWidth={2.5} />
+                                        </div>
+                                        <span className="uppercase tracking-tighter">{Object.values(user.permissions || {}).filter(Boolean).length} TELAS ATIVAS</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3 shrink-0 relative z-10">
+
+                            <div className="flex items-center gap-4 shrink-0 relative z-10">
                                 <div className="hidden xl:flex flex-col items-end">
-                                    <p className="text-[8px] font-bold text-[var(--muted)] uppercase tracking-widest opacity-60 italic leading-none mb-0.5">Inscrição</p>
-                                    <p className="text-xs font-bold text-[var(--foreground)] tracking-tight">
+                                    <p className="text-[8px] font-black text-[var(--muted)] uppercase tracking-[0.2em] opacity-50 mb-1">DATA DE INGRESSO</p>
+                                    <p className="text-xs font-black text-[var(--foreground)] tracking-tighter">
                                         {user.created_at ? new Date(user.created_at).toLocaleDateString('pt-BR') : '---'}
                                     </p>
                                 </div>
-                                <div className="size-8 rounded-lg text-[var(--muted)] bg-[var(--background)] hover:bg-primary/10 hover:text-primary transition-all shadow-sm flex items-center justify-center border border-[var(--border)] group-hover:border-primary/20">
-                                    <FileText size={14} strokeWidth={2} />
+                                <div className="size-9 rounded-xl text-[var(--muted)] bg-[var(--background)] group-hover:bg-primary/10 group-hover:text-primary transition-all shadow-sm flex items-center justify-center border border-[var(--border)] group-hover:border-primary/20 group-hover:scale-110 active:scale-95 duration-300">
+                                    <FileText size={16} strokeWidth={2.5} />
                                 </div>
-                                <ChevronRight size={14} strokeWidth={2.5} className="text-[var(--border)] group-hover:text-primary transition-all group-hover:translate-x-0.5" />
+                                <ChevronRight size={18} strokeWidth={3} className="text-[var(--border)] group-hover:text-primary transition-all group-hover:translate-x-1 duration-500" />
                             </div>
                         </div>
                     );
@@ -1397,6 +1436,12 @@ function AdminDashboardContent() {
     const handleSaveUserAdmin = async (userData: any) => {
         setIsUpdating(true);
         try {
+            // Build dynamic permissions object
+            const permissions: Record<string, boolean> = {};
+            PERMISSIONS_LIST.forEach(p => {
+                permissions[p.key] = userData[p.key] === 'on';
+            });
+
             const { error } = await supabase
                 .from('profiles')
                 .update({
@@ -1409,31 +1454,12 @@ function AdminDashboardContent() {
                     level: userData.level,
                     role: userData.role,
                     status: userData.status,
-                    permissions: {
-                        access_dashboard: userData.access_dashboard === 'on',
-                        access_certificates: userData.access_certificates === 'on',
-                        access_store: userData.access_store === 'on',
-                        access_marketing: userData.access_marketing === 'on',
-                        access_customers: userData.access_customers === 'on',
-                        access_financial: userData.access_financial === 'on',
-                        access_reports: userData.access_reports === 'on',
-                        access_settings: userData.access_settings === 'on',
-                        admin_overview: userData.admin_overview === 'on',
-                        admin_users: userData.admin_users === 'on',
-                        admin_invites: userData.admin_invites === 'on',
-                        admin_products: userData.admin_products === 'on',
-                        admin_sales: userData.admin_sales === 'on',
-                        admin_financials: userData.admin_financials === 'on',
-                        admin_gamification: userData.admin_gamification === 'on',
-                        admin_suppliers: userData.admin_suppliers === 'on'
-                    },
                     address_zip: userData.address_zip,
                     address_street: userData.address_street,
-                    address_number: userData.address_number,
-                    address_complement: userData.address_complement,
                     address_neighborhood: userData.address_neighborhood,
                     address_city: userData.address_city,
-                    address_state: userData.address_state
+                    address_state: userData.address_state,
+                    permissions: permissions
                 })
                 .eq('id', selectedUser.id);
 
@@ -1879,6 +1905,43 @@ function AdminDashboardContent() {
                                 <Input label="Bairro" name="address_neighborhood" defaultValue={selectedUser.address_neighborhood} className="bg-[var(--card)] rounded-xl border-[var(--border)] font-bold" />
                                 <Input label="Cidade" name="address_city" defaultValue={selectedUser.address_city} className="bg-[var(--card)] rounded-xl border-[var(--border)] font-bold" />
                                 <Input label="UF" name="address_state" defaultValue={selectedUser.address_state} className="bg-[var(--card)] rounded-xl border-[var(--border)] font-black text-center" />
+                            </div>
+                        </div>
+
+                        {/* Section: Permissões de Acesso */}
+                        <div className="space-y-8">
+                            <div className="flex items-center gap-3 border-b-4 border-emerald-500/10 pb-4">
+                                <div className="size-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600 border border-emerald-500/20">
+                                    <ShieldCheck size={18} />
+                                </div>
+                                <h5 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-[0.4em]">Permissões de Acesso</h5>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {['Menu Principal', 'Administração'].map((category) => (
+                                    <div key={category} className="space-y-4">
+                                        <h6 className="text-[9px] font-black uppercase tracking-widest text-[var(--muted)] opacity-60 ml-1">{category}</h6>
+                                        <div className="space-y-2 bg-[var(--background)]/40 p-4 rounded-2xl border border-[var(--border)] shadow-inner">
+                                            {PERMISSIONS_LIST.filter(p => p.category === category).map((perm) => (
+                                                <label key={perm.key} className="flex items-center justify-between group cursor-pointer p-2 hover:bg-primary/5 rounded-xl transition-all border border-transparent hover:border-primary/10">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] font-bold uppercase tracking-tight text-[var(--foreground)] group-hover:text-primary transition-colors">{perm.label}</span>
+                                                        <span className="text-[8px] font-medium text-[var(--muted)] opacity-60 uppercase tracking-widest">{perm.key}</span>
+                                                    </div>
+                                                    <div className="relative inline-flex items-center cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            name={perm.key}
+                                                            defaultChecked={selectedUser.permissions?.[perm.key]}
+                                                            className="sr-only peer"
+                                                        />
+                                                        <div className="w-9 h-5 bg-[var(--border)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 shadow-inner"></div>
+                                                    </div>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
