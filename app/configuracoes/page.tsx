@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { useSimulation } from "@/components/SimulationProvider";
 import { supabase } from "@/lib/supabase";
+import { calculateCommission } from "@/lib/rulesEngine";
 
 export default function SettingsPage() {
     const { currentUser, updateUser, updateThemePreference } = useSimulation();
@@ -43,6 +44,7 @@ export default function SettingsPage() {
     const [addressNeighborhood, setAddressNeighborhood] = useState("");
     const [addressCity, setAddressCity] = useState("");
     const [addressState, setAddressState] = useState("");
+    const [taxCollectionByUser, setTaxCollectionByUser] = useState(false);
 
     // Sync form when currentUser changes
     useEffect(() => {
@@ -62,12 +64,19 @@ export default function SettingsPage() {
             setAddressCity(currentUser.address_city || "");
             setAddressState(currentUser.address_state || "");
             setCustomPrices(currentUser.custom_prices || {});
+            setTaxCollectionByUser(currentUser.tax_collection_by_user || false);
         }
     }, [currentUser]);
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const { data, error } = await supabase.from('products').select('*').order('name');
+            const { data, error } = await supabase.from('products').select(`
+                *,
+                supplier_products (
+                    *,
+                    supplier_tables (*)
+                )
+            `).order('name');
             if (!error && data) setProducts(data);
         };
         fetchProducts();
@@ -97,7 +106,8 @@ export default function SettingsPage() {
                     address_complement: addressComplement,
                     address_neighborhood: addressNeighborhood,
                     address_city: addressCity,
-                    address_state: addressState
+                    address_state: addressState,
+                    tax_collection_by_user: taxCollectionByUser
                 })
                 .eq('id', session.user.id)
                 .select()
@@ -120,7 +130,8 @@ export default function SettingsPage() {
                 address_neighborhood: updated.address_neighborhood,
                 address_city: updated.address_city,
                 address_state: updated.address_state,
-                custom_prices: updated.custom_prices
+                custom_prices: updated.custom_prices,
+                tax_collection_by_user: updated.tax_collection_by_user
             });
             setSuccess(true);
 
@@ -494,6 +505,49 @@ export default function SettingsPage() {
                                     />
                                 </div>
                             </div>
+
+                            {/* New Fiscal Choice Container */}
+                            <div className="bg-amber-500/5 border-2 border-amber-500/10 p-8 rounded-[2rem] space-y-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="size-10 bg-amber-500 text-white rounded-xl flex items-center justify-center shadow-lg border-2 border-white/20">
+                                        <AlertCircle size={20} strokeWidth={3} />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-amber-600">Gestão Fiscal Personalizada</h4>
+                                        <p className="text-[9px] font-bold text-[var(--muted)] uppercase tracking-widest">Defina como o imposto de fornecedor deve ser processado.</p>
+                                    </div>
+                                </div>
+
+                                <label className="flex items-center gap-4 p-6 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl cursor-pointer hover:border-primary/50 transition-all group">
+                                    <div className="relative flex items-center justify-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={taxCollectionByUser}
+                                            onChange={(e) => setTaxCollectionByUser(e.target.checked)}
+                                            className="size-6 bg-[var(--card)] border-2 border-[var(--border)] rounded-lg appearance-none checked:bg-primary checked:border-primary transition-all cursor-pointer"
+                                        />
+                                        {taxCollectionByUser && (
+                                            <div className="absolute pointer-events-none">
+                                                <div className="size-1.5 bg-white rounded-full animate-pulse" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col leading-tight">
+                                        <span className={cn(
+                                            "text-xs font-black uppercase tracking-widest transition-colors",
+                                            taxCollectionByUser ? "text-primary" : "text-[var(--foreground)] opacity-60"
+                                        )}>
+                                            Recolhimento de impostos feito pelo usuário
+                                        </span>
+                                        <span className="text-[9px] font-bold text-[var(--muted)] uppercase tracking-[0.1em] italic">
+                                            {taxCollectionByUser 
+                                                ? "Imposto calculado sobre o CUSTO BASE (Elo). Você assume a diferença sobre o lucro." 
+                                                : "Imposto calculado sobre o PREÇO DE VENDA FINAL (Padrão)."}
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
+
                             <div className="flex justify-end pt-8 items-center gap-6">
                                 {success && (
                                     <span className="text-emerald-500 text-[11px] font-black uppercase tracking-[0.2em] animate-pulse">✓ Salvo com sucesso!</span>
@@ -647,35 +701,120 @@ export default function SettingsPage() {
                             </div>
 
                             <div className="grid grid-cols-1 gap-6">
-                                {products.map(product => (
-                                    <div key={product.id} className="flex flex-col md:flex-row md:items-center justify-between p-8 bg-[var(--background)] rounded-[2.5rem] border-4 border-[var(--border)] group hover:border-primary/30 transition-all shadow-lg hover:shadow-2xl">
-                                        <div className="mb-6 md:mb-0 space-y-2">
-                                            <div className="flex items-center gap-3">
-                                                <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                                                    <FileText size={16} strokeWidth={3} />
+                                {products.map(product => {
+                                    const userLevel = currentUser.level || 'Bronze';
+                                    const currentPrice = customPrices[product.id] || product.price;
+
+                                    // Extract supplier data if available
+                                    const supplierProduct = product.supplier_products; 
+                                    const supplierData = supplierProduct ? {
+                                        base_cost: supplierProduct.base_cost,
+                                        tax_fixed: supplierProduct.supplier_tables?.tax_fixed || 0,
+                                        tax_percent: supplierProduct.supplier_tables?.tax_percent || 0
+                                    } : undefined;
+
+                                    const productLevelCosts = {
+                                        bronze: Number(product.commission_bronze) || 0,
+                                        prata: Number(product.commission_prata) || 0,
+                                        ouro: Number(product.commission_ouro) || 0
+                                    };
+
+                                    const commissionData = calculateCommission(
+                                        currentPrice,
+                                        userLevel,
+                                        product.category === 'CNPJ', // isPJ
+                                        currentUser.equippedBadge,
+                                        supplierData,
+                                        productLevelCosts,
+                                        currentUser.tax_collection_by_user
+                                    );
+
+                                    const estimatedGain = commissionData.repasse;
+
+                                    return (
+                                        <div key={product.id} className="flex flex-col p-8 bg-[var(--background)] rounded-[2.5rem] border-4 border-[var(--border)] group hover:border-primary/30 transition-all shadow-lg hover:shadow-2xl relative overflow-hidden">
+                                            <div className="absolute top-0 right-0 w-48 h-full bg-primary/5 blur-3xl pointer-events-none group-hover:bg-primary/10 transition-all" />
+
+                                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                                                <div className="space-y-3">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="size-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center border border-primary/20">
+                                                            <FileText size={16} strokeWidth={3} />
+                                                        </div>
+                                                        <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">{product.category}</p>
+                                                    </div>
+                                                    <h4 className="text-2xl font-black text-[var(--foreground)] uppercase tracking-tighter leading-none">{product.name}</h4>
+
+                                                    <div className="flex flex-wrap items-center gap-3 mt-4">
+                                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--card)] border-2 border-[var(--border)] rounded-full">
+                                                            <span className="text-[8px] text-[var(--muted)] font-black uppercase tracking-widest">Sugerido:</span>
+                                                            <span className="text-[9px] text-primary font-black uppercase tracking-widest">R$ {product.price.toLocaleString('pt-BR')}</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-500/5 border-2 border-indigo-500/20 rounded-full">
+                                                            <span className="text-[8px] text-indigo-500 font-black uppercase tracking-widest">Seu Custo ({userLevel}):</span>
+                                                            <span className="text-[9px] text-indigo-600 font-black tracking-widest uppercase">R$ {commissionData.partnerCost.toLocaleString('pt-BR')}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">{product.category}</p>
+
+                                                <div className="flex flex-col items-end gap-3">
+                                                    <div className="relative group/input">
+                                                        <div className="absolute left-6 top-1/2 -translate-y-1/2 text-xs font-black text-[var(--muted)] group-focus-within/input:text-primary transition-colors">R$</div>
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            value={currentPrice}
+                                                            onChange={(e) => setCustomPrices({ ...customPrices, [product.id]: parseFloat(e.target.value) })}
+                                                            className="pl-14 pr-8 py-5 bg-[var(--card)] border-2 border-[var(--border)] rounded-2xl text-xl font-black text-primary focus:ring-8 focus:ring-primary/5 focus:border-primary w-52 text-right shadow-inner transition-all"
+                                                        />
+                                                    </div>
+
+                                                    <div className={cn(
+                                                        "flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 transition-all shadow-sm",
+                                                        estimatedGain >= 0
+                                                            ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-600 shadow-emerald-500/5"
+                                                            : "bg-rose-500/5 border-rose-500/20 text-rose-600 shadow-rose-500/5"
+                                                    )}>
+                                                        <div className="flex flex-col items-end">
+                                                            <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-80 leading-none mb-1">Seu Ganho Líquido</span>
+                                                            <span className="text-base font-black tracking-widest">
+                                                                {estimatedGain >= 0 ? '+' : ''} R$ {estimatedGain.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <h4 className="text-2xl font-black text-[var(--foreground)] uppercase tracking-tighter">{product.name}</h4>
-                                            <div className="flex items-center gap-2 px-3 py-1 bg-[var(--card)] border-2 border-[var(--border)] rounded-full w-fit">
-                                                <span className="text-[9px] text-[var(--muted)] font-black uppercase tracking-widest">Sugestão:</span>
-                                                <span className="text-[9px] text-primary font-black uppercase tracking-widest">R$ {product.price.toLocaleString('pt-BR')}</span>
+
+                                            {/* Detail Memory Calculation Breakdown */}
+                                            <div className="mt-8 pt-6 border-t-2 border-[var(--border)] relative z-10">
+                                                <p className="text-[9px] font-black text-[var(--muted)] uppercase tracking-[0.3em] mb-4 ml-1">Detalhamento da Memória de Cálculo</p>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                                    {commissionData.calculationSteps.map((step, idx) => (
+                                                        <div key={idx} className="bg-[var(--card)] p-4 rounded-2xl border border-[var(--border)] hover:border-primary/20 transition-all group/step shadow-sm">
+                                                            <p className="text-[8px] font-black text-[var(--muted)] uppercase tracking-wider mb-1 opacity-70 group-hover/step:text-primary transition-colors">{step.label}</p>
+                                                            <p className={cn(
+                                                                "text-sm font-black tracking-tight",
+                                                                step.type === "negative" ? "text-rose-500" :
+                                                                    step.type === "positive" ? "text-emerald-500" : "text-[var(--foreground)]"
+                                                            )}>
+                                                                {step.value > 0 ? "+" : ""} {step.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                            </p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="mt-4 p-4 bg-primary/5 rounded-2xl border-2 border-primary/10 flex items-center justify-between">
+                                                    <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Resultado Final por Emissão</span>
+                                                    <span className={cn(
+                                                        "text-lg font-black tracking-tighter",
+                                                        estimatedGain >= 0 ? "text-emerald-600" : "text-rose-600"
+                                                    )}>
+                                                        R$ {estimatedGain.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-6">
-                                            <div className="relative group/input">
-                                                <div className="absolute left-6 top-1/2 -translate-y-1/2 text-xs font-black text-[var(--muted)] group-focus-within/input:text-primary transition-colors">R$</div>
-                                                <input
-                                                    type="number"
-                                                    step="0.01"
-                                                    value={customPrices[product.id] || product.price}
-                                                    onChange={(e) => setCustomPrices({ ...customPrices, [product.id]: parseFloat(e.target.value) })}
-                                                    className="pl-14 pr-8 py-5 bg-[var(--card)] border-2 border-[var(--border)] rounded-2xl text-xl font-black text-primary focus:ring-8 focus:ring-primary/5 focus:border-primary w-52 text-right shadow-inner transition-all"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
 
                             <div className="flex justify-end pt-8 items-center gap-6 border-t-4 border-[var(--border)]">

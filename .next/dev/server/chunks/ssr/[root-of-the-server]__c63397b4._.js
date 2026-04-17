@@ -2037,7 +2037,7 @@ const LEVEL_COSTS = {
         PJ: 79.00
     }
 };
-function calculateCommission(salePrice, level, isPJ, activeBadge, supplierData, productLevelCosts) {
+function calculateCommission(salePrice, level, isPJ, activeBadge, supplierData, productLevelCosts, taxOnCost = false) {
     // 1. Determine base cost price for the seller
     let effectiveLevel = level;
     // Selo 'Start' grants Prata prices to Bronze sellers
@@ -2056,61 +2056,60 @@ function calculateCommission(salePrice, level, isPJ, activeBadge, supplierData, 
     }
     const steps = [
         {
-            label: "Preço de Venda",
+            label: "Preço de Venda Final",
             value: salePrice,
             type: "info"
         },
         {
-            label: `Custo Parceiro (${effectiveLevel})`,
+            label: `(-) Custo Base do Certificado (${effectiveLevel})`,
             value: -sellerCost,
             type: "negative"
         }
     ];
     // 3. Calculate external transaction costs (to be deducted from repasse)
-    let transactionCosts;
-    let taxes;
-    let fixedFee;
+    let taxes = 0;
+    let fixedFee = 0;
+    const taxAmountBase = taxOnCost ? sellerCost : salePrice;
     if (supplierData) {
-        taxes = salePrice * (supplierData.tax_percent / 100);
+        // Use real supplier table rules
+        taxes = taxAmountBase * (supplierData.tax_percent / 100);
         fixedFee = supplierData.tax_fixed;
-        transactionCosts = fixedFee + taxes;
     } else {
-        taxes = salePrice * FINANCE_CONSTANTS.TAX_RATE;
+        // Use fallback global rules
+        taxes = taxAmountBase * FINANCE_CONSTANTS.TAX_RATE;
         fixedFee = FINANCE_CONSTANTS.BASE_COST - 50;
-        transactionCosts = fixedFee + taxes;
     }
+    const transactionCosts = fixedFee + taxes;
+    const taxLabelBase = taxOnCost ? "Impostos s/ Custo Base" : "Impostos s/ Venda";
+    const taxRateDisplay = supplierData ? supplierData.tax_percent : FINANCE_CONSTANTS.TAX_RATE * 100;
     steps.push({
-        label: "Impostos s/ Venda",
+        label: `(-) ${taxLabelBase} (${taxRateDisplay}%)`,
         value: -taxes,
         type: "negative"
     });
     if (fixedFee > 0) {
         steps.push({
-            label: "Taxas Fixas",
+            label: "(-) Taxas Operacionais Fixas",
             value: -fixedFee,
             type: "negative"
         });
     }
-    // 4. Calculate Platform Costs (what the platform actually pays)
-    let totalCosts;
-    if (supplierData) {
-        totalCosts = supplierData.base_cost + transactionCosts;
-    } else {
-        totalCosts = 50.00 + transactionCosts; // Assuming 50.00 is the supplier cost
-    }
-    // 5. Calculate Final Repasse (Markup - External Costs)
-    // Formula: Repasse = (Sale Price - Partner Cost) - (Fees + Taxes)
-    let potentialRepasse = salePrice - sellerCost - transactionCosts;
+    // 4. Calculate Final Repasse (Markup - External Costs)
+    // Formula: Repasse = (Price - Cost) - (Fees + Taxes)
+    const potentialRepasse = salePrice - sellerCost - transactionCosts;
     // 6. Calculate Platform Revenue and Profit
     // Platform Revenue = what the platform keeps from the sale to cover costs and profit
     const platformRevenue = salePrice - potentialRepasse;
+    // totalCosts for the platform: Supplier Product Price + Taxes + Fees
+    const totalCosts = (supplierData?.base_cost || 50.00) + transactionCosts;
     const platformProfit = platformRevenue - totalCosts;
     const marginPercent = platformProfit / salePrice;
     return {
         repasse: potentialRepasse,
         platformProfit,
         marginPercent,
-        isBlocked: false,
+        isBlocked: potentialRepasse < 0,
+        reason: potentialRepasse < 0 ? "Margem do parceiro negativa" : undefined,
         partnerCost: sellerCost,
         taxes,
         fixedFees: fixedFee,
@@ -2340,7 +2339,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
         bronze: Number(selectedProduct.commission_bronze) || 0,
         prata: Number(selectedProduct.commission_prata) || 0,
         ouro: Number(selectedProduct.commission_ouro) || 0
-    }) : null;
+    }, currentUser.tax_collection_by_user) : null;
     // Auto-fill logic for CPF/CNPJ
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const fetchCustomer = async ()=>{
@@ -2434,7 +2433,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "1"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 308,
+                                    lineNumber: 309,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2442,13 +2441,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "Inicie o Pedido"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 309,
+                                    lineNumber: 310,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 307,
+                            lineNumber: 308,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2471,12 +2470,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     strokeWidth: 2.5
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 332,
+                                                    lineNumber: 333,
                                                     columnNumber: 33
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 328,
+                                                lineNumber: 329,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2486,7 +2485,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         children: "Pessoa Física"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 335,
+                                                        lineNumber: 336,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2494,24 +2493,24 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         children: "Para CPFs"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 336,
+                                                        lineNumber: 337,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 334,
+                                                lineNumber: 335,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 327,
+                                        lineNumber: 328,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 314,
+                                    lineNumber: 315,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2531,12 +2530,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     strokeWidth: 2.5
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 359,
+                                                    lineNumber: 360,
                                                     columnNumber: 33
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 355,
+                                                lineNumber: 356,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2546,7 +2545,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         children: "Pessoa Jurídica"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 362,
+                                                        lineNumber: 363,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2554,30 +2553,30 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         children: "Para Empresas"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 363,
+                                                        lineNumber: 364,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 361,
+                                                lineNumber: 362,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 354,
+                                        lineNumber: 355,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 341,
+                                    lineNumber: 342,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 313,
+                            lineNumber: 314,
                             columnNumber: 17
                         }, this),
                         selectedCategory && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2591,7 +2590,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 371,
+                                    lineNumber: 372,
                                     columnNumber: 25
                                 }, this),
                                 isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2601,12 +2600,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "Carregando Catálogo..."
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 377,
+                                        lineNumber: 378,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 376,
+                                    lineNumber: 377,
                                     columnNumber: 29
                                 }, this),
                                 error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2617,7 +2616,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Erro de Conexão"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 383,
+                                            lineNumber: 384,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2625,13 +2624,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: error.message || "Falha ao consultar banco de dados"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 384,
+                                            lineNumber: 385,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 382,
+                                    lineNumber: 383,
                                     columnNumber: 29
                                 }, this),
                                 !isLoading && !error && products?.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2642,7 +2641,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Base de Dados Vazia"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 390,
+                                            lineNumber: 391,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2650,13 +2649,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Nenhum produto cadastrado na tabela 'products'."
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 391,
+                                            lineNumber: 392,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 389,
+                                    lineNumber: 390,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2676,19 +2675,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 strokeWidth: 2.5
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 413,
+                                                                lineNumber: 414,
                                                                 columnNumber: 70
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$hard$2d$drive$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__HardDrive$3e$__["HardDrive"], {
                                                                 size: 18,
                                                                 strokeWidth: 2.5
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 413,
+                                                                lineNumber: 414,
                                                                 columnNumber: 110
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 409,
+                                                            lineNumber: 410,
                                                             columnNumber: 41
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2699,7 +2698,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                     children: product.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 416,
+                                                                    lineNumber: 417,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2707,13 +2706,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                     children: product.type
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 417,
+                                                                    lineNumber: 418,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 415,
+                                                            lineNumber: 416,
                                                             columnNumber: 41
                                                         }, this),
                                                         selectedProductId === product.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
@@ -2722,18 +2721,18 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             strokeWidth: 2.5
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 419,
+                                                            lineNumber: 420,
                                                             columnNumber: 78
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 408,
+                                                    lineNumber: 409,
                                                     columnNumber: 37
                                                 }, this)
                                             }, product.id, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 397,
+                                                lineNumber: 398,
                                                 columnNumber: 33
                                             }, this)),
                                         filteredProducts.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2743,30 +2742,30 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "Nenhum produto em estoque para esta categoria."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 425,
+                                                lineNumber: 426,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 424,
+                                            lineNumber: 425,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 395,
+                                    lineNumber: 396,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 370,
+                            lineNumber: 371,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 306,
+                    lineNumber: 307,
                     columnNumber: 13
                 }, this),
                 selectedProduct && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2781,7 +2780,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "Engenharia de Preço"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 437,
+                                        lineNumber: 438,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2789,13 +2788,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "Ajuste o valor final para o consumidor"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 438,
+                                        lineNumber: 439,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 436,
+                                lineNumber: 437,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2809,7 +2808,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "R$"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 445,
+                                                lineNumber: 446,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2821,13 +2820,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("w-24 bg-transparent border-0 focus:ring-0 text-lg font-bold p-2 transition-colors", commissionData && commissionData.repasse < 0 ? "text-rose-500" : "text-[var(--foreground)]")
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 449,
+                                                lineNumber: 450,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 441,
+                                        lineNumber: 442,
                                         columnNumber: 29
                                     }, this),
                                     commissionData && commissionData.repasse < 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2835,30 +2834,30 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "Margem Negativa Detectada!"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 460,
+                                        lineNumber: 461,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 440,
+                                lineNumber: 441,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 435,
+                        lineNumber: 436,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 434,
+                    lineNumber: 435,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 305,
+            lineNumber: 306,
             columnNumber: 9
         }, this);
     const renderStep2 = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2875,7 +2874,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "02"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 475,
+                                    lineNumber: 476,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2883,13 +2882,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "IDENTIFICAÇÃO DO TITULAR"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 476,
+                                    lineNumber: 477,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 474,
+                            lineNumber: 475,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2907,7 +2906,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("py-2.5 rounded-xl border-2 font-medium uppercase", identifiedCustomer && "border-emerald-500/30 bg-emerald-500/[0.02]")
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 481,
+                                            lineNumber: 482,
                                             columnNumber: 25
                                         }, this),
                                         identifiedCustomer && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2918,7 +2917,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     strokeWidth: 2.5
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 491,
+                                                    lineNumber: 492,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2933,19 +2932,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 492,
+                                                    lineNumber: 493,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 490,
+                                            lineNumber: 491,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 480,
+                                    lineNumber: 481,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2957,12 +2956,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 499,
+                                        lineNumber: 500,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 498,
+                                    lineNumber: 499,
                                     columnNumber: 21
                                 }, this),
                                 isPJ && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2974,7 +2973,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 504,
+                                            lineNumber: 505,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2985,7 +2984,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     children: "Representação Legal"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 506,
+                                                    lineNumber: 507,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2998,7 +2997,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 508,
+                                                            lineNumber: 509,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3008,19 +3007,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 509,
+                                                            lineNumber: 510,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 507,
+                                                    lineNumber: 508,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 505,
+                                            lineNumber: 506,
                                             columnNumber: 29
                                         }, this)
                                     ]
@@ -3032,7 +3031,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase text-blue-600"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 515,
+                                    lineNumber: 516,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3042,19 +3041,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 516,
+                                    lineNumber: 517,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 479,
+                            lineNumber: 480,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 473,
+                    lineNumber: 474,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3068,7 +3067,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "03"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 522,
+                                    lineNumber: 523,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -3076,13 +3075,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "LOCALIZAÇÃO E LOGÍSTICA"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 523,
+                                    lineNumber: 524,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 521,
+                            lineNumber: 522,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3096,7 +3095,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 527,
+                                    lineNumber: 528,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3108,12 +3107,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 529,
+                                        lineNumber: 530,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 528,
+                                    lineNumber: 529,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3123,7 +3122,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 531,
+                                    lineNumber: 532,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3133,7 +3132,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 532,
+                                    lineNumber: 533,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3143,7 +3142,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 533,
+                                    lineNumber: 534,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3154,19 +3153,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase text-center"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 534,
+                                    lineNumber: 535,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 526,
+                            lineNumber: 527,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 520,
+                    lineNumber: 521,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3184,7 +3183,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "DOCUMENTAÇÃO ANEXA"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 543,
+                                                lineNumber: 544,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3192,13 +3191,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "CNH, Contrato Social, etc."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 544,
+                                                lineNumber: 545,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 542,
+                                        lineNumber: 543,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -3213,19 +3212,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 multiple: true
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 548,
+                                                lineNumber: 549,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 546,
+                                        lineNumber: 547,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 541,
+                                lineNumber: 542,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3244,12 +3243,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 strokeWidth: 2
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 557,
+                                                                lineNumber: 558,
                                                                 columnNumber: 41
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 556,
+                                                            lineNumber: 557,
                                                             columnNumber: 37
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3260,7 +3259,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                     children: file.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 560,
+                                                                    lineNumber: 561,
                                                                     columnNumber: 41
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3271,19 +3270,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 561,
+                                                                    lineNumber: 562,
                                                                     columnNumber: 41
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 559,
+                                                            lineNumber: 560,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 555,
+                                                    lineNumber: 556,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3295,18 +3294,18 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         strokeWidth: 2.5
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 565,
+                                                        lineNumber: 566,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 564,
+                                                    lineNumber: 565,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, idx, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 554,
+                                            lineNumber: 555,
                                             columnNumber: 29
                                         }, this)),
                                     attachedFiles.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3317,7 +3316,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "Nenhum Documento Anexado"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 571,
+                                                lineNumber: 572,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3325,36 +3324,36 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "Você pode anexar comprovação posteriormente via app também."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 572,
+                                                lineNumber: 573,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 570,
+                                        lineNumber: 571,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 552,
+                                lineNumber: 553,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 540,
+                        lineNumber: 541,
                         columnNumber: 17
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 539,
+                    lineNumber: 540,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 472,
+            lineNumber: 473,
             columnNumber: 9
         }, this);
     const renderStep3 = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3371,7 +3370,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "04"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 585,
+                                    lineNumber: 586,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -3379,13 +3378,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "ESPECIFICAÇÕES TÉCNICAS"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 586,
+                                    lineNumber: 587,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 584,
+                            lineNumber: 585,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3398,7 +3397,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             className: "absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rotate-45 transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-1000"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 591,
+                                            lineNumber: 592,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3406,7 +3405,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Mídia & Validade"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 592,
+                                            lineNumber: 593,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3417,7 +3416,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 593,
+                                            lineNumber: 594,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3425,13 +3424,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Configuração otimizada para o produto selecionado."
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 594,
+                                            lineNumber: 595,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 590,
+                                    lineNumber: 591,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3452,12 +3451,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         ]
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 598,
+                                        lineNumber: 599,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 597,
+                                    lineNumber: 598,
                                     columnNumber: 21
                                 }, this),
                                 !videoConference && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3470,12 +3469,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 strokeWidth: 2.5
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 612,
+                                                lineNumber: 613,
                                                 columnNumber: 33
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 611,
+                                            lineNumber: 612,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3483,25 +3482,25 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "ATENÇÃO: A EMISSÃO PRESENCIAL REQUER AGENDAMENTO POSTERIOR NO HUB FÍSICO MAIS PRÓXIMO."
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 614,
+                                            lineNumber: 615,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 610,
+                                    lineNumber: 611,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 589,
+                            lineNumber: 590,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 583,
+                    lineNumber: 584,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3515,7 +3514,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "05"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 624,
+                                    lineNumber: 625,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -3523,13 +3522,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "FLUXO DE FATURAMENTO"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 625,
+                                    lineNumber: 626,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 623,
+                            lineNumber: 624,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3553,12 +3552,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         ]
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 630,
+                                        lineNumber: 631,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 629,
+                                    lineNumber: 630,
                                     columnNumber: 21
                                 }, this),
                                 billingType === "Diferente" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3570,7 +3569,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 643,
+                                            lineNumber: 644,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3579,7 +3578,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 644,
+                                            lineNumber: 645,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3588,7 +3587,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 645,
+                                            lineNumber: 646,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3597,7 +3596,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 646,
+                                            lineNumber: 647,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3611,12 +3610,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 649,
+                                                        lineNumber: 650,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 648,
+                                                    lineNumber: 649,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3627,12 +3626,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 652,
+                                                        lineNumber: 653,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 651,
+                                                    lineNumber: 652,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3641,7 +3640,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 654,
+                                                    lineNumber: 655,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3652,12 +3651,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 656,
+                                                        lineNumber: 657,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 655,
+                                                    lineNumber: 656,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3668,12 +3667,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         className: "py-2.5 rounded-xl border-2 font-medium uppercase"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 659,
+                                                        lineNumber: 660,
                                                         columnNumber: 37
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 658,
+                                                    lineNumber: 659,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$Input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -3683,37 +3682,37 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     maxLength: 2
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 661,
+                                                    lineNumber: 662,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 647,
+                                            lineNumber: 648,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 642,
+                                    lineNumber: 643,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 628,
+                            lineNumber: 629,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 622,
+                    lineNumber: 623,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 582,
+            lineNumber: 583,
             columnNumber: 9
         }, this);
     const renderStep4 = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3731,12 +3730,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         size: 24
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 675,
+                                        lineNumber: 676,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 674,
+                                    lineNumber: 675,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -3744,7 +3743,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "Revisão Estratégica"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 678,
+                                    lineNumber: 679,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3752,7 +3751,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: "Confirme os detalhes e assegure o repasse"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 679,
+                                    lineNumber: 680,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3770,7 +3769,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: "Produto Selecionado"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 685,
+                                                                lineNumber: 686,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3778,7 +3777,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: "Valor Final"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 686,
+                                                                lineNumber: 687,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -3786,18 +3785,18 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: "Seu Repasse"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 687,
+                                                                lineNumber: 688,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 684,
+                                                        lineNumber: 685,
                                                         columnNumber: 33
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 683,
+                                                    lineNumber: 684,
                                                     columnNumber: 29
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -3809,7 +3808,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: selectedProduct?.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 692,
+                                                                lineNumber: 693,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3820,7 +3819,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 })
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 693,
+                                                                lineNumber: 694,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -3831,24 +3830,24 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 })
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 694,
+                                                                lineNumber: 695,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 691,
+                                                        lineNumber: 692,
                                                         columnNumber: 33
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 690,
+                                                    lineNumber: 691,
                                                     columnNumber: 29
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 682,
+                                            lineNumber: 683,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3860,7 +3859,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         size: 16
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 702,
+                                                        lineNumber: 703,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3871,30 +3870,30 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 703,
+                                                        lineNumber: 704,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 701,
+                                                lineNumber: 702,
                                                 columnNumber: 29
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 700,
+                                            lineNumber: 701,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 681,
+                                    lineNumber: 682,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 673,
+                            lineNumber: 674,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3908,7 +3907,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Identificação do Titular"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 711,
+                                            lineNumber: 712,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3921,7 +3920,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             children: "Nome / Razão Social"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 714,
+                                                            lineNumber: 715,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3929,13 +3928,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             children: watch("name")
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 715,
+                                                            lineNumber: 716,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 713,
+                                                    lineNumber: 714,
                                                     columnNumber: 29
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3945,7 +3944,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             children: "Número do Documento"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 718,
+                                                            lineNumber: 719,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3953,13 +3952,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             children: watch("doc")
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 719,
+                                                            lineNumber: 720,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 717,
+                                                    lineNumber: 718,
                                                     columnNumber: 29
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3970,7 +3969,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             children: "Endereço"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 722,
+                                                            lineNumber: 723,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3986,25 +3985,25 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 723,
+                                                            lineNumber: 724,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 721,
+                                                    lineNumber: 722,
                                                     columnNumber: 29
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 712,
+                                            lineNumber: 713,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 710,
+                                    lineNumber: 711,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4025,12 +4024,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 strokeWidth: 2.5
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 738,
+                                                                lineNumber: 739,
                                                                 columnNumber: 37
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 737,
+                                                            lineNumber: 738,
                                                             columnNumber: 33
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4038,13 +4037,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                             children: "Memória Técnica de Cálculo"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 740,
+                                                            lineNumber: 741,
                                                             columnNumber: 33
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 736,
+                                                    lineNumber: 737,
                                                     columnNumber: 29
                                                 }, this),
                                                 showCalcMemory ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronUp$3e$__["ChevronUp"], {
@@ -4052,20 +4051,20 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     className: "text-indigo-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 742,
+                                                    lineNumber: 743,
                                                     columnNumber: 47
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                                                     size: 20,
                                                     className: "text-[var(--muted)]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 742,
+                                                    lineNumber: 743,
                                                     columnNumber: 101
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 731,
+                                            lineNumber: 732,
                                             columnNumber: 25
                                         }, this),
                                         showCalcMemory && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4081,7 +4080,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                     children: step.label
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 750,
+                                                                    lineNumber: 751,
                                                                     columnNumber: 45
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4095,13 +4094,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                    lineNumber: 751,
+                                                                    lineNumber: 752,
                                                                     columnNumber: 45
                                                                 }, this)
                                                             ]
                                                         }, idx, true, {
                                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                            lineNumber: 749,
+                                                            lineNumber: 750,
                                                             columnNumber: 41
                                                         }, this)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4112,7 +4111,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: "Lucro Líquido Projetado"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 762,
+                                                                lineNumber: 763,
                                                                 columnNumber: 41
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4123,30 +4122,30 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 })
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 763,
+                                                                lineNumber: 764,
                                                                 columnNumber: 41
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 761,
+                                                        lineNumber: 762,
                                                         columnNumber: 37
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 747,
+                                                lineNumber: 748,
                                                 columnNumber: 33
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 746,
+                                            lineNumber: 747,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 730,
+                                    lineNumber: 731,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4158,7 +4157,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "Configurações Base"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 774,
+                                                lineNumber: 775,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4171,7 +4170,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: "Mídia"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 777,
+                                                                lineNumber: 778,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4179,13 +4178,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: watch("mediaType")
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 778,
+                                                                lineNumber: 779,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 776,
+                                                        lineNumber: 777,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4195,7 +4194,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: "Modal"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 781,
+                                                                lineNumber: 782,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4203,13 +4202,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: videoConference ? "Vídeo" : "Presencial"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 782,
+                                                                lineNumber: 783,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 780,
+                                                        lineNumber: 781,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4219,7 +4218,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                 children: "Anexos"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 785,
+                                                                lineNumber: 786,
                                                                 columnNumber: 37
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4233,7 +4232,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                        lineNumber: 787,
+                                                                        lineNumber: 788,
                                                                         columnNumber: 41
                                                                     }, this),
                                                                     attachedFiles.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
@@ -4241,48 +4240,48 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                                         className: "text-emerald-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                        lineNumber: 788,
+                                                                        lineNumber: 789,
                                                                         columnNumber: 70
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                                lineNumber: 786,
+                                                                lineNumber: 787,
                                                                 columnNumber: 37
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 784,
+                                                        lineNumber: 785,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 775,
+                                                lineNumber: 776,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 773,
+                                        lineNumber: 774,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 772,
+                                    lineNumber: 773,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 709,
+                            lineNumber: 710,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 672,
+                    lineNumber: 673,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4297,12 +4296,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         size: 20
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 800,
+                                        lineNumber: 801,
                                         columnNumber: 25
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 799,
+                                    lineNumber: 800,
                                     columnNumber: 21
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4312,7 +4311,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Multiplicador"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 803,
+                                            lineNumber: 804,
                                             columnNumber: 25
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4320,19 +4319,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: "Bônus de constância (5 dias)"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 804,
+                                            lineNumber: 805,
                                             columnNumber: 25
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 802,
+                                    lineNumber: 803,
                                     columnNumber: 21
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 798,
+                            lineNumber: 799,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4340,19 +4339,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                             children: "2x XP"
                         }, void 0, false, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 807,
+                            lineNumber: 808,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 797,
+                    lineNumber: 798,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 671,
+            lineNumber: 672,
             columnNumber: 9
         }, this);
     const onSubmitAction = async (data, isDraft = false)=>{
@@ -4435,12 +4434,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                             className: "animate-in zoom-in duration-500 delay-200"
                         }, void 0, false, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 897,
+                            lineNumber: 898,
                             columnNumber: 25
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 896,
+                        lineNumber: 897,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4451,7 +4450,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                 children: "Operação Concluída"
                             }, void 0, false, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 901,
+                                lineNumber: 902,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4463,19 +4462,19 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: protocol
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 902,
+                                        lineNumber: 903,
                                         columnNumber: 123
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 902,
+                                lineNumber: 903,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 900,
+                        lineNumber: 901,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4492,7 +4491,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         className: "mb-2 group-hover:rotate-12 transition-transform"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 911,
+                                        lineNumber: 912,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4500,7 +4499,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "COBRANÇA VIA PIX/CARTÃO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 912,
+                                        lineNumber: 913,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4508,13 +4507,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "LINK DE PAGAMENTO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 913,
+                                        lineNumber: 914,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 906,
+                                lineNumber: 907,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4527,7 +4526,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         className: "mb-2 group-hover:-rotate-12 transition-transform"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 920,
+                                        lineNumber: 921,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4535,7 +4534,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "RESERVAR HORÁRIO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 921,
+                                        lineNumber: 922,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4543,13 +4542,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         children: "LINK DE AGENDAMENTO"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 922,
+                                        lineNumber: 923,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 916,
+                                lineNumber: 917,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4559,7 +4558,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         className: "absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-125 transition-transform duration-1000"
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 926,
+                                        lineNumber: 927,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4569,12 +4568,12 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             strokeWidth: 2.5
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 928,
+                                            lineNumber: 929,
                                             columnNumber: 33
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 927,
+                                        lineNumber: 928,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4585,7 +4584,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "Status: Aguardando Pagamento"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 931,
+                                                lineNumber: 932,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4593,25 +4592,25 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 children: "A liberação da emissão ocorre instantaneamente após a confirmação do pagamento."
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 932,
+                                                lineNumber: 933,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 930,
+                                        lineNumber: 931,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 925,
+                                lineNumber: 926,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 905,
+                        lineNumber: 906,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4620,18 +4619,18 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                         children: "RETORNAR AO PAINEL"
                     }, void 0, false, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 937,
+                        lineNumber: 938,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                lineNumber: 895,
+                lineNumber: 896,
                 columnNumber: 17
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 894,
+            lineNumber: 895,
             columnNumber: 13
         }, this);
     }
@@ -4659,7 +4658,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("h-1.5 rounded-full transition-all duration-500", step >= s ? "bg-primary" : "bg-[var(--border)]")
                                     }, void 0, false, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 961,
+                                        lineNumber: 962,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4670,23 +4669,23 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                        lineNumber: 965,
+                                        lineNumber: 966,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, s, true, {
                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                lineNumber: 960,
+                                lineNumber: 961,
                                 columnNumber: 29
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                        lineNumber: 958,
+                        lineNumber: 959,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 957,
+                    lineNumber: 958,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4707,7 +4706,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 981,
+                                            lineNumber: 982,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4715,13 +4714,13 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                             children: step === 1 ? "Produto" : step === 2 ? "Titular" : step === 3 ? "Logística" : "Revisão Final"
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 982,
+                                            lineNumber: 983,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 980,
+                                    lineNumber: 981,
                                     columnNumber: 25
                                 }, this),
                                 step === 1 && renderStep1(),
@@ -4731,7 +4730,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 978,
+                            lineNumber: 979,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4744,7 +4743,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                     children: step === 1 ? "Cancelar" : "Voltar"
                                 }, void 0, false, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 994,
+                                    lineNumber: 995,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4762,14 +4761,14 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                     className: "group-hover:scale-110 transition-transform"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                    lineNumber: 1009,
+                                                    lineNumber: 1010,
                                                     columnNumber: 33
                                                 }, this),
                                                 "Salvar Rascunho"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 1003,
+                                            lineNumber: 1004,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4790,7 +4789,7 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                 className: "size-4 border-2 border-white/30 border-t-white rounded-full animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                lineNumber: 1034,
+                                                lineNumber: 1035,
                                                 columnNumber: 37
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                                 children: [
@@ -4801,43 +4800,43 @@ function OrderJourneyModal({ isOpen, onClose, onSubmit, products, error, isLoadi
                                                         className: "ml-2 group-hover:translate-x-1 transition-transform"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/OrderJourneyModal.tsx",
-                                                        lineNumber: 1038,
+                                                        lineNumber: 1039,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true)
                                         }, void 0, false, {
                                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                                            lineNumber: 1013,
+                                            lineNumber: 1014,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                                    lineNumber: 1002,
+                                    lineNumber: 1003,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/OrderJourneyModal.tsx",
-                            lineNumber: 993,
+                            lineNumber: 994,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/OrderJourneyModal.tsx",
-                    lineNumber: 977,
+                    lineNumber: 978,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/OrderJourneyModal.tsx",
-            lineNumber: 955,
+            lineNumber: 956,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/OrderJourneyModal.tsx",
-        lineNumber: 949,
+        lineNumber: 950,
         columnNumber: 9
     }, this);
 }

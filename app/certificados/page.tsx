@@ -137,7 +137,13 @@ export default function CertificatesPage() {
         fetcher
     );
     const { data: products } = useSWR("global_products_fetch", async () => {
-        const { data, error } = await supabase.from('products').select('*');
+        const { data, error } = await supabase.from('products').select(`
+            *,
+            supplier_products (
+                *,
+                supplier_tables (*)
+            )
+        `);
         if (error) throw error;
         return data;
     });

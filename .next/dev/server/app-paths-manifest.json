@@ -1,6 +1,7 @@
 {
   "/admin/page": "app/admin/page.js",
   "/api/admin/financials/route": "app/api/admin/financials/route.js",
+  "/api/certificates/logs/route": "app/api/certificates/logs/route.js",
   "/api/certificates/route": "app/api/certificates/route.js",
   "/api/customers/route": "app/api/customers/route.js",
   "/api/financials/route": "app/api/financials/route.js",
