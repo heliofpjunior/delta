@@ -52,7 +52,8 @@ export function calculateCommission(
         bronze: number;
         prata: number;
         ouro: number;
-    }
+    },
+    taxOnCost: boolean = false
 ): CommissionResult {
     // 1. Determine base cost price for the seller
     let effectiveLevel = level;
@@ -75,45 +76,51 @@ export function calculateCommission(
     }
 
     const steps: CalculationStep[] = [
-        { label: "Preço de Venda", value: salePrice, type: "info" },
-        { label: `Custo Parceiro (${effectiveLevel})`, value: -sellerCost, type: "negative" },
+        { label: "Preço de Venda Final", value: salePrice, type: "info" },
+        { label: `(-) Custo Base do Certificado (${effectiveLevel})`, value: -sellerCost, type: "negative" },
     ];
 
     // 3. Calculate external transaction costs (to be deducted from repasse)
-    let transactionCosts: number;
-    let taxes: number;
-    let fixedFee: number;
+    let taxes = 0;
+    let fixedFee = 0;
+
+    const taxAmountBase = taxOnCost ? sellerCost : salePrice;
 
     if (supplierData) {
-        taxes = salePrice * (supplierData.tax_percent / 100);
+        // Use real supplier table rules
+        taxes = taxAmountBase * (supplierData.tax_percent / 100);
         fixedFee = supplierData.tax_fixed;
-        transactionCosts = fixedFee + taxes;
     } else {
-        taxes = salePrice * FINANCE_CONSTANTS.TAX_RATE;
+        // Use fallback global rules
+        taxes = taxAmountBase * FINANCE_CONSTANTS.TAX_RATE;
         fixedFee = (FINANCE_CONSTANTS.BASE_COST - 50);
-        transactionCosts = fixedFee + taxes;
     }
 
-    steps.push({ label: "Impostos s/ Venda", value: -taxes, type: "negative" });
+    const transactionCosts = fixedFee + taxes;
+    
+    const taxLabelBase = taxOnCost ? "Impostos s/ Custo Base" : "Impostos s/ Venda";
+    const taxRateDisplay = supplierData ? supplierData.tax_percent : (FINANCE_CONSTANTS.TAX_RATE * 100);
+    
+    steps.push({ 
+        label: `(-) ${taxLabelBase} (${taxRateDisplay}%)`, 
+        value: -taxes, 
+        type: "negative" 
+    });
+
     if (fixedFee > 0) {
-        steps.push({ label: "Taxas Fixas", value: -fixedFee, type: "negative" });
+        steps.push({ label: "(-) Taxas Operacionais Fixas", value: -fixedFee, type: "negative" });
     }
 
-    // 4. Calculate Platform Costs (what the platform actually pays)
-    let totalCosts: number;
-    if (supplierData) {
-        totalCosts = supplierData.base_cost + transactionCosts;
-    } else {
-        totalCosts = 50.00 + transactionCosts; // Assuming 50.00 is the supplier cost
-    }
-
-    // 5. Calculate Final Repasse (Markup - External Costs)
-    // Formula: Repasse = (Sale Price - Partner Cost) - (Fees + Taxes)
-    let potentialRepasse = salePrice - sellerCost - transactionCosts;
+    // 4. Calculate Final Repasse (Markup - External Costs)
+    // Formula: Repasse = (Price - Cost) - (Fees + Taxes)
+    const potentialRepasse = salePrice - sellerCost - transactionCosts;
 
     // 6. Calculate Platform Revenue and Profit
     // Platform Revenue = what the platform keeps from the sale to cover costs and profit
     const platformRevenue = salePrice - potentialRepasse;
+    
+    // totalCosts for the platform: Supplier Product Price + Taxes + Fees
+    const totalCosts = (supplierData?.base_cost || 50.00) + transactionCosts;
     const platformProfit = platformRevenue - totalCosts;
     const marginPercent = platformProfit / salePrice;
 
@@ -121,7 +128,8 @@ export function calculateCommission(
         repasse: potentialRepasse,
         platformProfit,
         marginPercent,
-        isBlocked: false,
+        isBlocked: potentialRepasse < 0,
+        reason: potentialRepasse < 0 ? "Margem do parceiro negativa" : undefined,
         partnerCost: sellerCost,
         taxes,
         fixedFees: fixedFee,

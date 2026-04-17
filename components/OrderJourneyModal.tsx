@@ -219,7 +219,8 @@ export default function OrderJourneyModal({ isOpen, onClose, onSubmit, products,
             bronze: Number(selectedProduct.commission_bronze) || 0,
             prata: Number(selectedProduct.commission_prata) || 0,
             ouro: Number(selectedProduct.commission_ouro) || 0
-        }
+        },
+        currentUser.tax_collection_by_user
     ) : null;
 
     // Auto-fill logic for CPF/CNPJ

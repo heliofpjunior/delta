@@ -4984,6 +4984,16 @@
     }
   }
 
+  .shadow-emerald-500\/5 {
+    --tw-shadow-color: #00bb7f0d;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .shadow-emerald-500\/5 {
+      --tw-shadow-color: color-mix(in oklab, color-mix(in oklab, var(--color-emerald-500) 5%, transparent) var(--tw-shadow-alpha), transparent);
+    }
+  }
+
   .shadow-emerald-500\/10 {
     --tw-shadow-color: #00bb7f1a;
   }
@@ -5157,6 +5167,16 @@
   @supports (color: color-mix(in lab, red, red)) {
     .shadow-rose-200 {
       --tw-shadow-color: color-mix(in oklab, var(--color-rose-200) var(--tw-shadow-alpha), transparent);
+    }
+  }
+
+  .shadow-rose-500\/5 {
+    --tw-shadow-color: #ff23570d;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .shadow-rose-500\/5 {
+      --tw-shadow-color: color-mix(in oklab, color-mix(in oklab, var(--color-rose-500) 5%, transparent) var(--tw-shadow-alpha), transparent);
     }
   }
 
@@ -5969,6 +5989,12 @@
   }
 
   @media (hover: hover) {
+    .group-hover\/step\:text-primary:is(:where(.group\/step):hover *) {
+      color: var(--color-primary);
+    }
+  }
+
+  @media (hover: hover) {
     .group-hover\/wallet\:rotate-12:is(:where(.group\/wallet):hover *) {
       rotate: 12deg;
     }
@@ -6208,6 +6234,14 @@
   .peer-checked\:after\:border-white:is(:where(.peer):checked ~ *):after {
     content: var(--tw-content);
     border-color: var(--color-white);
+  }
+
+  .checked\:border-primary:checked {
+    border-color: var(--color-primary);
+  }
+
+  .checked\:bg-primary:checked {
+    background-color: var(--color-primary);
   }
 
   .focus-within\:w-80:focus-within {
