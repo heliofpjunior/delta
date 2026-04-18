@@ -176,6 +176,7 @@ function SimulationProvider({ children }) {
                                 balance_available: Number(profile.balance_available) || 0,
                                 balance_processing: Number(profile.balance_processing) || 0,
                                 custom_prices: profile.custom_prices || {},
+                                tax_collection_by_user: profile.tax_collection_by_user || false,
                                 permissions: profile.permissions || {},
                                 preferences: {
                                     darkMode: profile.preferences?.darkMode ?? prevUser.preferences?.darkMode ?? true
@@ -251,7 +252,7 @@ function SimulationProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/components/SimulationProvider.tsx",
-        lineNumber: 274,
+        lineNumber: 276,
         columnNumber: 9
     }, this);
 }
