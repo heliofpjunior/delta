@@ -31,7 +31,10 @@ interface UserProfile {
     balance_available?: number;
     balance_processing?: number;
     custom_prices?: Record<number, number>;
+<<<<<<< HEAD
     tax_collection_by_user?: boolean;
+=======
+>>>>>>> 41c331e2fc4dfed83f3331c7ac5e43e8f98812ec
     permissions?: Record<string, boolean>;
     preferences?: {
         darkMode: boolean;
@@ -206,7 +209,10 @@ export function SimulationProvider({ children }: { children: React.ReactNode }) 
                             balance_available: Number(profile.balance_available) || 0,
                             balance_processing: Number(profile.balance_processing) || 0,
                             custom_prices: profile.custom_prices || {},
+<<<<<<< HEAD
                             tax_collection_by_user: profile.tax_collection_by_user || false,
+=======
+>>>>>>> 41c331e2fc4dfed83f3331c7ac5e43e8f98812ec
                             permissions: profile.permissions || {},
                             preferences: {
                                 darkMode: profile.preferences?.darkMode ?? prevUser.preferences?.darkMode ?? true
