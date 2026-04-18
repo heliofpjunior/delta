@@ -176,6 +176,10 @@ function SimulationProvider({ children }) {
                                 balance_available: Number(profile.balance_available) || 0,
                                 balance_processing: Number(profile.balance_processing) || 0,
                                 custom_prices: profile.custom_prices || {},
+<<<<<<< HEAD
+                                tax_collection_by_user: profile.tax_collection_by_user || false,
+=======
+>>>>>>> 41c331e2fc4dfed83f3331c7ac5e43e8f98812ec
                                 permissions: profile.permissions || {},
                                 preferences: {
                                     darkMode: profile.preferences?.darkMode ?? prevUser.preferences?.darkMode ?? true
@@ -251,7 +255,11 @@ function SimulationProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/components/SimulationProvider.tsx",
+<<<<<<< HEAD
+        lineNumber: 276,
+=======
         lineNumber: 274,
+>>>>>>> 41c331e2fc4dfed83f3331c7ac5e43e8f98812ec
         columnNumber: 9
     }, this);
 }

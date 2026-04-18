@@ -7362,12 +7362,15 @@
   }
 
   @media (min-width: 48rem) {
+<<<<<<< HEAD
+=======
     .md\:mb-0 {
       margin-bottom: calc(var(--spacing) * 0);
     }
   }
 
   @media (min-width: 48rem) {
+>>>>>>> 41c331e2fc4dfed83f3331c7ac5e43e8f98812ec
     .md\:block {
       display: block;
     }
