@@ -92,35 +92,34 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
     }
 
     return (
-        <div className="flex min-h-screen bg-[var(--background)] font-sans overflow-hidden transition-colors duration-500">
+        <div className="flex h-[100dvh] bg-[var(--background)] font-sans overflow-hidden transition-colors duration-500">
             <Sidebar />
-            <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
-                {/* Main container without excessive margins/rounding */}
-                <div className="flex-1 h-full flex flex-col overflow-y-auto custom-scrollbar transition-all duration-500 bg-[var(--background)]">
-                    <div className="flex-1 flex flex-col min-h-full transition-colors duration-500">
-                        <Header onOpenJourney={() => setIsJourneyOpen(true)} />
-                        <div className="flex-1 p-2 md:p-3 lg:p-4 overflow-y-auto custom-scrollbar">
-                            <div className="max-w-[1920px] mx-auto pb-20">
-                                {isRestricted ? (
-                                    <div className="flex flex-col items-center justify-center py-20 text-center">
-                                        <div className="size-16 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-6 text-slate-400">
-                                            <ShieldAlert size={32} />
-                                        </div>
-                                        <h2 className="text-xl font-black mb-2">Módulo Restrito</h2>
-                                        <p className="text-sm text-slate-500 max-w-sm mb-8">
-                                            Este módulo ainda não foi liberado para o seu perfil ou está em desenvolvimento.
-                                        </p>
-                                        <button
-                                            onClick={() => window.location.href = '/loja'}
-                                            className="bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-xs"
-                                        >
-                                            Ir para Loja / Certificados
-                                        </button>
+            <main className="flex-1 flex flex-col min-h-0 relative overflow-hidden">
+                {/* Main scrollable area */}
+                <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-[var(--background)]">
+                    <Header onOpenJourney={() => setIsJourneyOpen(true)} />
+                    
+                    <div className="p-2 md:p-3 lg:p-4">
+                        <div className="max-w-[1920px] mx-auto">
+                            {isRestricted ? (
+                                <div className="flex flex-col items-center justify-center py-20 text-center">
+                                    <div className="size-16 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-6 text-slate-400">
+                                        <ShieldAlert size={32} />
                                     </div>
-                                ) : (
-                                    children
-                                )}
-                            </div>
+                                    <h2 className="text-xl font-black mb-2">Módulo Restrito</h2>
+                                    <p className="text-sm text-slate-500 max-w-sm mb-8">
+                                        Este módulo ainda não foi liberado para o seu perfil ou está em desenvolvimento.
+                                    </p>
+                                    <button
+                                        onClick={() => window.location.href = '/loja'}
+                                        className="bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-xs"
+                                    >
+                                        Ir para Loja / Certificados
+                                    </button>
+                                </div>
+                            ) : (
+                                children
+                            )}
                         </div>
                     </div>
                 </div>

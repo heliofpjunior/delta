@@ -202,12 +202,12 @@ function QuickAction({ href, icon: Icon, label, color }: any) {
     return (
         <Link href={href} className="flex flex-col items-center gap-2 group">
             <div className={cn(
-                "size-16 rounded-2xl flex items-center justify-center transition-all group-active:scale-90 shadow-sm",
+                "size-14 md:size-16 rounded-2xl flex items-center justify-center transition-all group-active:scale-90 shadow-sm",
                 color
             )}>
-                <Icon size={24} strokeWidth={2.5} />
+                <Icon size={24} strokeWidth={2.5} className="size-5 md:size-6" />
             </div>
-            <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider group-hover:text-primary transition-colors">
+            <span className="text-[9px] md:text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider group-hover:text-primary transition-colors text-center">
                 {label}
             </span>
         </Link>
