@@ -224,40 +224,57 @@ export default function CustomersPage() {
                 </div>
             </div>
 
-            {/* Statistics - Condensed & Elegant */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                <div className="bg-white dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm">
-                    <div className="flex items-center gap-2 mb-1">
-                        <Users size={12} className="text-blue-500" />
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Total</p>
+            {/* Statistics - Ultra-Condensed with Elegant Navigation */}
+            <div className="relative group/stats">
+                <div className="flex md:grid md:grid-cols-4 gap-2 overflow-x-auto no-scrollbar scroll-smooth pb-1 md:pb-0" id="stats-container">
+                    <div className="flex-1 min-w-[120px] md:min-w-0 bg-white dark:bg-slate-900/40 p-2.5 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm flex items-center gap-3">
+                        <div className="size-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 shrink-0">
+                            <Users size={16} />
+                        </div>
+                        <div className="leading-none">
+                            <p className="text-sm font-bold text-slate-900 dark:text-white">{customers?.length || 0}</p>
+                            <p className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">Total</p>
+                        </div>
                     </div>
-                    <p className="text-xl font-bold text-slate-900 dark:text-white leading-none">{customers?.length || 0}</p>
+                    <div className="flex-1 min-w-[120px] md:min-w-0 bg-white dark:bg-slate-900/40 p-2.5 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm flex items-center gap-3">
+                        <div className="size-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 shrink-0">
+                            <TrendingUp size={16} />
+                        </div>
+                        <div className="leading-none">
+                            <p className="text-sm font-bold text-slate-900 dark:text-white">{customers?.filter((c: any) => c.status === "Oportunidade").length || 0}</p>
+                            <p className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">Ops</p>
+                        </div>
+                    </div>
+                    <div className="flex-1 min-w-[120px] md:min-w-0 bg-white dark:bg-slate-900/40 p-2.5 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm flex items-center gap-3">
+                        <div className="size-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0">
+                            <Shield size={16} />
+                        </div>
+                        <div className="leading-none">
+                            <p className="text-sm font-bold text-slate-900 dark:text-white">{customers?.filter((c: any) => c.status === "Ativo").length || 0}</p>
+                            <p className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">Ativos</p>
+                        </div>
+                    </div>
+                    <div className="flex-1 min-w-[120px] md:min-w-0 bg-white dark:bg-slate-900/40 p-2.5 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm flex items-center gap-3">
+                        <div className="size-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-500 shrink-0">
+                            <CalendarClock size={16} />
+                        </div>
+                        <div className="leading-none">
+                            <p className="text-sm font-bold text-rose-500">
+                                {customers?.filter((c: any) => {
+                                    const diff = dayDiff(c.expiry_date);
+                                    return diff !== null && diff > 0 && diff < 30;
+                                }).length || 0}
+                            </p>
+                            <p className="text-[8px] font-bold text-slate-400 uppercase tracking-wider">Vence</p>
+                        </div>
+                    </div>
                 </div>
-                <div className="bg-white dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm">
-                    <div className="flex items-center gap-2 mb-1">
-                        <TrendingUp size={12} className="text-amber-500" />
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Oportunidades</p>
+                
+                {/* Visual Indicators for Scroll */}
+                <div className="md:hidden absolute right-0 top-0 bottom-1 w-12 bg-gradient-to-l from-slate-50 dark:from-slate-950 to-transparent pointer-events-none flex items-center justify-end pr-1 opacity-0 group-hover/stats:opacity-100 transition-opacity">
+                    <div className="size-6 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-center text-slate-400">
+                        <ChevronRight size={14} />
                     </div>
-                    <p className="text-xl font-bold text-slate-900 dark:text-white leading-none">{customers?.filter((c: any) => c.status === "Oportunidade").length || 0}</p>
-                </div>
-                <div className="bg-white dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm">
-                    <div className="flex items-center gap-2 mb-1">
-                        <Shield size={12} className="text-emerald-500" />
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Ativos</p>
-                    </div>
-                    <p className="text-xl font-bold text-slate-900 dark:text-white leading-none">{customers?.filter((c: any) => c.status === "Ativo").length || 0}</p>
-                </div>
-                <div className="bg-white dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm">
-                    <div className="flex items-center gap-2 mb-1">
-                        <CalendarClock size={12} className="text-rose-500" />
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Vencendo</p>
-                    </div>
-                    <p className="text-xl font-bold text-rose-500 leading-none">
-                        {customers?.filter((c: any) => {
-                            const diff = dayDiff(c.expiry_date);
-                            return diff !== null && diff > 0 && diff < 30;
-                        }).length || 0}
-                    </p>
                 </div>
             </div>
 

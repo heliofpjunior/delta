@@ -25,8 +25,8 @@ export default function Header({ onOpenJourney }: { onOpenJourney?: () => void }
     return (
         <header className="sticky top-0 z-40 bg-[var(--card)]/90 backdrop-blur-md px-4 py-1 border-b border-[var(--border)] shadow-sm">
             <div className="flex flex-col md:flex-row items-center justify-between gap-3 h-full">
-                {/* Compact Search */}
-                <div className="flex-1 w-full max-w-[280px] relative group">
+                {/* Compact Search - Hidden on Mobile */}
+                <div className="flex-1 w-full max-w-[280px] relative group hidden md:block">
                     <div className="absolute left-2 top-1/2 -translate-y-1/2 size-5 bg-[var(--background)] rounded-md flex items-center justify-center text-[var(--muted)] group-focus-within:text-primary transition-all border border-[var(--border)] shadow-sm opacity-50">
                         <Search size={12} strokeWidth={2} />
                     </div>
