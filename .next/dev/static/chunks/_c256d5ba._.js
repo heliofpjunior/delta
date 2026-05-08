@@ -5056,7 +5056,7 @@ function AppWrapper({ children }) {
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex min-h-screen bg-[var(--background)] font-sans overflow-hidden transition-colors duration-500",
+        className: "flex h-[100dvh] bg-[var(--background)] font-sans overflow-hidden transition-colors duration-500",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/components/AppWrapper.tsx",
@@ -5064,88 +5064,81 @@ function AppWrapper({ children }) {
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-                className: "flex-1 flex flex-col h-screen overflow-hidden relative",
+                className: "flex-1 flex flex-col min-h-0 relative overflow-hidden",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex-1 h-full flex flex-col overflow-y-auto custom-scrollbar transition-all duration-500 bg-[var(--background)]",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex-1 flex flex-col min-h-full transition-colors duration-500",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                onOpenJourney: ()=>setIsJourneyOpen(true)
-                            }, void 0, false, {
-                                fileName: "[project]/components/AppWrapper.tsx",
-                                lineNumber: 101,
-                                columnNumber: 25
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex-1 p-2 md:p-3 lg:p-4 overflow-y-auto custom-scrollbar",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "max-w-[1920px] mx-auto pb-20",
-                                    children: isRestricted ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex flex-col items-center justify-center py-20 text-center",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "size-16 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-6 text-slate-400",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldAlert$3e$__["ShieldAlert"], {
-                                                    size: 32
-                                                }, void 0, false, {
-                                                    fileName: "[project]/components/AppWrapper.tsx",
-                                                    lineNumber: 107,
-                                                    columnNumber: 45
-                                                }, this)
+                    className: "flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-[var(--background)]",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            onOpenJourney: ()=>setIsJourneyOpen(true)
+                        }, void 0, false, {
+                            fileName: "[project]/components/AppWrapper.tsx",
+                            lineNumber: 100,
+                            columnNumber: 21
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "p-2 md:p-3 lg:p-4",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "max-w-[1920px] mx-auto",
+                                children: isRestricted ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex flex-col items-center justify-center py-20 text-center",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "size-16 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-6 text-slate-400",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShieldAlert$3e$__["ShieldAlert"], {
+                                                size: 32
                                             }, void 0, false, {
                                                 fileName: "[project]/components/AppWrapper.tsx",
-                                                lineNumber: 106,
-                                                columnNumber: 41
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                className: "text-xl font-black mb-2",
-                                                children: "Módulo Restrito"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/AppWrapper.tsx",
-                                                lineNumber: 109,
-                                                columnNumber: 41
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-sm text-slate-500 max-w-sm mb-8",
-                                                children: "Este módulo ainda não foi liberado para o seu perfil ou está em desenvolvimento."
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/AppWrapper.tsx",
-                                                lineNumber: 110,
-                                                columnNumber: 41
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                onClick: ()=>window.location.href = '/loja',
-                                                className: "bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-xs",
-                                                children: "Ir para Loja / Certificados"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/AppWrapper.tsx",
-                                                lineNumber: 113,
+                                                lineNumber: 107,
                                                 columnNumber: 41
                                             }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/components/AppWrapper.tsx",
-                                        lineNumber: 105,
-                                        columnNumber: 37
-                                    }, this) : children
-                                }, void 0, false, {
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/AppWrapper.tsx",
+                                            lineNumber: 106,
+                                            columnNumber: 37
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                            className: "text-xl font-black mb-2",
+                                            children: "Módulo Restrito"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/AppWrapper.tsx",
+                                            lineNumber: 109,
+                                            columnNumber: 37
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm text-slate-500 max-w-sm mb-8",
+                                            children: "Este módulo ainda não foi liberado para o seu perfil ou está em desenvolvimento."
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/AppWrapper.tsx",
+                                            lineNumber: 110,
+                                            columnNumber: 37
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: ()=>window.location.href = '/loja',
+                                            className: "bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-xs",
+                                            children: "Ir para Loja / Certificados"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/AppWrapper.tsx",
+                                            lineNumber: 113,
+                                            columnNumber: 37
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/components/AppWrapper.tsx",
-                                    lineNumber: 103,
-                                    columnNumber: 29
-                                }, this)
+                                    lineNumber: 105,
+                                    columnNumber: 33
+                                }, this) : children
                             }, void 0, false, {
                                 fileName: "[project]/components/AppWrapper.tsx",
-                                lineNumber: 102,
+                                lineNumber: 103,
                                 columnNumber: 25
                             }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/components/AppWrapper.tsx",
-                        lineNumber: 100,
-                        columnNumber: 21
-                    }, this)
-                }, void 0, false, {
+                        }, void 0, false, {
+                            fileName: "[project]/components/AppWrapper.tsx",
+                            lineNumber: 102,
+                            columnNumber: 21
+                        }, this)
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/components/AppWrapper.tsx",
                     lineNumber: 99,
                     columnNumber: 17
@@ -5164,7 +5157,7 @@ function AppWrapper({ children }) {
                 isLoading: productsLoading
             }, void 0, false, {
                 fileName: "[project]/components/AppWrapper.tsx",
-                lineNumber: 129,
+                lineNumber: 128,
                 columnNumber: 13
             }, this)
         ]
