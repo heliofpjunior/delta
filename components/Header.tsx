@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useSimulation } from "@/components/SimulationProvider";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
+import { useState, useEffect } from "react";
 import {
     Award,
     Search,
@@ -12,7 +13,9 @@ import {
     Bell,
     LogOut,
     Plus as PlusIcon,
-    Search as SearchIcon
+    Search as SearchIcon,
+    Eye,
+    EyeOff
 } from "lucide-react";
 
 import ThemeToggle from "./ThemeToggle";
@@ -21,6 +24,21 @@ export default function Header({ onOpenJourney }: { onOpenJourney?: () => void }
     const { currentUser, logout } = useSimulation();
     const { data: financialData } = useSWR(currentUser?.id ? `/api/financials?userId=${currentUser.id}` : null, fetcher);
     const availableBalance = financialData?.available ?? currentUser.balance_available ?? 0;
+
+    const [showBalance, setShowBalance] = useState(true);
+
+    // Sync with localStorage to persist preference if possible, or just local state
+    useEffect(() => {
+        const stored = localStorage.getItem('delta_show_balance');
+        if (stored !== null) setShowBalance(stored === 'true');
+    }, []);
+
+    const toggleBalance = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const newState = !showBalance;
+        setShowBalance(newState);
+        localStorage.setItem('delta_show_balance', String(newState));
+    };
 
     return (
         <header className="sticky top-0 z-40 bg-[var(--card)]/90 backdrop-blur-md px-4 py-1 border-b border-[var(--border)] shadow-sm">
@@ -51,14 +69,19 @@ export default function Header({ onOpenJourney }: { onOpenJourney?: () => void }
 
                     {/* Dynamic Balance Hub */}
                     <div
-                        className="flex items-center gap-2 bg-emerald-600 text-white px-3.5 h-7 rounded-lg shadow-md border border-white/10 active:scale-95 transition-all cursor-pointer group/wallet"
+                        className="flex items-center gap-2 bg-emerald-600 text-white px-3 h-7 rounded-lg shadow-md border border-white/10 active:scale-95 transition-all cursor-pointer group/wallet relative"
                         onClick={() => window.location.href = '/financeiro'}
                     >
-                        <Wallet size={12} className="group-hover/wallet:rotate-12 transition-transform" />
-                        <span className="text-xs font-bold tracking-tight leading-none">{availableBalance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                        <div className="size-3.5 bg-white/20 rounded-full flex items-center justify-center group-hover/wallet:bg-white group-hover/wallet:text-emerald-600 transition-colors">
-                            <Plus size={7} strokeWidth={3} />
-                        </div>
+                        <Wallet size={12} className="group-hover/wallet:rotate-12 transition-transform shrink-0" />
+                        <span className="text-xs font-bold tracking-tight leading-none min-w-[70px]">
+                            {showBalance ? availableBalance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "••••••"}
+                        </span>
+                        <button 
+                            onClick={toggleBalance}
+                            className="size-5 hover:bg-white/20 rounded-md flex items-center justify-center transition-colors"
+                        >
+                            {showBalance ? <Eye size={10} /> : <EyeOff size={10} />}
+                        </button>
                     </div>
 
                     {/* Primary Action */}
@@ -122,3 +145,4 @@ export default function Header({ onOpenJourney }: { onOpenJourney?: () => void }
         </header>
     );
 }
+
