@@ -1,9 +1,0 @@
-{
-  "/api/certificates/route": "app/api/certificates/route.js",
-  "/api/customers/route": "app/api/customers/route.js",
-  "/api/financials/route": "app/api/financials/route.js",
-  "/certificados/page": "app/certificados/page.js",
-  "/clientes/page": "app/clientes/page.js",
-  "/financeiro/page": "app/financeiro/page.js",
-  "/page": "app/page.js"
-}
