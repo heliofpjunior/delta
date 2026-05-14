@@ -22,6 +22,8 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/ThemeProvider";
+import AttributionManager from "@/components/AttributionManager";
+import { Suspense } from "react";
 
 export default function RootLayout({
     children,
@@ -33,6 +35,9 @@ export default function RootLayout({
             <body className={`${inter.variable} ${outfit.variable} antialiased`}>
                 <SimulationProvider>
                     <ThemeProvider>
+                        <Suspense fallback={null}>
+                            <AttributionManager />
+                        </Suspense>
                         <AppWrapper>
                             {children}
                         </AppWrapper>

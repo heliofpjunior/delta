@@ -8,13 +8,12 @@ import Input from "./ui/Input";
 import SegmentedControl from "./ui/SegmentedControl";
 import SearchSelect from "./ui/SearchSelect";
 import { useEffect } from "react";
+import { Ticket } from "lucide-react";
 
 const couponSchema = z.object({
     code: z.string().min(3, "Código deve ter pelo menos 3 caracteres").toUpperCase(),
     discountType: z.enum(["percent", "fixed"]),
     discountValue: z.string().min(1, "Informe o valor"),
-    influencer: z.string().min(1, "Informe o influenciador"),
-    products: z.string().optional(),
 });
 
 type CouponFormData = z.infer<typeof couponSchema>;
@@ -41,102 +40,71 @@ export default function CouponModal({ isOpen, onClose, onSubmit, initialData, ti
 
     useEffect(() => {
         if (initialData) {
-            // Transform legacy data if needed
             reset({
                 code: initialData.code || "",
-                discountType: initialData.discount?.includes("%") ? "percent" : "fixed",
-                discountValue: initialData.discount?.replace(/[^0-9]/g, "") || "",
-                influencer: initialData.influencer || "Geral",
-                products: initialData.products || "Todos",
+                discountType: initialData.discount_type || "percent",
+                discountValue: String(initialData.discount_value) || "",
             });
         } else {
-            reset({ code: "", discountType: "percent", discountValue: "", influencer: "Geral", products: "Todos" });
+            reset({ code: "", discountType: "percent", discountValue: "" });
         }
     }, [initialData, reset, isOpen]);
 
     const discountType = watch("discountType");
 
-    const onSubmitProxy = (data: any) => {
-        const formattedData = {
-            ...data,
-            discount: data.discountType === "percent" ? `${data.discountValue}%` : `R$ ${data.discountValue}`,
-        };
-        onSubmit(formattedData);
-    };
-
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
-            <form onSubmit={handleSubmit(onSubmitProxy)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 p-2">
+                <div className="bg-emerald-500/5 border-2 border-emerald-500/10 p-6 rounded-[2rem] flex items-center gap-4">
+                    <div className="size-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg">
+                        <Ticket size={24} />
+                    </div>
+                    <div>
+                        <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Configuração de Incentivo</p>
+                        <p className="text-[9px] font-bold text-[var(--muted)] uppercase">O VALOR SERÁ ABATIDO DA SUA COMISSÃO</p>
+                    </div>
+                </div>
+
                 <Input
                     label="Código do Cupom"
                     {...register("code")}
                     error={errors.code?.message}
-                    placeholder="Ex: VERAO2026"
-                    helpText="Crie nomes curtos e memoráveis para facilitar o uso."
+                    placeholder="Ex: PROMO10"
+                    helpText="Crie nomes curtos e memoráveis."
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                    <div className="md:col-span-3">
-                        <SegmentedControl
-                            label="Tipo de Desconto"
-                            value={discountType}
-                            onChange={(val) => setValue("discountType", val as any)}
-                            options={[
-                                { label: "Porcentagem (%)", value: "percent" },
-                                { label: "Valor Fixo (R$)", value: "fixed" },
-                            ]}
-                        />
-                    </div>
-                    <div className="md:col-span-2">
-                        <Input
-                            label={discountType === "percent" ? "Porcentagem" : "Valor R$"}
-                            {...register("discountValue")}
-                            error={errors.discountValue?.message}
-                            placeholder={discountType === "percent" ? "15" : "50,00"}
-                            helpText={discountType === "fixed" ? "Gera fechamentos mais rápidos." : "Ideal para combos."}
-                        />
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <SearchSelect
-                        label="Influenciador / Origem"
-                        value={watch("influencer")}
-                        onChange={(val) => setValue("influencer", val as string)}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <SegmentedControl
+                        label="Tipo de Desconto"
+                        value={discountType}
+                        onChange={(val) => setValue("discountType", val as any)}
                         options={[
-                            { label: "Geral (Auto)", value: "Geral" },
-                            { label: "Parceiro VIP", value: "Parceiro VIP" },
-                            { label: "@vlog_contabil", value: "Maria Silva" },
-                            { label: "Campanha Fevereiro", value: "Fevereiro" },
+                            { label: "Porcentagem (%)", value: "percent" },
+                            { label: "Valor Fixo (R$)", value: "fixed" },
                         ]}
                     />
-                    <SearchSelect
-                        label="Limitar a Produtos"
-                        value={watch("products") || "Todos"}
-                        onChange={(val) => setValue("products", val as string)}
-                        options={[
-                            { label: "Todos os Produtos", value: "Todos" },
-                            { label: "Apenas e-CPF", value: "Apenas CPF" },
-                            { label: "Apenas e-CNPJ", value: "Apenas CNPJ" },
-                            { label: "Certificados A3", value: "Apenas A3" },
-                        ]}
+                    <Input
+                        label={discountType === "percent" ? "Porcentagem (%)" : "Valor Fixo (R$)"}
+                        {...register("discountValue")}
+                        error={errors.discountValue?.message}
+                        placeholder={discountType === "percent" ? "10" : "20.00"}
                     />
                 </div>
 
-                <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-6 border-t border-slate-50 dark:border-slate-800/50">
+                <div className="flex flex-col md:flex-row justify-end gap-4 pt-6 border-t border-[var(--border)]">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="px-6 py-2.5 rounded-lg font-bold text-xs text-[var(--muted)] hover:text-[var(--foreground)] transition-all"
+                        className="px-8 py-3 rounded-xl font-black text-[10px] text-[var(--muted)] uppercase tracking-widest hover:bg-[var(--background)] transition-all"
                     >
-                        Cancelar
+                        CANCELAR
                     </button>
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 max-w-full md:max-w-[60%] bg-primary text-on-primary px-8 py-3 rounded-lg font-bold text-sm shadow-sm hover:bg-primary/90 active:scale-95 transition-all disabled:opacity-50"
+                        className="bg-emerald-500 text-white px-10 py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-emerald-500/20 hover:scale-[1.05] active:scale-95 transition-all border-b-4 border-emerald-700 disabled:opacity-50"
                     >
-                        {isSubmitting ? "Salvando..." : "Ativar Campanha"}
+                        {isSubmitting ? "SALVANDO..." : "ATIVAR CUPOM"}
                     </button>
                 </div>
             </form>

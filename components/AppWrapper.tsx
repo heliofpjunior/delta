@@ -16,6 +16,11 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
     const { isAuthenticated, loading, currentUser, hasPermission } = useSimulation();
     const pathname = usePathname();
     const [isJourneyOpen, setIsJourneyOpen] = useState(false);
+    const isPublicSalesRoute =
+        pathname.startsWith('/loja/') ||
+        pathname.startsWith('/l/') ||
+        pathname === '/checkout' ||
+        pathname.startsWith('/checkout/');
 
     // Permission Guard Logic
     const routePermissions: Record<string, string> = {
@@ -33,7 +38,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
     const isRestricted = requiredPermission && !hasPermission(requiredPermission);
 
     // Global Products Fetch with diagnostics
-    const { data: products, error: productsError, isLoading: productsLoading } = useSWR('global_products_fetch', async () => {
+    const { data: products, error: productsError, isLoading: productsLoading } = useSWR(isAuthenticated ? 'global_products_fetch' : null, async () => {
         console.log("AppWrapper: --- INICIANDO DIAGNÓSTICO DE CONEXÃO ---");
         console.log("AppWrapper: URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
         console.log("AppWrapper: Key (inicio):", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 15) + "...");
@@ -59,6 +64,10 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
 
     const isAdminRoute = pathname.startsWith('/admin');
     const isUserAdmin = currentUser?.role === 'admin';
+
+    if (isPublicSalesRoute) {
+        return <>{children}</>;
+    }
 
     if (loading) {
         return (

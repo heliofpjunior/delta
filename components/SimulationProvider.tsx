@@ -32,6 +32,13 @@ interface UserProfile {
     balance_processing?: number;
     custom_prices?: Record<number, number>;
     tax_collection_by_user?: boolean;
+    is_public_store_active?: boolean;
+    store_slug?: string;
+    store_branding?: {
+        logo: string | null;
+        primary_color: string;
+        bio: string;
+    };
     permissions?: Record<string, boolean>;
     preferences?: {
         darkMode: boolean;
@@ -133,92 +140,93 @@ export function SimulationProvider({ children }: { children: React.ReactNode }) 
         });
     };
 
-    // Load actual profile if connected to Supabase
     useEffect(() => {
         const loadProfile = async () => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
 
-                if (session) {
-                    setIsAuthenticated(true);
-                    let { data: profile, error } = await supabase
+                if (!session) {
+                    setIsAuthenticated(false);
+                    return;
+                }
+
+                let { data: profile, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (!profile || error) {
+                    console.log("Sincronizando perfil com Supabase...");
+                    const { data: newProfile, error: createError } = await supabase
                         .from('profiles')
-                        .select('*')
-                        .eq('id', session.user.id)
+                        .upsert([
+                            {
+                                id: session.user.id,
+                                full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Novo Vendedor',
+                                email: session.user.email,
+                                role: 'seller',
+                                level: 'Bronze',
+                                xp: 0,
+                                wallet: 0,
+                                status: 'Ativo'
+                            }
+                        ])
+                        .select()
                         .single();
 
-                    // If profile doesn't exist, create it automatically (JIT)
-                    if (!profile || error) {
-                        console.log("Sincronizando perfil com Supabase...");
-                        const { data: newProfile, error: createError } = await supabase
-                            .from('profiles')
-                            .upsert([
-                                {
-                                    id: session.user.id,
-                                    full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Novo Vendedor',
-                                    email: session.user.email,
-                                    role: 'seller',
-                                    level: 'Bronze',
-                                    xp: 0,
-                                    wallet: 0,
-                                    status: 'Ativo'
-                                }
-                            ])
-                            .select()
-                            .single();
-
-                        if (createError) {
-                            console.error("Erro JIT Supabase:", createError.message || createError, {
-                                code: createError.code,
-                                details: createError.details,
-                                hint: createError.hint
-                            });
-                        } else {
-                            profile = newProfile;
-                        }
+                    if (createError) {
+                        throw createError;
                     }
 
-                    if (profile) {
-                        setCurrentUser(prevUser => ({
-                            id: profile.id,
-                            name: profile.full_name,
-                            email: profile.email,
-                            company: profile.company_name || "Delta360 Platform",
-                            role: profile.role || 'seller',
-                            level: profile.level || 'Bronze',
-                            xp: profile.xp || 0,
-                            wallet: Number(profile.wallet) || 0,
-                            sales_total: Number(profile.wallet) * 10,
-                            salesCount60Days: 0,
-                            avatar: profile.avatar_url,
-                            doc: profile.doc,
-                            phone: profile.phone,
-                            company_name: profile.company_name,
-                            state_registration: profile.state_registration,
-                            pix_key: profile.pix_key,
-                            address_zip: profile.address_zip,
-                            address_street: profile.address_street,
-                            address_number: profile.address_number,
-                            address_complement: profile.address_complement,
-                            address_neighborhood: profile.address_neighborhood,
-                            address_city: profile.address_city,
-                            address_state: profile.address_state,
-                            balance_available: Number(profile.balance_available) || 0,
-                            balance_processing: Number(profile.balance_processing) || 0,
-                            custom_prices: profile.custom_prices || {},
-                            tax_collection_by_user: profile.tax_collection_by_user || false,
-                            permissions: profile.permissions || {},
-                            preferences: {
-                                darkMode: profile.preferences?.darkMode ?? prevUser.preferences?.darkMode ?? true
-                            }
-                        }));
+                    profile = newProfile;
+                }
+
+                if (!profile) {
+                    throw new Error("Perfil autenticado não encontrado.");
+                }
+
+                setCurrentUser(prevUser => ({
+                    id: profile.id,
+                    name: profile.full_name,
+                    email: profile.email,
+                    company: profile.company_name || "Delta360 Platform",
+                    role: profile.role || 'seller',
+                    level: profile.level || 'Bronze',
+                    xp: profile.xp || 0,
+                    wallet: Number(profile.wallet) || 0,
+                    sales_total: Number(profile.wallet) * 10,
+                    salesCount60Days: 0,
+                    avatar: profile.avatar_url,
+                    doc: profile.doc,
+                    phone: profile.phone,
+                    company_name: profile.company_name,
+                    state_registration: profile.state_registration,
+                    pix_key: profile.pix_key,
+                    address_zip: profile.address_zip,
+                    address_street: profile.address_street,
+                    address_number: profile.address_number,
+                    address_complement: profile.address_complement,
+                    address_neighborhood: profile.address_neighborhood,
+                    address_city: profile.address_city,
+                    address_state: profile.address_state,
+                    balance_available: Number(profile.balance_available) || 0,
+                    balance_processing: Number(profile.balance_processing) || 0,
+                    custom_prices: profile.custom_prices || {},
+                    tax_collection_by_user: profile.tax_collection_by_user || false,
+                    is_public_store_active: profile.is_public_store_active || false,
+                    store_slug: profile.store_slug || "",
+                    store_branding: profile.store_branding || { logo: null, primary_color: "#3B82F6", bio: "" },
+                    permissions: profile.permissions || {},
+                    preferences: {
+                        darkMode: profile.preferences?.darkMode ?? prevUser.preferences?.darkMode ?? true
                     }
-                }
-                else {
-                    setIsAuthenticated(false);
-                }
+                }));
+                setIsAuthenticated(true);
             } catch (err) {
-                console.warn("Supabase profile load failed. Using simulated user.");
+                console.warn("Falha ao carregar perfil autenticado. Voltando para login.", err);
+                setIsAuthenticated(false);
+                await supabase.auth.signOut();
             } finally {
                 setLoading(false);
             }
