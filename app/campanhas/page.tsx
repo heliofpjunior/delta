@@ -34,6 +34,15 @@ export default function CampanhasPage() {
         return data;
     });
 
+    const { data: products } = useSWR("products_fetch", async () => {
+        const { data, error } = await supabase
+            .from('products')
+            .select('id, name, type')
+            .order('name', { ascending: true });
+        if (error) throw error;
+        return data;
+    });
+
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCoupon, setSelectedCoupon] = useState<any>(null);
@@ -64,12 +73,24 @@ export default function CampanhasPage() {
 
     const handleModalSubmit = async (data: any) => {
         try {
+            // Conversao dos campos opcionais
+            const parseProducts = data.applicableProducts 
+                ? data.applicableProducts.split(',').map((p: string) => parseInt(p.trim())).filter((p: number) => !isNaN(p)) 
+                : [];
+                
+            const parseDocs = data.allowedDocs 
+                ? data.allowedDocs.split(',').map((d: string) => d.replace(/\D/g, '')).filter((d: string) => d.length > 0) 
+                : [];
+
             const couponData = {
                 vendedor_id: currentUser.id,
                 code: data.code.toUpperCase(),
                 discount_value: parseFloat(data.discountValue),
                 discount_type: data.discountType,
-                active: true
+                active: true,
+                expires_at: data.expiresAt ? new Date(data.expiresAt).toISOString() : null,
+                applicable_products: parseProducts,
+                allowed_docs: parseDocs
             };
 
             if (selectedCoupon) {
@@ -239,6 +260,7 @@ export default function CampanhasPage() {
                 onSubmit={handleModalSubmit}
                 initialData={selectedCoupon}
                 title={modalTitle}
+                products={products || []}
             />
         </div>
     );

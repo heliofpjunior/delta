@@ -36,8 +36,19 @@ function CheckoutContent() {
         doc: "",
         email: "",
         phone: "",
-        zip: ""
+        zip: "",
+        street: "",
+        number: "",
+        complement: "",
+        neighborhood: "",
+        city: "",
+        state: "",
+        ibge: "",
+        legalRepName: "",
+        legalRepCpf: ""
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState("");
 
     useEffect(() => {
         const initCheckout = async () => {
@@ -113,6 +124,28 @@ function CheckoutContent() {
             return;
         }
 
+        if (coupon.expires_at && new Date(coupon.expires_at) < new Date()) {
+            setCouponError("Este cupom esta expirado.");
+            return;
+        }
+
+        if (coupon.applicable_products && coupon.applicable_products.length > 0 && !coupon.applicable_products.includes(Number(productId))) {
+            setCouponError("Este cupom nao e valido para este produto.");
+            return;
+        }
+
+        const cleanDoc = formData.doc.replace(/\D/g, "");
+        if (coupon.allowed_docs && coupon.allowed_docs.length > 0) {
+            if (!cleanDoc) {
+                setCouponError("Por favor, preencha o campo CPF ou CNPJ no Passo 1 para usar este cupom.");
+                return;
+            }
+            if (!coupon.allowed_docs.includes(cleanDoc)) {
+                setCouponError("Este cupom não está disponível para esse CNPJ/CPF.");
+                return;
+            }
+        }
+
         if (attribution && coupon.vendedor_id !== attribution.vendedor_id) {
             setCouponError("Este cupom nao pertence a este parceiro.");
             return;
@@ -133,15 +166,113 @@ function CheckoutContent() {
             discountAmount = Number(coupon.discount_value);
         }
 
+        const newFinalPrice = Math.max(0, basePrice - discountAmount);
+
+        // Previne prejuizo: preco final nao pode ser menor que os custos minimos
+        const minCost = Number(product?.cost || 0) + Number(product?.taxes || 0) + Number(product?.fixed_fees || 0);
+        if (minCost > 0 && newFinalPrice < minCost) {
+            setCouponError("O desconto excede a margem permitida para este produto.");
+            return;
+        }
+
+        setFinalPrice(newFinalPrice);
         setAppliedCoupon(coupon);
         setCouponCode(normalizedCode);
-        setFinalPrice(Math.max(0, basePrice - discountAmount));
+        localStorage.removeItem("delta_pending_coupon");
     };
 
     const handleRemoveCoupon = () => {
         setAppliedCoupon(null);
         setCouponError("");
         setFinalPrice(basePrice);
+    };
+
+    const handleZipChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        const rawZip = val.replace(/\D/g, "");
+        setForm(prev => ({ ...prev, zip: val }));
+
+        if (rawZip.length === 8) {
+            try {
+                const res = await fetch(`https://viacep.com.br/ws/${rawZip}/json/`);
+                const data = await res.json();
+                if (!data.erro) {
+                    setForm(prev => ({
+                        ...prev,
+                        street: data.logradouro || "",
+                        neighborhood: data.bairro || "",
+                        city: data.localidade || "",
+                        state: data.uf || "",
+                        ibge: data.ibge || "",
+                    }));
+                }
+            } catch (error) {
+                console.error("Erro ao buscar CEP:", error);
+            }
+        }
+    };
+
+    const handleSubmitOrder = async () => {
+        if (!formData.name || !formData.doc || !formData.email || !formData.phone || !formData.zip || !formData.street || !formData.number || !formData.neighborhood || !formData.city || !formData.state) {
+            setSubmitError("Por favor, preencha todos os campos obrigatórios no Passo 1 e 2.");
+            return;
+        }
+
+        setIsSubmitting(true);
+        setSubmitError("");
+
+        try {
+            const formDataObj = new FormData();
+            formDataObj.append("productId", productId || "");
+            formDataObj.append("customPrice", finalPrice.toString());
+
+            if (attribution) {
+                formDataObj.append("seller_id", attribution.vendedor_id);
+            }
+
+            formDataObj.append("name", formData.name);
+            formDataObj.append("doc", formData.doc);
+            formDataObj.append("email", formData.email);
+            formDataObj.append("phone", formData.phone);
+            formDataObj.append("cep", formData.zip);
+            formDataObj.append("street", formData.street);
+            formDataObj.append("number", formData.number);
+            formDataObj.append("complement", formData.complement);
+            formDataObj.append("neighborhood", formData.neighborhood);
+            formDataObj.append("city", formData.city);
+            formDataObj.append("state", formData.state);
+            formDataObj.append("ibge", formData.ibge);
+
+            if (formData.doc.replace(/\D/g, "").length === 14) {
+                formDataObj.append("legalRepName", formData.legalRepName);
+                formDataObj.append("legalRepCpf", formData.legalRepCpf);
+            }
+
+            formDataObj.append("videoConference", "true");
+
+            const res = await fetch("/api/integracao/vendas", {
+                method: "POST",
+                body: formDataObj
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Erro ao processar pedido.");
+            }
+
+            if (data.paymentLink) {
+                window.location.href = data.paymentLink;
+            } else {
+                setSubmitError("Link de pagamento não retornado pela API.");
+                setIsSubmitting(false);
+            }
+
+        } catch (error: any) {
+            console.error("Erro no checkout:", error);
+            setSubmitError(error.message || "Erro desconhecido.");
+            setIsSubmitting(false);
+        }
     };
 
     const couponSavings = appliedCoupon ? Math.max(0, basePrice - finalPrice) : 0;
@@ -162,7 +293,7 @@ function CheckoutContent() {
                         <Lock size={24} />
                     </div>
                     <div>
-                        <h1 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Checkout Seguro</h1>
+                        <h1 className="text-xl font-black text-[var(--foreground)] uppercase tracking-tight">Compra Segura</h1>
                         <p className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-widest flex items-center gap-2">
                             <ShieldCheck size={12} className="text-emerald-500" />
                             Ambiente 100% criptografado
@@ -242,23 +373,54 @@ function CheckoutContent() {
                                         placeholder="seu@email.com"
                                     />
                                 </div>
+                                {formData.doc.replace(/\D/g, "").length === 14 && (
+                                    <>
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Nome do Representante</label>
+                                            <input
+                                                type="text"
+                                                value={formData.legalRepName}
+                                                onChange={e => setForm({ ...formData, legalRepName: e.target.value })}
+                                                className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                                placeholder="Nome do representante legal"
+                                            />
+                                        </div>
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">CPF do Representante</label>
+                                            <input
+                                                type="text"
+                                                value={formData.legalRepCpf}
+                                                onChange={e => setForm({ ...formData, legalRepCpf: e.target.value })}
+                                                className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all"
+                                                placeholder="Apenas números"
+                                            />
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             <div className={cn(
-                                "border-2 p-5 sm:p-6 rounded-[2rem] space-y-5 transition-all",
-                                appliedCoupon ? "bg-emerald-500/5 border-emerald-500/20" : "bg-primary/5 border-primary/10"
+                                "border-2 p-5 sm:p-6 rounded-[2rem] space-y-5 transition-all relative overflow-hidden",
+                                appliedCoupon
+                                    ? "bg-emerald-500/5 border-emerald-500/20 shadow-[0_0_40px_-15px_rgba(16,185,129,0.3)]"
+                                    : "bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-orange-500/10 border-amber-500/30 shadow-[0_0_40px_-15px_rgba(245,158,11,0.4)]"
                             )}>
+                                {!appliedCoupon && (
+                                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-orange-500/20 blur-[50px] -z-10 rounded-full animate-pulse" />
+                                )}
                                 <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                                     <div className={cn(
-                                        "size-12 rounded-2xl flex items-center justify-center border shrink-0",
-                                        appliedCoupon ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" : "bg-primary/10 text-primary border-primary/20"
+                                        "size-12 rounded-2xl flex items-center justify-center border shrink-0 relative z-10",
+                                        appliedCoupon
+                                            ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                                            : "bg-gradient-to-br from-amber-400 to-orange-500 text-white border-orange-500/20 shadow-lg shadow-orange-500/30"
                                     )}>
                                         {appliedCoupon ? <CheckCircle2 size={24} /> : <Tag size={24} />}
                                     </div>
-                                    <div className="flex-1 space-y-1">
+                                    <div className="flex-1 space-y-1 relative z-10">
                                         <p className={cn(
                                             "text-[10px] font-black uppercase tracking-widest",
-                                            appliedCoupon ? "text-emerald-600" : "text-primary"
+                                            appliedCoupon ? "text-emerald-600" : "text-amber-600 dark:text-amber-500"
                                         )}>
                                             {appliedCoupon ? "Cupom aplicado" : "Tem um cupom de desconto?"}
                                         </p>
@@ -271,7 +433,7 @@ function CheckoutContent() {
                                 </div>
 
                                 {appliedCoupon ? (
-                                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-stretch">
+                                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-stretch relative z-10">
                                         <div className="bg-[var(--card)] border border-emerald-500/20 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                             <div>
                                                 <p className="text-[9px] font-black text-[var(--muted)] uppercase tracking-widest">Codigo</p>
@@ -293,7 +455,7 @@ function CheckoutContent() {
                                         </button>
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col sm:flex-row gap-3">
+                                    <div className="flex flex-col sm:flex-row gap-3 relative z-10">
                                         <input
                                             type="text"
                                             value={couponCode}
@@ -302,11 +464,11 @@ function CheckoutContent() {
                                                 setCouponError("");
                                             }}
                                             placeholder="CODIGO DO CUPOM"
-                                            className="min-h-12 flex-1 px-5 bg-white dark:bg-slate-900 border-2 border-[var(--border)] rounded-2xl text-xs font-black uppercase tracking-widest focus:border-primary focus:ring-8 focus:ring-primary/5 outline-none"
+                                            className="min-h-12 flex-1 px-5 bg-white dark:bg-slate-900 border-2 border-amber-500/30 rounded-2xl text-xs font-black uppercase tracking-widest focus:border-amber-500 focus:ring-8 focus:ring-amber-500/10 outline-none transition-all shadow-inner"
                                         />
                                         <button
                                             onClick={handleApplyCoupon}
-                                            className="min-h-12 bg-primary text-white px-7 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-lg"
+                                            className="min-h-12 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-7 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-orange-500/30 border border-orange-400/50"
                                         >
                                             Aplicar
                                         </button>
@@ -345,7 +507,7 @@ function CheckoutContent() {
                                     <input
                                         type="text"
                                         value={formData.zip}
-                                        onChange={e => setForm({ ...formData, zip: e.target.value })}
+                                        onChange={handleZipChange}
                                         className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all"
                                         placeholder="00000-000"
                                     />
@@ -358,6 +520,66 @@ function CheckoutContent() {
                                         onChange={e => setForm({ ...formData, phone: e.target.value })}
                                         className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all"
                                         placeholder="(00) 00000-0000"
+                                    />
+                                </div>
+                                <div className="md:col-span-2 space-y-3">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Rua / Logradouro</label>
+                                    <input
+                                        type="text"
+                                        value={formData.street}
+                                        onChange={e => setForm({ ...formData, street: e.target.value })}
+                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        placeholder="Sua rua"
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Número</label>
+                                    <input
+                                        type="text"
+                                        value={formData.number}
+                                        onChange={e => setForm({ ...formData, number: e.target.value })}
+                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        placeholder="Nº"
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Complemento</label>
+                                    <input
+                                        type="text"
+                                        value={formData.complement}
+                                        onChange={e => setForm({ ...formData, complement: e.target.value })}
+                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        placeholder="Opcional"
+                                    />
+                                </div>
+                                <div className="md:col-span-2 space-y-3">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Bairro</label>
+                                    <input
+                                        type="text"
+                                        value={formData.neighborhood}
+                                        onChange={e => setForm({ ...formData, neighborhood: e.target.value })}
+                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        placeholder="Seu bairro"
+                                    />
+                                </div>
+                                <div className="md:col-span-2 space-y-3">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Cidade</label>
+                                    <input
+                                        type="text"
+                                        value={formData.city}
+                                        onChange={e => setForm({ ...formData, city: e.target.value })}
+                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        placeholder="Sua cidade"
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Estado</label>
+                                    <input
+                                        type="text"
+                                        value={formData.state}
+                                        onChange={e => setForm({ ...formData, state: e.target.value })}
+                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        placeholder="UF"
                                     />
                                 </div>
                             </div>
@@ -374,11 +596,19 @@ function CheckoutContent() {
                                 <p className="text-xs font-bold text-[var(--muted)] uppercase tracking-widest">Finalize seu pedido com total seguranca.</p>
                             </div>
 
+                            {submitError && (
+                                <div className="max-w-md mx-auto mb-6 rounded-2xl bg-rose-500/10 border border-rose-500/20 px-4 py-3 text-[10px] font-black text-rose-500 uppercase tracking-wider text-left">
+                                    {submitError}
+                                </div>
+                            )}
                             <div className="grid grid-cols-1 gap-4 max-w-md mx-auto">
-                                <button className="p-6 bg-[var(--background)] border-2 border-primary rounded-[2rem] flex items-center justify-between group hover:shadow-xl transition-all">
+                                <button
+                                    onClick={handleSubmitOrder}
+                                    disabled={isSubmitting}
+                                    className="p-6 bg-[var(--background)] border-2 border-primary rounded-[2rem] flex items-center justify-between group hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                                     <div className="flex items-center gap-4 text-left">
                                         <div className="size-12 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg">
-                                            <Zap size={24} />
+                                            {isSubmitting ? <Loader2 className="animate-spin" size={24} /> : <Zap size={24} />}
                                         </div>
                                         <div>
                                             <p className="font-black text-sm text-[var(--foreground)] uppercase tracking-tight">Pagar via PIX</p>
@@ -387,13 +617,16 @@ function CheckoutContent() {
                                     </div>
                                     <ArrowRight size={20} className="text-primary group-hover:translate-x-1 transition-transform" />
                                 </button>
-                                <button className="p-6 bg-[var(--background)] border-2 border-[var(--border)] rounded-[2rem] flex items-center justify-between group hover:border-primary transition-all opacity-60">
+                                <button
+                                    onClick={handleSubmitOrder}
+                                    disabled={isSubmitting}
+                                    className="p-6 bg-[var(--background)] border-2 border-[var(--border)] rounded-[2rem] flex items-center justify-between group hover:border-primary transition-all opacity-80 disabled:opacity-50 disabled:cursor-not-allowed">
                                     <div className="flex items-center gap-4 text-left">
-                                        <div className="size-12 rounded-2xl bg-[var(--border)] text-[var(--muted)] flex items-center justify-center shadow-sm">
-                                            <CreditCard size={24} />
+                                        <div className="size-12 rounded-2xl bg-[var(--border)] text-[var(--foreground)] flex items-center justify-center shadow-sm">
+                                            {isSubmitting ? <Loader2 className="animate-spin text-[var(--muted)]" size={24} /> : <CreditCard className="text-[var(--muted)]" size={24} />}
                                         </div>
                                         <div>
-                                            <p className="font-black text-sm text-[var(--muted)] uppercase tracking-tight">Cartao de Credito</p>
+                                            <p className="font-black text-sm text-[var(--foreground)] uppercase tracking-tight">Cartao de Credito</p>
                                             <p className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-widest">Em ate 12x</p>
                                         </div>
                                     </div>
@@ -422,9 +655,9 @@ function CheckoutContent() {
                             <ArrowRight size={18} strokeWidth={3} />
                         </button>
                     ) : (
-                        <div className="flex items-center gap-3 text-[10px] font-black text-emerald-500 uppercase tracking-widest animate-pulse">
-                            <ShieldCheck size={16} />
-                            Pedido em processamento
+                        <div className="flex items-center gap-3 text-[10px] font-black text-[var(--muted)] uppercase tracking-widest">
+                            <ShieldCheck size={16} className={isSubmitting ? "text-primary animate-pulse" : ""} />
+                            {isSubmitting ? "Gerando link de pagamento..." : "Aguardando pagamento"}
                         </div>
                     )}
                 </div>
