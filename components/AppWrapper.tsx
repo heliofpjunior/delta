@@ -17,6 +17,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
     const pathname = usePathname();
     const [isJourneyOpen, setIsJourneyOpen] = useState(false);
     const isPublicSalesRoute =
+        pathname === '/' ||
         pathname.startsWith('/loja/') ||
         pathname.startsWith('/l/') ||
         pathname === '/checkout' ||
@@ -24,7 +25,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
 
     // Permission Guard Logic
     const routePermissions: Record<string, string> = {
-        '/': 'access_dashboard',
+        '/dashboard': 'access_dashboard',
         '/certificados': 'access_certificates',
         '/loja': 'access_store',
         '/campanhas': 'access_marketing',
@@ -91,7 +92,7 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
                 <h1 className="text-2xl font-black text-[var(--foreground)] mb-2">Acesso Restrito</h1>
                 <p className="text-[var(--muted)] max-w-xs text-sm font-medium">Você não tem permissão para acessar a área administrativa. Entre em contato com o suporte se isso for um erro.</p>
                 <button
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => window.location.href = '/dashboard'}
                     className="mt-8 px-8 py-3 bg-primary text-on-primary font-black rounded-none hover:bg-primary/90 transition-all shadow-lg"
                 >
                     Voltar para o Início
