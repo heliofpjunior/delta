@@ -12,8 +12,8 @@ export default async function LandingPage() {
         const { data, error } = await supabaseAdmin
             .from("products")
             .select("*")
-            .order("price", { ascending: true })
-            .limit(3);
+            .eq("is_active", true)
+            .order("price", { ascending: true });
             
         if (error) console.error("Erro ao buscar produtos:", error);
         if (data) products = data;

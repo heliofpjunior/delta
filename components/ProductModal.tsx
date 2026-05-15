@@ -19,7 +19,10 @@ const productSchema = z.object({
     category: z.string().min(2, "Informe a categoria"),
     type: z.string().min(2, "Informe o tipo (ex: A1, A3)"),
     media_type: z.enum(["Nuvem", "Token", "Cartão", "Arquivo"]),
-    supplier_product_id: z.coerce.number().optional().nullable(),
+    supplier_product_id: z.preprocess(
+        (val) => (val === "" ? null : val),
+        z.coerce.number().nullable().optional()
+    ),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -45,6 +48,18 @@ export default function ProductModal({ isOpen, onClose, onSubmit, initialData, s
         resolver: zodResolver(productSchema) as any,
     });
 
+    // Debugging: Log errors if any
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            console.log("ProductModal Validation Errors:", errors);
+        }
+    }, [errors]);
+
+    const onFormSubmit = (data: ProductFormData) => {
+        console.log("Submitting Product Data:", data);
+        onSubmit(data);
+    };
+
     useEffect(() => {
         if (initialData) {
             reset({
@@ -55,7 +70,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, initialData, s
         } else {
             reset({
                 name: "",
-                price: 0,
+                price: 1,
                 commission_bronze: 0,
                 commission_prata: 0,
                 commission_ouro: 0,
@@ -69,7 +84,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, initialData, s
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 py-4">
+            <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-8 py-4">
                 <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-[var(--muted)] ml-1">Nome Comercial do Produto</label>
                     <Input

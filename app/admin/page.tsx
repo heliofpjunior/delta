@@ -1480,12 +1480,24 @@ function AdminDashboardContent() {
         setIsProductBusy(true);
         try {
             // Envia commission_bronze também para a coluna antiga por compatibilidade
-            const payload = { ...data, commission: data.commission_bronze };
+            const payload = { 
+                name: data.name,
+                price: data.price,
+                commission: data.commission_bronze,
+                commission_bronze: data.commission_bronze,
+                commission_prata: data.commission_prata,
+                commission_ouro: data.commission_ouro,
+                category: data.category,
+                type: data.type,
+                media_type: data.media_type,
+                supplier_product_id: data.supplier_product_id || null
+            };
             const { error } = await supabase.from('products').insert([payload]);
             if (error) throw error;
             mutateProducts();
             setIsProductModalOpen(false);
         } catch (error: any) {
+            console.error("Erro ao criar produto:", error);
             alert("Erro ao criar produto: " + error.message);
         } finally {
             setIsProductBusy(false);
@@ -1496,7 +1508,18 @@ function AdminDashboardContent() {
         if (!editingProduct) return;
         setIsProductBusy(true);
         try {
-            const payload = { ...data, commission: data.commission_bronze };
+            const payload = { 
+                name: data.name,
+                price: data.price,
+                commission: data.commission_bronze,
+                commission_bronze: data.commission_bronze,
+                commission_prata: data.commission_prata,
+                commission_ouro: data.commission_ouro,
+                category: data.category,
+                type: data.type,
+                media_type: data.media_type,
+                supplier_product_id: data.supplier_product_id || null
+            };
             const { error } = await supabase
                 .from('products')
                 .update(payload)
@@ -1506,6 +1529,7 @@ function AdminDashboardContent() {
             setIsProductModalOpen(false);
             setEditingProduct(null);
         } catch (error: any) {
+            console.error("Erro ao atualizar produto:", error);
             alert("Erro ao atualizar produto: " + error.message);
         } finally {
             setIsProductBusy(false);
