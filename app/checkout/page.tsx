@@ -16,6 +16,7 @@ import {
     X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { calculateCommission, LEVEL_COSTS, SellerLevel, FINANCE_CONSTANTS } from "@/lib/rulesEngine";
 
 function CheckoutContent() {
     const searchParams = useSearchParams();
@@ -24,6 +25,7 @@ function CheckoutContent() {
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState<any>(null);
     const [attribution, setAttribution] = useState<any>(null);
+    const [sellerProfile, setSellerProfile] = useState<any>(null);
     const [step, setStep] = useState(1);
     const [basePrice, setBasePrice] = useState(0);
     const [finalPrice, setFinalPrice] = useState(0);
@@ -59,7 +61,7 @@ function CheckoutContent() {
 
             const { data: prod } = await supabase
                 .from("products")
-                .select("*")
+                .select("*, supplier_products(*, supplier_tables(*))")
                 .eq("id", productId)
                 .single();
 
@@ -77,12 +79,12 @@ function CheckoutContent() {
 
                 const { data: profile } = await supabase
                     .from("profiles")
-                    .select("custom_prices")
+                    .select("custom_prices, level, doc")
                     .eq("id", attr.vendedor_id)
                     .single();
 
-                const customPrice = Number(profile?.custom_prices?.[productId] || attr.custom_price || prod.price);
-                setBasePrice(customPrice);
+                setSellerProfile(profile);
+                const customPrice = Number(profile?.custom_prices?.[productId] || attr.custom_price || prod.price);                setBasePrice(customPrice);
                 setFinalPrice(customPrice);
             } else {
                 setBasePrice(Number(prod.price));
@@ -166,15 +168,60 @@ function CheckoutContent() {
             discountAmount = Number(coupon.discount_value);
         }
 
-        const newFinalPrice = Math.max(0, basePrice - discountAmount);
+        let newFinalPrice = Math.max(0, basePrice - discountAmount);
 
-        // Previne prejuizo: preco final nao pode ser menor que os custos minimos
-        const minCost = Number(product?.cost || 0) + Number(product?.taxes || 0) + Number(product?.fixed_fees || 0);
-        if (minCost > 0 && newFinalPrice < minCost) {
-            setCouponError("O desconto excede a margem permitida para este produto.");
-            return;
+        // Previne prejuízo: aplica o desconto apenas até atingir o preço de custo (Margem Zero)
+        // Usamos fallbacks caso dados do fornecedor ou perfil não estejam carregados para garantir proteção
+        const isPJ = (sellerProfile?.doc?.replace(/\D/g, "") || "").length === 14;
+        const level = (sellerProfile?.level as SellerLevel) || "Bronze";
+        
+        // Extrai dados do fornecedor com suporte a objeto ou array (Supabase Join)
+        const supplierProd = Array.isArray(product?.supplier_products) 
+            ? product.supplier_products[0] 
+            : product?.supplier_products;
+            
+        const supplierTab = supplierProd?.supplier_tables;
+        
+        const taxPercent = supplierTab?.tax_percent 
+            ? Number(supplierTab.tax_percent) / 100 
+            : FINANCE_CONSTANTS.TAX_RATE;
+            
+        const fixedFee = supplierTab?.tax_fixed 
+            ? Number(supplierTab.tax_fixed) 
+            : (FINANCE_CONSTANTS.BASE_COST - 50);
+        
+        // Custo Base do Produto de acordo com o nível (O cadastro usa 'commission_X' como custo)
+        let sellerCost = 0;
+        if (product) {
+            const levelKey = `commission_${level.toLowerCase()}`;
+            sellerCost = Number(product[levelKey] || 0);
         }
 
+        // Se o produto não tiver custo específico para o nível, usa o fallback global do rulesEngine
+        if (sellerCost <= 0) {
+            sellerCost = isPJ 
+                ? LEVEL_COSTS[level]?.PJ || 95 
+                : LEVEL_COSTS[level]?.PF || 85;
+        }
+        
+        // Cálculo do Preço Mínimo (Break-even: Repasse = 0)
+        // A fórmula inverte: SalePrice * (1 - taxPercent) - sellerCost - fixedFee = 0
+        const minPrice = (sellerCost + fixedFee) / (1 - taxPercent);
+
+        if (newFinalPrice < minPrice) {
+            // Cap no desconto: não permitimos baixar além do preço de custo + taxas
+            const maxAllowedDiscount = Math.max(0, basePrice - minPrice);
+            discountAmount = maxAllowedDiscount;
+            newFinalPrice = basePrice - discountAmount;
+            
+            // Se o desconto foi totalmente zerado ou reduzido a ponto de não poder ser aplicado
+            if (newFinalPrice >= basePrice && basePrice <= minPrice) {
+                setCouponError("Este cupom não pode ser aplicado pois o preço base já está no limite de custo.");
+                return;
+            }
+        }
+
+        newFinalPrice = Math.round(newFinalPrice * 100) / 100;
         setFinalPrice(newFinalPrice);
         setAppliedCoupon(coupon);
         setCouponCode(normalizedCode);
@@ -226,8 +273,49 @@ function CheckoutContent() {
             formDataObj.append("productId", productId || "");
             formDataObj.append("customPrice", finalPrice.toString());
 
-            if (attribution) {
+            if (attribution && sellerProfile) {
                 formDataObj.append("seller_id", attribution.vendedor_id);
+
+                // Recalcula comissão e custos para persistência precisa
+                const isPJ = (sellerProfile.doc?.replace(/\D/g, "") || "").length === 14;
+                const level = sellerProfile.level || "Bronze";
+                
+                const supplierProd = Array.isArray(product?.supplier_products) 
+                    ? product.supplier_products[0] 
+                    : product?.supplier_products;
+                
+                const supplierData = supplierProd ? {
+                    base_cost: Number(supplierProd.base_cost),
+                    tax_fixed: Number(supplierProd.supplier_tables?.tax_fixed || 0),
+                    tax_percent: Number(supplierProd.supplier_tables?.tax_percent || 0)
+                } : undefined;
+
+                const productLevelCosts = {
+                    bronze: Number(product.commission_bronze || (isPJ ? LEVEL_COSTS.Bronze.PJ : LEVEL_COSTS.Bronze.PF)),
+                    prata: Number(product.commission_prata || (isPJ ? LEVEL_COSTS.Prata.PJ : LEVEL_COSTS.Prata.PF)),
+                    ouro: Number(product.commission_ouro || (isPJ ? LEVEL_COSTS.Ouro.PJ : LEVEL_COSTS.Ouro.PF))
+                };
+
+                const comm = calculateCommission(
+                    finalPrice,
+                    level as SellerLevel,
+                    isPJ,
+                    undefined, // Badge (Start etc) - Futuro
+                    supplierData,
+                    productLevelCosts
+                );
+
+                if (comm.isBlocked) {
+                    setSubmitError("Erro de Margem: O preço final (R$ " + finalPrice.toFixed(2) + ") resultaria em prejuízo para o parceiro. Por favor, remova ou troque o cupom.");
+                    setIsSubmitting(false);
+                    return;
+                }
+
+                formDataObj.append("seller_commission", comm.repasse.toString());
+                formDataObj.append("partner_cost", comm.partnerCost.toString());
+                formDataObj.append("taxes", comm.taxes.toString());
+                formDataObj.append("fixed_fees", comm.fixedFees.toString());
+                formDataObj.append("calculation_memory", JSON.stringify(comm.calculationSteps));
             }
 
             formDataObj.append("name", formData.name);
