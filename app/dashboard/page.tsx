@@ -38,7 +38,7 @@ export default function Dashboard() {
     const xpProgress = Math.min((currentUser.xp / xpGoal) * 100, 100);
 
     return (
-        <div className="max-w-4xl mx-auto p-4 space-y-10 pb-24 relative pt-4 md:pt-8">
+        <div className="max-w-5xl mx-auto p-4 space-y-10 pb-24 relative pt-4 md:pt-8">
             
             {/* ── Main Sales & Access Actions (Priority Focus) ── */}
             <section className="grid grid-cols-2 md:grid-cols-4 gap-4">

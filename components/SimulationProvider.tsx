@@ -89,7 +89,7 @@ const defaultUser: UserProfile = {
     },
     salesCount60Days: 24,
     avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAA65jbQbRFT_PDlvYMVTP3jdi6Y0M5XKach0uVKCc-u2nNiGY4dXathU9JL2D1fYBSRDJi1KuMjH_m4OZJTcO-vfJ3w0gVvuveIyKE23dzwugAuCd7laQ0bZE2IrG5aFxSPVmApOaPv2qJGIw4iLTESk8t2EBUYQJBTjzFFqpxVPxizXpfvDG_E8MSjXrNJCg4v3hJiYh3thS6oAAbbg3lP9pJL9tg8WUQXGUnMB8Z9CS_Dx6TE6QSzjjnWEoYy5CQSiCjDAc63_M",
-    preferences: { darkMode: true }
+    preferences: { darkMode: false }
 };
 
 const SimulationContext = createContext<SimulationContextType | undefined>(undefined);
@@ -102,7 +102,7 @@ export function SimulationProvider({ children }: { children: React.ReactNode }) 
                 return { ...defaultUser, preferences: { darkMode: stored === 'dark' } };
             }
         }
-        return defaultUser;
+        return { ...defaultUser, preferences: { darkMode: false } };
     });
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -132,7 +132,7 @@ export function SimulationProvider({ children }: { children: React.ReactNode }) 
                     wallet: 1500.00,
                     salesCount60Days: 120,
                     avatar: undefined,
-                    preferences: { darkMode: true }
+                    preferences: { darkMode: false }
                 };
             } else {
                 return defaultUser;

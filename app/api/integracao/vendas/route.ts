@@ -26,8 +26,14 @@ export async function POST(request: Request) {
         const videoConference = formData.get('videoConference') === 'true';
         const sellerId = formData.get('seller_id') as string;
         const sellerCommission = Number(formData.get('seller_commission'));
+        const rg = formData.get('rg') as string;
+        const birthDate = formData.get('birthDate') as string;
+        const fantasyName = formData.get('fantasyName') as string;
+        const cei = formData.get('cei') as string;
         const legalRepName = formData.get('legalRepName') as string;
         const legalRepCpf = (formData.get('legalRepCpf') as string || '').replace(/\D/g, '');
+        const legalRepRg = formData.get('legalRepRg') as string;
+        const legalRepBirthDate = formData.get('legalRepBirthDate') as string;
         const calculationMemory = formData.get('calculation_memory') as string;
         const partnerCost = Number(formData.get('partner_cost') || 0);
         const taxesValue = Number(formData.get('taxes') || 0);
@@ -153,10 +159,16 @@ export async function POST(request: Request) {
                         bairro: neighborhood,
                         complemento: complement || ""
                     },
+                    ...(rg ? { rg } : {}),
+                    ...(cei ? { cei_caepf: cei } : {}),
+                    ...(birthDate ? { data_nascimento: birthDate } : {}),
+                    ...(cleanDoc.length === 14 && fantasyName ? { nome_fantasia: fantasyName } : {}),
                     ...(cleanDoc.length === 14 ? {
                         representante_legal: {
                             nome: legalRepName,
-                            documento: legalRepCpf
+                            documento: legalRepCpf,
+                            ...(legalRepRg ? { rg: legalRepRg } : {}),
+                            ...(legalRepBirthDate ? { data_nascimento: legalRepBirthDate } : {})
                         }
                     } : {})
                 },

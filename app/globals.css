@@ -30,8 +30,42 @@
     --color-background-dark: #131314;
     /* Google Dark BG */
 
+    /* Missing Material 3 Tokens for Landing Page */
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #f1f3ff;
+    --color-surface-container-high: #e1e8ff;
+    --color-surface-container-highest: #d8e2ff;
+    --color-surface-dim: #ccdaff;
+    --color-surface-bright: #faf9ff;
+    
+    --color-primary-container: #0052cc;
+    --color-on-primary-container: #c4d2ff;
+    --color-secondary: #00687b;
+    --color-on-secondary: #ffffff;
+    --color-secondary-container: #50dcff;
+    --color-on-secondary-container: #005f71;
+    
+    --color-outline-variant: #c3c6d6;
+    
+    /* Spacing Tokens */
+    --spacing-section-padding: 80px;
+    --spacing-stack-lg: 32px;
+    --spacing-stack-md: 16px;
+    --spacing-stack-sm: 8px;
+    --spacing-gutter: 24px;
+    --spacing-container-max: 1200px;
+
+    /* Typography Tokens */
     --font-display: var(--font-inter), sans-serif;
     --font-sans: var(--font-inter), sans-serif;
+    
+    --font-headline-lg: var(--font-inter), sans-serif;
+    --font-headline-md: var(--font-inter), sans-serif;
+    --font-body-lg: var(--font-inter), sans-serif;
+    --font-display-lg: var(--font-inter), sans-serif;
+    --font-body-md: var(--font-inter), sans-serif;
+    --font-display-lg-mobile: var(--font-inter), sans-serif;
+    --font-label-md: var(--font-inter), sans-serif;
 }
 
 @layer base {
@@ -153,4 +187,14 @@
 
 .tier-ouro {
     @apply bg-amber-100 text-amber-700 border-amber-200;
+}
+
+/* Custom additions for landing page */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+.trust-badge-hover:hover {
+    transform: translateY(-4px);
+    transition: transform 0.3s ease;
 }

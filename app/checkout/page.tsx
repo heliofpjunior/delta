@@ -36,6 +36,10 @@ function CheckoutContent() {
     const [formData, setForm] = useState({
         name: "",
         doc: "",
+        rg: "",
+        birthDate: "",
+        fantasyName: "",
+        cei: "",
         email: "",
         phone: "",
         zip: "",
@@ -47,7 +51,9 @@ function CheckoutContent() {
         state: "",
         ibge: "",
         legalRepName: "",
-        legalRepCpf: ""
+        legalRepCpf: "",
+        legalRepRg: "",
+        legalRepBirthDate: ""
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState("");
@@ -320,6 +326,10 @@ function CheckoutContent() {
 
             formDataObj.append("name", formData.name);
             formDataObj.append("doc", formData.doc);
+            formDataObj.append("rg", formData.rg);
+            formDataObj.append("birthDate", formData.birthDate);
+            formDataObj.append("fantasyName", formData.fantasyName);
+            formDataObj.append("cei", formData.cei);
             formDataObj.append("email", formData.email);
             formDataObj.append("phone", formData.phone);
             formDataObj.append("cep", formData.zip);
@@ -334,6 +344,8 @@ function CheckoutContent() {
             if (formData.doc.replace(/\D/g, "").length === 14) {
                 formDataObj.append("legalRepName", formData.legalRepName);
                 formDataObj.append("legalRepCpf", formData.legalRepCpf);
+                formDataObj.append("legalRepRg", formData.legalRepRg);
+                formDataObj.append("legalRepBirthDate", formData.legalRepBirthDate);
             }
 
             formDataObj.append("videoConference", "true");
@@ -375,7 +387,7 @@ function CheckoutContent() {
 
     return (
         <div className="min-h-screen bg-[var(--background)] py-8 sm:py-12 px-4 sm:px-6 flex flex-col items-center">
-            <div className="w-full max-w-4xl mb-8 sm:mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="w-full max-w-6xl mb-8 sm:mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
                     <div className="size-12 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg shrink-0">
                         <Lock size={24} />
@@ -402,8 +414,59 @@ function CheckoutContent() {
                 </div>
             </div>
 
-            <div className="w-full max-w-3xl bg-[var(--card)] rounded-[2rem] sm:rounded-[3rem] border-2 border-[var(--border)] overflow-hidden shadow-2xl flex flex-col">
-                <div className="p-5 sm:p-8 bg-[var(--background)]/50 border-b border-[var(--border)] flex justify-between relative">
+            <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6 lg:gap-12 items-start">
+                {/* Detalhes do Produto - Mini Landing Page */}
+                <div className="w-full lg:w-[40%] space-y-4 lg:space-y-6 lg:sticky lg:top-8 order-1 lg:order-1">
+                    <div className="bg-[var(--card)] border border-[var(--border)] rounded-3xl p-5 md:p-8 shadow-xl">
+                        <div className="hidden lg:flex size-16 bg-primary/10 text-primary rounded-2xl items-center justify-center mb-6">
+                            <ShieldCheck size={32} />
+                        </div>
+                        <h2 className="text-xl lg:text-2xl font-black text-[var(--foreground)] tracking-tight mb-2 lg:mb-3">
+                            {product.name}
+                        </h2>
+                        <p className="text-[11px] lg:text-sm text-[var(--muted)] mb-5 lg:mb-8 font-medium leading-relaxed">
+                            {product.description || "O Certificado Digital ideal para sua empresa. Segurança, validade jurídica e praticidade em um único produto com emissão 100% online."}
+                        </p>
+                        
+                        <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-4 mb-5 lg:mb-8">
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 bg-[var(--background)] lg:bg-transparent p-3 lg:p-0 rounded-2xl lg:rounded-none border lg:border-0 border-[var(--border)]">
+                                <div className="size-6 lg:size-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                                    <CheckCircle2 className="size-3 lg:size-4 text-emerald-500" />
+                                </div>
+                                <span className="text-[9px] lg:text-sm font-bold text-[var(--foreground)] leading-tight uppercase tracking-wider lg:tracking-normal lg:normal-case">Emissão 100% Online</span>
+                            </div>
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 bg-[var(--background)] lg:bg-transparent p-3 lg:p-0 rounded-2xl lg:rounded-none border lg:border-0 border-[var(--border)]">
+                                <div className="size-6 lg:size-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                                    <CheckCircle2 className="size-3 lg:size-4 text-emerald-500" />
+                                </div>
+                                <span className="text-[9px] lg:text-sm font-bold text-[var(--foreground)] leading-tight uppercase tracking-wider lg:tracking-normal lg:normal-case">Pronto no mesmo dia</span>
+                            </div>
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 bg-[var(--background)] lg:bg-transparent p-3 lg:p-0 rounded-2xl lg:rounded-none border lg:border-0 border-[var(--border)]">
+                                <div className="size-6 lg:size-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                                    <CheckCircle2 className="size-3 lg:size-4 text-emerald-500" />
+                                </div>
+                                <span className="text-[9px] lg:text-sm font-bold text-[var(--foreground)] leading-tight uppercase tracking-wider lg:tracking-normal lg:normal-case">Suporte Incluso</span>
+                            </div>
+                            <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 bg-[var(--background)] lg:bg-transparent p-3 lg:p-0 rounded-2xl lg:rounded-none border lg:border-0 border-[var(--border)]">
+                                <div className="size-6 lg:size-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                                    <CheckCircle2 className="size-3 lg:size-4 text-emerald-500" />
+                                </div>
+                                <span className="text-[9px] lg:text-sm font-bold text-[var(--foreground)] leading-tight uppercase tracking-wider lg:tracking-normal lg:normal-case">Validade Jurídica</span>
+                            </div>
+                        </div>
+
+                        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 lg:p-5 flex items-center lg:items-start gap-3 lg:gap-4">
+                            <Zap className="size-5 lg:size-6 text-primary shrink-0 lg:mt-1" />
+                            <div>
+                                <h4 className="text-[10px] lg:text-sm font-black text-[var(--foreground)] uppercase tracking-tight mb-0 lg:mb-1">Aprovação Imediata</h4>
+                                <p className="hidden lg:block text-xs text-[var(--muted)] font-medium">Pagamentos no PIX ou Cartão de Crédito são aprovados na hora, agilizando sua emissão.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="w-full lg:w-[60%] bg-[var(--card)] rounded-[2rem] sm:rounded-[3rem] border-2 border-[var(--border)] overflow-hidden shadow-2xl flex flex-col order-2 lg:order-2">
+                    <div className="p-5 sm:p-8 bg-[var(--background)]/50 border-b border-[var(--border)] flex justify-between relative">
                     {[1, 2, 3].map((s) => (
                         <div key={s} className="flex flex-col items-center gap-3 relative z-10">
                             <div className={cn(
@@ -430,60 +493,129 @@ function CheckoutContent() {
                 <div className="p-5 sm:p-10 min-h-[400px]">
                     {step === 1 && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Nome Completo</label>
-                                    <input
-                                        type="text"
-                                        value={formData.name}
-                                        onChange={e => setForm({ ...formData, name: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
-                                        placeholder="Ex: Joao Silva"
-                                    />
-                                </div>
-                                <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-4 sm:gap-5">
+                                <div className="space-y-2 col-span-2">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">CPF ou CNPJ</label>
                                     <input
                                         type="text"
                                         value={formData.doc}
                                         onChange={e => setForm({ ...formData, doc: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all"
+                                        className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
                                         placeholder="Apenas numeros"
                                     />
                                 </div>
-                                <div className="md:col-span-2 space-y-3">
+                                <div className="space-y-2 col-span-2">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">{formData.doc.replace(/\D/g, "").length === 14 ? "Razão Social" : "Nome Completo"}</label>
+                                    <input
+                                        type="text"
+                                        value={formData.name}
+                                        onChange={e => setForm({ ...formData, name: e.target.value })}
+                                        className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
+                                        placeholder="Ex: Joao Silva"
+                                    />
+                                </div>
+
+                                {formData.doc.replace(/\D/g, "").length === 14 ? (
+                                    <>
+                                        <div className="space-y-2 col-span-2 md:col-span-1">
+                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Nome Fantasia (Opcional)</label>
+                                            <input
+                                                type="text"
+                                                value={formData.fantasyName}
+                                                onChange={e => setForm({ ...formData, fantasyName: e.target.value })}
+                                                className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
+                                                placeholder="Nome fantasia da empresa"
+                                            />
+                                        </div>
+                                        <div className="space-y-2 col-span-2 md:col-span-1">
+                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">CEI / CAEPF (Opcional)</label>
+                                            <input
+                                                type="text"
+                                                value={formData.cei}
+                                                onChange={e => setForm({ ...formData, cei: e.target.value })}
+                                                className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
+                                            />
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="space-y-2 col-span-1">
+                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2 truncate block">Nascimento</label>
+                                            <input
+                                                type="date"
+                                                value={formData.birthDate}
+                                                onChange={e => setForm({ ...formData, birthDate: e.target.value })}
+                                                className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[13px] font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                                            />
+                                        </div>
+                                        <div className="space-y-2 col-span-1">
+                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">RG</label>
+                                            <input
+                                                type="text"
+                                                value={formData.rg}
+                                                onChange={e => setForm({ ...formData, rg: e.target.value })}
+                                                className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[13px] font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
+                                                placeholder="Opcional"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+                                
+                                <div className="col-span-2 space-y-2">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">E-mail de Recebimento</label>
                                     <input
                                         type="email"
                                         value={formData.email}
                                         onChange={e => setForm({ ...formData, email: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all lowercase"
+                                        className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all lowercase"
                                         placeholder="seu@email.com"
                                     />
                                 </div>
+                                
                                 {formData.doc.replace(/\D/g, "").length === 14 && (
-                                    <>
-                                        <div className="space-y-3">
-                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Nome do Representante</label>
-                                            <input
-                                                type="text"
-                                                value={formData.legalRepName}
-                                                onChange={e => setForm({ ...formData, legalRepName: e.target.value })}
-                                                className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
-                                                placeholder="Nome do representante legal"
-                                            />
+                                    <div className="col-span-2 border-t border-[var(--border)] pt-4 mt-2">
+                                        <h4 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-widest mb-4 px-2">Representante Legal</h4>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2 col-span-2">
+                                                <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Nome do Representante</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.legalRepName}
+                                                    onChange={e => setForm({ ...formData, legalRepName: e.target.value })}
+                                                    className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
+                                                    placeholder="Nome"
+                                                />
+                                            </div>
+                                            <div className="space-y-2 col-span-2">
+                                                <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">CPF do Representante</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.legalRepCpf}
+                                                    onChange={e => setForm({ ...formData, legalRepCpf: e.target.value })}
+                                                    className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                                                    placeholder="Apenas números"
+                                                />
+                                            </div>
+                                            <div className="space-y-2 col-span-1">
+                                                <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2 block truncate">Nascimento</label>
+                                                <input
+                                                    type="date"
+                                                    value={formData.legalRepBirthDate}
+                                                    onChange={e => setForm({ ...formData, legalRepBirthDate: e.target.value })}
+                                                    className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[13px] font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                                                />
+                                            </div>
+                                            <div className="space-y-2 col-span-1">
+                                                <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">RG</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.legalRepRg}
+                                                    onChange={e => setForm({ ...formData, legalRepRg: e.target.value })}
+                                                    className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-[13px] font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="space-y-3">
-                                            <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">CPF do Representante</label>
-                                            <input
-                                                type="text"
-                                                value={formData.legalRepCpf}
-                                                onChange={e => setForm({ ...formData, legalRepCpf: e.target.value })}
-                                                className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all"
-                                                placeholder="Apenas números"
-                                            />
-                                        </div>
-                                    </>
+                                    </div>
                                 )}
                             </div>
 
@@ -521,15 +653,15 @@ function CheckoutContent() {
                                 </div>
 
                                 {appliedCoupon ? (
-                                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-stretch relative z-10">
-                                        <div className="bg-[var(--card)] border border-emerald-500/20 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 items-stretch relative z-10">
+                                        <div className="bg-[var(--background)] border border-emerald-500/20 rounded-2xl p-4 flex items-center justify-between gap-3">
                                             <div>
-                                                <p className="text-[9px] font-black text-[var(--muted)] uppercase tracking-widest">Codigo</p>
-                                                <p className="text-lg font-black text-emerald-600 uppercase tracking-widest">{appliedCoupon.code}</p>
+                                                <p className="text-[8px] font-black text-[var(--muted)] uppercase tracking-widest">Código</p>
+                                                <p className="text-sm sm:text-base font-black text-emerald-600 uppercase tracking-widest">{appliedCoupon.code}</p>
                                             </div>
-                                            <div className="text-left sm:text-right">
-                                                <p className="text-[9px] font-black text-[var(--muted)] uppercase tracking-widest">Economia</p>
-                                                <p className="text-lg font-black text-emerald-600">
+                                            <div className="text-right">
+                                                <p className="text-[8px] font-black text-[var(--muted)] uppercase tracking-widest">Economia</p>
+                                                <p className="text-sm sm:text-base font-black text-emerald-600">
                                                     R$ {couponSavings.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                                                 </p>
                                             </div>
@@ -539,7 +671,7 @@ function CheckoutContent() {
                                             className="min-h-12 px-5 rounded-2xl border-2 border-[var(--border)] bg-[var(--background)] text-[var(--muted)] hover:text-rose-500 hover:border-rose-500/40 font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                                         >
                                             <X size={14} strokeWidth={3} />
-                                            Remover
+                                            <span className="hidden sm:inline">Remover</span>
                                         </button>
                                     </div>
                                 ) : (
@@ -551,7 +683,7 @@ function CheckoutContent() {
                                                 setCouponCode(e.target.value.toUpperCase());
                                                 setCouponError("");
                                             }}
-                                            placeholder="CODIGO DO CUPOM"
+                                            placeholder="CÓDIGO DO CUPOM"
                                             className="min-h-12 flex-1 px-5 bg-white dark:bg-slate-900 border-2 border-amber-500/30 rounded-2xl text-xs font-black uppercase tracking-widest focus:border-amber-500 focus:ring-8 focus:ring-amber-500/10 outline-none transition-all shadow-inner"
                                         />
                                         <button
@@ -569,18 +701,24 @@ function CheckoutContent() {
                                     </div>
                                 )}
 
-                                <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                                    <div className="rounded-2xl bg-[var(--background)] border border-[var(--border)] p-3">
-                                        <p className="text-[8px] font-black text-[var(--muted)] uppercase tracking-widest">Subtotal</p>
-                                        <p className="text-xs sm:text-sm font-black text-[var(--foreground)]">R$ {basePrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
+                                <div className="flex flex-col gap-3 rounded-2xl bg-[var(--background)] border border-[var(--border)] p-4 sm:p-5 relative z-10">
+                                    <div className="flex justify-between items-center text-xs">
+                                        <span className="text-[var(--muted)] font-black uppercase tracking-widest">Subtotal</span>
+                                        <span className="font-black text-[var(--foreground)]">R$ {basePrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
                                     </div>
-                                    <div className="rounded-2xl bg-[var(--background)] border border-[var(--border)] p-3">
-                                        <p className="text-[8px] font-black text-[var(--muted)] uppercase tracking-widest">Desconto</p>
-                                        <p className="text-xs sm:text-sm font-black text-emerald-600">R$ {couponSavings.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
-                                    </div>
-                                    <div className="rounded-2xl bg-[var(--background)] border border-primary/20 p-3">
-                                        <p className="text-[8px] font-black text-primary uppercase tracking-widest">Total</p>
-                                        <p className="text-xs sm:text-sm font-black text-primary">R$ {finalPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
+                                    
+                                    {couponSavings > 0 && (
+                                        <div className="flex justify-between items-center text-xs text-emerald-600">
+                                            <span className="font-black uppercase tracking-widest">Desconto</span>
+                                            <span className="font-black">- R$ {couponSavings.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
+                                        </div>
+                                    )}
+                                    
+                                    <div className="h-px w-full bg-[var(--border)] my-1" />
+                                    
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xs font-black text-primary uppercase tracking-widest">Total</span>
+                                        <span className="text-base sm:text-lg font-black text-primary">R$ {finalPrice.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
                                     </div>
                                 </div>
                             </div>
@@ -589,84 +727,84 @@ function CheckoutContent() {
 
                     {step === 2 && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                                <div className="space-y-3">
+                            <div className="grid grid-cols-4 gap-4 sm:gap-5">
+                                <div className="space-y-2 col-span-4 md:col-span-2">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">CEP</label>
                                     <input
                                         type="text"
                                         value={formData.zip}
                                         onChange={handleZipChange}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all"
+                                        className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
                                         placeholder="00000-000"
                                     />
                                 </div>
-                                <div className="md:col-span-2 space-y-3">
+                                <div className="space-y-2 col-span-4 md:col-span-2">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">WhatsApp / Celular</label>
                                     <input
                                         type="text"
                                         value={formData.phone}
                                         onChange={e => setForm({ ...formData, phone: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all"
+                                        className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
                                         placeholder="(00) 00000-0000"
                                     />
                                 </div>
-                                <div className="md:col-span-2 space-y-3">
+                                <div className="space-y-2 col-span-4 md:col-span-3">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Rua / Logradouro</label>
                                     <input
                                         type="text"
                                         value={formData.street}
                                         onChange={e => setForm({ ...formData, street: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
                                         placeholder="Sua rua"
                                     />
                                 </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Número</label>
+                                <div className="space-y-2 col-span-1 md:col-span-1">
+                                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2 truncate block">Número</label>
                                     <input
                                         type="text"
                                         value={formData.number}
                                         onChange={e => setForm({ ...formData, number: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
                                         placeholder="Nº"
                                     />
                                 </div>
-                                <div className="space-y-3">
+                                <div className="space-y-2 col-span-3 md:col-span-2">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Complemento</label>
                                     <input
                                         type="text"
                                         value={formData.complement}
                                         onChange={e => setForm({ ...formData, complement: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
                                         placeholder="Opcional"
                                     />
                                 </div>
-                                <div className="md:col-span-2 space-y-3">
+                                <div className="space-y-2 col-span-4 md:col-span-2">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Bairro</label>
                                     <input
                                         type="text"
                                         value={formData.neighborhood}
                                         onChange={e => setForm({ ...formData, neighborhood: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        className="w-full px-5 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
                                         placeholder="Seu bairro"
                                     />
                                 </div>
-                                <div className="md:col-span-2 space-y-3">
+                                <div className="space-y-2 col-span-2 md:col-span-3">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Cidade</label>
                                     <input
                                         type="text"
                                         value={formData.city}
                                         onChange={e => setForm({ ...formData, city: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
                                         placeholder="Sua cidade"
                                     />
                                 </div>
-                                <div className="space-y-3">
+                                <div className="space-y-2 col-span-2 md:col-span-1">
                                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-widest px-2">Estado</label>
                                     <input
                                         type="text"
                                         value={formData.state}
                                         onChange={e => setForm({ ...formData, state: e.target.value })}
-                                        className="w-full px-5 sm:px-6 py-4 bg-[var(--background)] border-2 border-[var(--border)] rounded-2xl text-sm font-black focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all uppercase"
+                                        className="w-full px-4 py-3 bg-[var(--background)] border-2 border-[var(--border)] rounded-xl text-sm font-black focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all uppercase"
                                         placeholder="UF"
                                     />
                                 </div>
@@ -748,6 +886,7 @@ function CheckoutContent() {
                             {isSubmitting ? "Gerando link de pagamento..." : "Aguardando pagamento"}
                         </div>
                     )}
+                </div>
                 </div>
             </div>
 

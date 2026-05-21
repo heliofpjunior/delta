@@ -6,7 +6,7 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { Loader2, ShieldAlert } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
 import { supabase } from "@/lib/supabase";
@@ -22,6 +22,14 @@ export default function AppWrapper({ children }: { children: React.ReactNode }) 
         pathname.startsWith('/l/') ||
         pathname === '/checkout' ||
         pathname.startsWith('/checkout/');
+
+    // Force light mode on public routes regardless of saved preference
+    useEffect(() => {
+        if (isPublicSalesRoute) {
+            document.documentElement.classList.remove('dark');
+            document.body.style.backgroundColor = "#F8F9FA";
+        }
+    }, [isPublicSalesRoute, pathname]);
 
     // Permission Guard Logic
     const routePermissions: Record<string, string> = {
